@@ -1,0 +1,143 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL_DEV")
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
+  output   = "../ERD.svg"
+}
+
+enum ProgramingSkill {
+  // HTML
+  HTML
+  // CSS
+  CSS
+  // JavaScript
+  JAVA_SCRIPT
+  // TypeScript
+  TYPE_SCRIPT
+  // Python
+  PYTHON
+  // C
+  C
+  // C#
+  C_SHARP
+  // C++
+  C_PLUSPLUS
+  // Objective-C
+  OBJECTIVE_C
+  // Java
+  JAVA
+  // VBScript
+  VB_SCRIPT
+  // COBOL
+  COBOL
+  // Perl
+  PERL
+  // PHP
+  PHP
+  // Ruby
+  RUBY
+  // Go
+  GO
+  // Rust
+  RUST
+  // R
+  R
+  // Swift
+  SWIFT
+  // Dart
+  DART
+  // SQL
+  SQL
+  // No SQL
+  NO_SQL
+  // Docker
+  DOCKER
+  // Kubernetes
+  KUBERNETES
+  // Google Cloud Platform
+  GCP
+  // Amazon Web Service
+  AWS
+  // Git
+  GIT
+}
+
+model DevelopmentExperience {
+  id     String @id @default(cuid())
+  userId String @unique
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model InternshipExperience {
+  id     String @id @default(cuid())
+  userId String @unique
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model User {
+  id                    String                 @id @default(cuid())
+  name                  String?
+  email                 String                 @unique
+  imageUrl              String?
+  age                   Int?
+  prefecture            String?
+  university            String?
+  undergraduate         String?
+  selfPublicity         String?
+  careerVision          String?
+  programingSkills      Json?
+  developmentExperience DevelopmentExperience?
+  internshipExperience  InternshipExperience?
+  userRecruits          UserRecruit[]
+  applicants             Applicant[]
+}
+
+model Applicant {
+  id        String    @id @default(cuid())
+  userId    String
+  recruitId String
+
+  user User @relation(fields: [userId], references: [id])
+  recruit   Recruit @relation(fields: [recruitId], references: [id])
+
+  @@unique([userId, recruitId])
+}
+
+model Recruit {
+  id                 String       @id @default(cuid())
+  headline           String
+  details            String?
+  programingSkills   Json
+  developmentPeriod  String?
+  hackathonUrl       String?
+  numberOfApplicants Int
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  applicants         Applicant[]
+  userRecruits        UserRecruit[]
+}
+
+model UserRecruit {
+  id          String   @id @default(cuid())
+  recruitId   String
+  recruiterId String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  recruit   Recruit @relation(fields: [recruitId], references: [id])
+  recruiter User    @relation(fields: [recruiterId], references: [id])
+
+  @@unique([recruitId, recruiterId])
+}

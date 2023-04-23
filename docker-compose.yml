@@ -1,0 +1,22 @@
+version: '3.8'
+
+networks:
+  overlay:
+
+services:
+  unite-db:
+    image: mysql:8.0
+    env_file:
+      - ./docker/mysql.env
+    container_name: 'unite-db'
+    restart: 'no'
+    ports:
+      - 5506:3306
+    volumes:
+      - ./docker/conf/mysql.cnf:/etc/mysql/conf.d/mysql.conf.cnf
+      - ./docker/data:/var/lib/mysql
+      - ./docker/logs:/var/log/mysql
+    networks:
+      - overlay
+    cap_add:
+      - SYS_NICE # CAP_SYS_NICE
