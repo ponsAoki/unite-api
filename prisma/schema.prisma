@@ -88,6 +88,7 @@ model InternshipExperience {
 
 model User {
   id                    String                 @id @default(cuid())
+  firebaseUID           String?                @unique
   name                  String?
   email                 String                 @unique
   imageUrl              String?
@@ -101,32 +102,32 @@ model User {
   developmentExperience DevelopmentExperience?
   internshipExperience  InternshipExperience?
   userRecruits          UserRecruit[]
-  applicants             Applicant[]
+  applicants            Applicant[]
 }
 
 model Applicant {
-  id        String    @id @default(cuid())
+  id        String @id @default(cuid())
   userId    String
   recruitId String
 
-  user User @relation(fields: [userId], references: [id])
-  recruit   Recruit @relation(fields: [recruitId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+  recruit Recruit @relation(fields: [recruitId], references: [id])
 
   @@unique([userId, recruitId])
 }
 
 model Recruit {
-  id                 String       @id @default(cuid())
+  id                 String        @id @default(cuid())
   headline           String
   details            String?
   programingSkills   Json
   developmentPeriod  String?
   hackathonUrl       String?
   numberOfApplicants Int
-  createdAt          DateTime     @default(now())
-  updatedAt          DateTime     @updatedAt
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
   applicants         Applicant[]
-  userRecruits        UserRecruit[]
+  userRecruits       UserRecruit[]
 }
 
 model UserRecruit {

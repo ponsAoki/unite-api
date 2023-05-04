@@ -7,9 +7,7 @@ import { CreateUserRecruitInput } from './dto/create-user-recruit.input';
 export class UserRecruitService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  create(
-    userRecruit: CreateUserRecruitInput,
-  ): PrismaPromise<UserRecruit | null> {
+  create(userRecruit: CreateUserRecruitInput): PrismaPromise<UserRecruit> {
     return this.prismaService.userRecruit.create({ data: userRecruit });
   }
 }
