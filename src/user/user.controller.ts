@@ -27,9 +27,9 @@ export class UserController {
 
   @Put()
   async update(
-    @Headers() headers: any,
+    @Headers('user-id') userId: string,
     @Body() input: UpdateUserInput,
   ): Promise<UserEntity> {
-    return await this.userService.update(headers['user-id'], input);
+    return await this.userService.update(userId, input);
   }
 }
