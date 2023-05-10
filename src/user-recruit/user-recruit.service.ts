@@ -7,9 +7,20 @@ import { CreateUserRecruitInput } from './dto/create-user-recruit.input';
 export class UserRecruitService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  create(
-    userRecruit: CreateUserRecruitInput,
+  findByRecruitIdAndRecruiterId(
+    recruitId: string,
+    recruiterId: string,
   ): PrismaPromise<UserRecruit | null> {
+    return this.prismaService.userRecruit.findFirst({
+      where: { recruitId, recruiterId },
+    });
+  }
+
+  create(userRecruit: CreateUserRecruitInput): PrismaPromise<UserRecruit> {
     return this.prismaService.userRecruit.create({ data: userRecruit });
+  }
+
+  delete(id: string): PrismaPromise<UserRecruit> {
+    return this.prismaService.userRecruit.delete({ where: { id } });
   }
 }
