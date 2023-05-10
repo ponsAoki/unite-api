@@ -12,6 +12,10 @@ export class RecruitService {
     return this.prismaService.recruit.findMany();
   }
 
+  findById(id: string): PrismaPromise<Recruit> {
+    return this.prismaService.recruit.findFirst({ where: { id } });
+  }
+
   create(recruit: CreateSystemRecruitInput): PrismaPromise<Recruit> {
     return this.prismaService.recruit.create({ data: recruit });
   }

@@ -18,6 +18,13 @@ export class UserController {
     return await this.userService.findAll();
   }
 
+  @Get('find-by-firebase-uid')
+  async findByFirebaseUID(
+    @Headers('firebase-uid') firebaseUID: string,
+  ): Promise<UserEntity> {
+    return await this.userService.findByFirebaseUID(firebaseUID);
+  }
+
   @Post()
   async create(
     @Body() input: CreateUserWithEmailInput,
@@ -25,11 +32,11 @@ export class UserController {
     return await this.createUserWithEmail.handle(input);
   }
 
-  @Put()
+  @Put('update-by-firebase-uid')
   async update(
-    @Headers('user-id') userId: string,
+    @Headers('firebase-uid') firebaseUID: string,
     @Body() input: UpdateUserInput,
   ): Promise<UserEntity> {
-    return await this.userService.update(userId, input);
+    return await this.userService.updateByFirebaseUID(firebaseUID, input);
   }
 }
