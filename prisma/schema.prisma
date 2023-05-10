@@ -117,12 +117,13 @@ model Applicant {
 
 model Recruit {
   id                 String       @id @default(cuid())
+  hackthonName       String?
   headline           String
-  details            String?
+  details            String? @db.VarChar(500)
   programingSkills   Json
   developmentPeriod  String?
   hackathonUrl       String?
-  numberOfApplicants Int
+  numberOfApplicants String
   createdAt          DateTime     @default(now())
   updatedAt          DateTime     @updatedAt
   applicants         Applicant[]

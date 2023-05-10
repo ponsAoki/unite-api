@@ -5,9 +5,10 @@ export class RecruitEntity implements Recruit {
   createdAt: Date;
   updatedAt: Date;
   headline: string;
+  hackthonName: string;
   details: string;
   programingSkills: Prisma.JsonValue;
   developmentPeriod: string;
   hackathonUrl: string;
-  numberOfApplicants: number;
+  numberOfApplicants: string;
 }
