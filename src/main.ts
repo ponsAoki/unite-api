@@ -8,12 +8,10 @@ async function bootstrap() {
 
   const prismaService: PrismaService = app.get(PrismaService);
   prismaService.enableShutdownHooks(app);
-
   app.get(AuthUtil).initialize();
-
+  
   //デプロイまでにもう少し厳格なcorsルールつける
   app.enableCors();
-
   await app.listen(8080);
 }
 bootstrap();

@@ -5,6 +5,10 @@ export class CreateRecruitInput {
   @IsString()
   headline!: string;
 
+  @IsNotEmpty()
+  @IsString()
+  hackthonName!: string;
+
   @IsString()
   details?: string;
 
@@ -19,5 +23,5 @@ export class CreateRecruitInput {
 
   @IsNotEmpty()
   @IsString()
-  numberOfApplicants!: number;
+  numberOfApplicants!: string;
 }
