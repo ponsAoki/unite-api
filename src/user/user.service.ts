@@ -12,6 +12,14 @@ export class UserService {
     return this.prismaService.user.findMany();
   }
 
+  findById(id: string): PrismaPromise<User | null> {
+    return this.prismaService.user.findFirst({ where: { id } });
+  }
+
+  findByFirebaseUID(firebaseUID: string): PrismaPromise<User | null> {
+    return this.prismaService.user.findFirst({ where: { firebaseUID } });
+  }
+
   findByEmail(email: string): PrismaPromise<User | null> {
     return this.prismaService.user.findFirst({ where: { email } });
   }
@@ -20,7 +28,20 @@ export class UserService {
     return this.prismaService.user.create({ data: input });
   }
 
-  update(id: string, input: UpdateUserInput): PrismaPromise<User> {
-    return this.prismaService.user.update({ where: { id }, data: input });
+  updateById(id: string, input: UpdateUserInput): PrismaPromise<User> {
+    return this.prismaService.user.update({
+      where: { id },
+      data: input,
+    });
+  }
+
+  updateByFirebaseUID(
+    firebaseUID: string,
+    input: UpdateUserInput,
+  ): PrismaPromise<User> {
+    return this.prismaService.user.update({
+      where: { firebaseUID },
+      data: input,
+    });
   }
 }

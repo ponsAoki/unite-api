@@ -6,6 +6,7 @@ import {
   Headers,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { CreateRecruitInput } from './dto/create-recruit.input';
 import { UpdateRecruitInput } from './dto/update-recruite.input';
@@ -27,6 +28,13 @@ export class RecruitController {
   @Get()
   async findAll(): Promise<RecruitEntity[]> {
     return await this.recruitService.findAll();
+  }
+
+  @Get()
+  async findById(
+    @Query('recruitId') recruitId: string,
+  ): Promise<RecruitEntity> {
+    return await this.recruitService.findById(recruitId);
   }
 
   @Post('create-user-recruit')
