@@ -19,7 +19,7 @@ export class UserController {
   }
 
   @Get('find-by-firebase-uid')
-  async findById(
+  async findByFirebaseUID(
     @Headers('firebase-uid') firebaseUID: string,
   ): Promise<UserEntity> {
     return await this.userService.findByFirebaseUID(firebaseUID);
