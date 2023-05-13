@@ -1,7 +1,8 @@
-import { Prisma, Recruit } from '@prisma/client';
+import { Prisma, UserRecruit } from '@prisma/client';
 
-export class RecruitEntity implements Recruit {
+export class UserRecruitEntity implements UserRecruit {
   id: string;
+  recruiterId: string;
   createdAt: Date;
   updatedAt: Date;
   headline: string;
