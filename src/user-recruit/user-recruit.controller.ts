@@ -3,11 +3,11 @@ import {
   Controller,
   Delete,
   Get,
-  Headers,
   Param,
   Post,
   Put,
 } from '@nestjs/common';
+import { FirebaseAuth } from 'src/common/decorators/auth.decorator';
 import { CreateUserRecruitInput } from './dto/create-user-recruit.input';
 import { UpdateUserRecruitInput } from './dto/update-user-recruit.input';
 import { UserRecruitEntity } from './entities/user-recruit.entity';
@@ -37,30 +37,26 @@ export class UserRecruitController {
 
   @Post()
   async create(
-    @Headers('recruiter-firebase-uid') recruiterFirebaseUID: string,
+    @FirebaseAuth() authUser: any,
     @Body() input: CreateUserRecruitInput,
   ): Promise<UserRecruitEntity> {
-    return await this.createUserRecruit.handle(recruiterFirebaseUID, input);
+    return await this.createUserRecruit.handle(authUser.uid, input);
   }
 
   @Put(':id')
   async update(
+    @FirebaseAuth() authUser: any,
     @Param('id') id: string,
-    @Headers('recruiter-firebase-uid') recruiterFirebaseUID: string,
     @Body() input: UpdateUserRecruitInput,
   ): Promise<UserRecruitEntity> {
-    return await this.updateUserRecruitService.handle(
-      id,
-      recruiterFirebaseUID,
-      input,
-    );
+    return await this.updateUserRecruitService.handle(id, authUser.uid, input);
   }
 
   @Delete(':id')
   async delete(
+    @FirebaseAuth() authUser: any,
     @Param('id') id: string,
-    @Headers('recruiter-firebase-uid') recruiterFirebaseUID: string,
   ): Promise<UserRecruitEntity> {
-    return await this.deleteUserRecruitService.handle(id, recruiterFirebaseUID);
+    return await this.deleteUserRecruitService.handle(id, authUser.uid);
   }
 }

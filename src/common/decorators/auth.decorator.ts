@@ -1,7 +1,8 @@
 import { ExecutionContext, createParamDecorator } from '@nestjs/common';
 
-export const UserContext = createParamDecorator(
+export const FirebaseAuth = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
-    // ここで、ログインしてるユーザー情報を返したい
+    const req = ctx.switchToHttp().getRequest();
+    return req.firebaseAuth;
   },
 );
