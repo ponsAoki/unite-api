@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Headers, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put } from '@nestjs/common';
+import { FirebaseAuth } from 'src/common/decorators/auth.decorator';
 import { CreateUserWithEmailInput } from './dto/create-user-with-email.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { UserWithTokenEntity } from './entities/user-with-token.entity';
@@ -19,10 +20,8 @@ export class UserController {
   }
 
   @Get('find-by-firebase-uid')
-  async findByFirebaseUID(
-    @Headers('firebase-uid') firebaseUID: string,
-  ): Promise<UserEntity> {
-    return await this.userService.findByFirebaseUID(firebaseUID);
+  async findByFirebaseUID(@FirebaseAuth() authUser: any): Promise<UserEntity> {
+    return await this.userService.findByFirebaseUID(authUser.uid);
   }
 
   @Post()
@@ -34,9 +33,9 @@ export class UserController {
 
   @Put('update-by-firebase-uid')
   async update(
-    @Headers('firebase-uid') firebaseUID: string,
+    @FirebaseAuth() authUser: any,
     @Body() input: UpdateUserInput,
   ): Promise<UserEntity> {
-    return await this.userService.updateByFirebaseUID(firebaseUID, input);
+    return await this.userService.updateByFirebaseUID(authUser.uid, input);
   }
 }
