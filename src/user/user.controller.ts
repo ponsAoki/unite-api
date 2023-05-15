@@ -26,7 +26,6 @@ export class UserController {
 
   @Post()
   async create(
-    @FirebaseAuth() userCtx: any,
     @Body() input: CreateUserWithEmailInput,
   ): Promise<UserWithTokenEntity> {
     return await this.createUserWithEmail.handle(input);
