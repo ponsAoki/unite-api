@@ -27,9 +27,11 @@ export class CreateEmployeeWithEmail {
 
     try {
       authEmployee = await this.authService.createUser(input.email, input.password);
+      console.log(authEmployee)
 
       const token =  await this.authService.createCustomToken(authEmployee.uid);
 
+      console.log(corporation.id)
       const employee = await this.createEmployee.handle({
         ...input,
         firebaseUID: authEmployee.uid
@@ -41,7 +43,7 @@ export class CreateEmployeeWithEmail {
       if (authEmployee?.uid) {
         await this.authService.deleteUser(authEmployee.uid);
       }
-      console.error(`ユーザー登録に失敗しました: ${err}`);
+      throw new Error(`ユーザー登録に失敗しました: ${err}`);
     }
   }
 }

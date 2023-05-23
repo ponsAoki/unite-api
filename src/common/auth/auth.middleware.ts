@@ -6,6 +6,7 @@ import * as admin from 'firebase-admin';
 export class AuthMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: NextFunction) {
     // Authorizationヘッダーの値がundefined or nullだったらエラー返す
+    console.log(`ミドルウェア${req.headers.authorization}`)
     if (!req.headers.authorization) return res.status(401).end();
 
     //Authorizationヘッダーに`Bearer token`のように設定されているはずなので、下記のようにしてtokenを取得
@@ -14,6 +15,7 @@ export class AuthMiddleware implements NestMiddleware {
     try {
       //上記tokenをdecodeすると、クライアントが持っていた認証情報 (object) に変換される
       const decodedToken = await admin.auth().verifyIdToken(token);
+      console.log(`deco... ${decodedToken}`)
       req['firebaseAuth'] = decodedToken;
 
       next();

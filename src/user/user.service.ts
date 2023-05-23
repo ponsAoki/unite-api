@@ -17,7 +17,11 @@ export class UserService {
   }
 
   findByFirebaseUID(firebaseUID: string): PrismaPromise<User | null> {
-    return this.prismaService.user.findFirst({ where: { firebaseUID } });
+    return this.prismaService.user.findFirst({
+      where: {
+        firebaseUID
+      }
+    });
   }
 
   findByEmail(email: string): PrismaPromise<User | null> {

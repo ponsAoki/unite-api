@@ -19,6 +19,8 @@ export class AppModule {
       .apply(AuthMiddleware)
       .exclude(
         { path: 'user', method: RequestMethod.POST },
+        { path: 'user', method: RequestMethod.GET },
+        { path: 'user/:firebaseUID', method: RequestMethod.GET },
         { path: 'user-recruit', method: RequestMethod.GET },
         { path: 'user-recruit/:id', method: RequestMethod.GET},
         { path: 'corporation', method: RequestMethod.POST },

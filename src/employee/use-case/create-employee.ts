@@ -1,10 +1,9 @@
-import { UserService } from "src/user/user.service";
 import { CreateEmployeeInput } from "../dto/create-employee.input";
 import { EmployeeEntity } from "../entities/employee.entity";
 import { EmployeeService } from "../employee.service";
-import { Employee } from "@prisma/client";
 
-//ここではprism上でemployeeを作成している
+
+//ここではprisma上でemployeeを作成している
 export class CreateEmployee {
   constructor(
     private readonly  employeeService: EmployeeService,
@@ -18,11 +17,14 @@ export class CreateEmployee {
     // if(employee.firebaseUID) {
     //   throw new Error('すでに登録済みのメールアドレスです')
     // }
+    console.log(`確認　${this.employeeService}`)
     const employee = await this.employeeService.create({
         email: input.email,
         firebaseUID: input.firebaseUID
       },
       corporationId)
+
+    console.log(`employee: ${employee.email}`)
     return employee
   }
 }
