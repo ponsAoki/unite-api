@@ -21,8 +21,6 @@ export class UserController {
 
   @Get('find-by-firebase-uid')
   async findByFirebaseUID(@FirebaseAuth() authUser: any): Promise<UserEntity> {
-    console.log(authUser)
-    console.log("走ってます")
     return await this.userService.findByFirebaseUID(authUser.uid);
   }
 

@@ -43,7 +43,6 @@ export class UserService {
     firebaseUID: string,
     input: UpdateUserInput,
   ): PrismaPromise<User> {
-    console.log(firebaseUID)
     return this.prismaService.user.update({
       where: { firebaseUID },
       data: input,

@@ -34,7 +34,6 @@ export class EmployeeService {
     input: CreateEmployeeInput,
     corporationId: string
   ): Promise<Employee> {
-    console.log("ここは読み込まれています🙇‍♀️",input, corporationId)
     return this.prismaService.employee.create({data: { ...input, corporationId }});
   }
 }

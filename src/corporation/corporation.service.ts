@@ -22,7 +22,6 @@ export class CorporationService {
 
   //企業を共有パスワードから探索する
   findBySharedPassword(sharedPassword: string): PrismaPromise<Corporation | null> {
-    console.log(sharedPassword)
     return this.prismaService.corporation.findFirst({
       where: {
         sharedPassword
