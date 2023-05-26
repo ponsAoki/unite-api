@@ -31,7 +31,7 @@ export class UserController {
   async findByFirebaseUIDWithoutFirebaseAuth(
     @Param('firebaseUID') firebaseUID: string
   ) {
-    return await this.userService.findByFirebaseUID(firebaseUID);
+    return await this.userService.findById(firebaseUID);
   }
 
   @Post()

@@ -1,8 +1,11 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { CreateEmployeeWithEmailInput } from './dto/create-employee-with-email.input';
 import { EmployeeWithTokenEntity } from './entities/employee-with-token.entity';
 import { CreateEmployeeWithEmail } from './use-case/create-employee-with-email';
+import { FirebaseAuth } from 'src/common/decorators/auth.decorator';
+import { EmployeeEntity } from './entities/employee.entity';
+import { UpdateEmployeeInput } from './dto/update-employee.input';
 
 @Controller('employee')
 export class EmployeeController {
@@ -14,18 +17,26 @@ export class EmployeeController {
   //全体の社員を取得
   @Get()
   async findAll() {
-    console.log("全件取得です")
     return this.employeeService.findAll()
   }
-  //企業に属する社員の取得
-
   //一意となる社員の取得
-
+  @Get('find-by-firebaseUID')
+  async findByFirebaseUID(@FirebaseAuth() authEmployee: any): Promise<EmployeeEntity | null> {
+    return await this.employeeService.findByFirebaseUID(authEmployee.firebaseUID)
+  }
+  //社員情報の更新
+  @Put('update-by-firebase-uid')
+  async update(
+    @FirebaseAuth() authEmployee: any,
+    @Body() input: UpdateEmployeeInput
+  ) {
+    return await this.employeeService.updateByFirebaseUID(authEmployee.uid, input)
+  }
+  //会社に属する社員の登録
   @Post()
   async create(
     @Body() input: CreateEmployeeWithEmailInput,
   ): Promise<EmployeeWithTokenEntity> {
-    console.log("ユーザーが作成されました")
     return this.createEmployeeWithEmail.handle(input)
   }
 

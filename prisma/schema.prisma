@@ -140,7 +140,7 @@ model Corporation {
   name                  String?
   email                 String                 @unique
   imageUrl              String?
-  DescriptionOfBusiness String?                @db.VarChar(2000)
+  DescriptionOfBusiness String?                @db.Text()
   location              String?
   phoneNumber           String?
   employees             Employee[]

@@ -23,15 +23,13 @@ export class CreateEmployeeWithEmail {
     const corporation = await this.corporationService.findBySharedPassword(input.sharedPassword);
 
     //フロントにエラー文を送れるようにしたい。
-    if (!corporation) return
+    if (!corporation) throw new Error("Not found corporation")
 
     try {
       authEmployee = await this.authService.createUser(input.email, input.password);
-      console.log(authEmployee)
 
       const token =  await this.authService.createCustomToken(authEmployee.uid);
 
-      console.log(corporation.id)
       const employee = await this.createEmployee.handle({
         ...input,
         firebaseUID: authEmployee.uid
