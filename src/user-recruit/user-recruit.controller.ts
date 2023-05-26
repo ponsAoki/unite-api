@@ -30,6 +30,11 @@ export class UserRecruitController {
     return await this.userRecruitService.findAll();
   }
 
+  @Get('my-recruits')
+  async findMyRecruit(@FirebaseAuth() authUser: any) {
+    return this.userRecruitService.findManyByFirebaseUID(authUser.uid)
+  }
+
   @Get(':id')
   async findById(@Param('id') id: string): Promise<UserRecruitEntity> {
     return await this.userRecruitService.findById(id);
