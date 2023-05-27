@@ -165,3 +165,28 @@ model ChatRoomMessage {
   room   ChatRoom            @relation(fields: [roomId], references: [id])
   sender ChatRoomParticipant @relation(fields: [senderId], references: [id])
 }
+
+
+model Corporation {
+  id                    String                 @id @default(cuid())
+  sharedPassword        String?
+  name                  String?
+  email                 String                 @unique
+  imageUrl              String?
+  DescriptionOfBusiness String?                @db.Text()
+  location              String?
+  phoneNumber           String?
+  employees             Employee[]
+}
+
+model Employee {
+  id                    String                 @id @default(cuid())
+  firebaseUID           String?                @unique
+  corporationId         String
+  name                  String?
+  email                 String                 @unique
+  imageUrl              String?
+  introduction          String?                @db.VarChar(2000)
+  phoneNumber           String?
+  belongToCorporation   Corporation @relation(fields: [corporationId], references: [id])
+}

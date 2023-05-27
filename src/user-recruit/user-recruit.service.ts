@@ -16,6 +16,18 @@ export class UserRecruitService {
     return this.prismaService.userRecruit.findFirst({ where: { id } });
   }
 
+  findManyByFirebaseUID(firebaseUID): Promise<UserRecruit[]> {
+    return this.prismaService.userRecruit.findMany(
+      {
+        where: {
+          recruiter: {
+            firebaseUID
+          }
+        }
+      }
+    )
+  }
+
   findByIdAndRecruiterId(
     id: string,
     recruiterId: string,

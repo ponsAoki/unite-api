@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { FirebaseAuth } from 'src/common/decorators/auth.decorator';
 import { CreateUserWithEmailInput } from './dto/create-user-with-email.input';
 import { UpdateUserInput } from './dto/update-user.input';
@@ -22,6 +22,14 @@ export class UserController {
   @Get('find-by-firebase-uid')
   async findByFirebaseUID(@FirebaseAuth() authUser: any): Promise<UserEntity> {
     return await this.userService.findByFirebaseUID(authUser.uid);
+  }
+
+  // 認証使わない(SSRの際に使用する)
+  @Get(':firebaseUID')
+  async findByFirebaseUIDWithoutFirebaseAuth(
+    @Param('firebaseUID') firebaseUID: string
+  ) {
+    return await this.userService.findById(firebaseUID);
   }
 
   @Post()

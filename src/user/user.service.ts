@@ -12,12 +12,16 @@ export class UserService {
     return this.prismaService.user.findMany();
   }
 
-  find(id: string): PrismaPromise<User | null> {
-    return this.prismaService.user.findFirst({ where: { id } });
+  findById(firebaseUID: string): PrismaPromise<User | null> {
+    return this.prismaService.user.findUnique({ where: { firebaseUID } });
   }
 
   findByFirebaseUID(firebaseUID: string): PrismaPromise<User | null> {
-    return this.prismaService.user.findFirst({ where: { firebaseUID } });
+    return this.prismaService.user.findFirst({
+      where: {
+        firebaseUID,
+      },
+    });
   }
 
   findByEmail(email: string): PrismaPromise<User | null> {

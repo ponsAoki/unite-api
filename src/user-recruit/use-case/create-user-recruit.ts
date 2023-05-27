@@ -4,6 +4,7 @@ import { UserService } from 'src/user/user.service';
 import { CreateUserRecruitInput } from '../dto/create-user-recruit.input';
 import { UserRecruitEntity } from '../entities/user-recruit.entity';
 import { ManipulateUserRecruitPolicy } from '../policy/manipulate-user-recruit.policy';
+import { CreateUserRecruitInput } from '../dto/create-user-recruit.input';
 
 @Injectable()
 export class CreateUserRecruit {
