@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserRecruitService } from 'src/user-recruit/user-recruit.service';
 import { UserService } from 'src/user/user.service';
-import { UpdateUserRecruitInput } from '../dto/update-user-recruit.input';
+import { CreateUserRecruitInput } from '../dto/create-user-recruit.input';
 import { UserRecruitEntity } from '../entities/user-recruit.entity';
 import { ManipulateUserRecruitPolicy } from '../policy/manipulate-user-recruit.policy';
 
@@ -15,7 +15,7 @@ export class CreateUserRecruit {
 
   async handle(
     recruiterFirebaseUID: string,
-    input: UpdateUserRecruitInput,
+    input: CreateUserRecruitInput,
   ): Promise<UserRecruitEntity> {
     const user = await this.userService.findByFirebaseUID(recruiterFirebaseUID);
     if (!user) throw new BadRequestException('user not found');

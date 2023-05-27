@@ -12,7 +12,7 @@ export class UserRecruitService {
     return this.prismaService.userRecruit.findMany();
   }
 
-  findById(id: string): PrismaPromise<UserRecruit> {
+  find(id: string): PrismaPromise<UserRecruit> {
     return this.prismaService.userRecruit.findFirst({ where: { id } });
   }
 

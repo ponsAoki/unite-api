@@ -12,7 +12,7 @@ export class UserService {
     return this.prismaService.user.findMany();
   }
 
-  findById(id: string): PrismaPromise<User | null> {
+  find(id: string): PrismaPromise<User | null> {
     return this.prismaService.user.findFirst({ where: { id } });
   }
 
