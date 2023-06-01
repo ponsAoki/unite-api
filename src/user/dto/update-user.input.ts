@@ -31,6 +31,10 @@ export class UpdateUserInput {
 
   @IsString()
   @IsOptional()
+  graduateYear?: string;
+
+  @IsString()
+  @IsOptional()
   selfPublicity?: string;
 
   @IsString()

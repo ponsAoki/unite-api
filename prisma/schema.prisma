@@ -96,6 +96,7 @@ model User {
   prefecture       String?
   university       String?
   undergraduate    String?
+  graduateYear         String?
   selfPublicity    String?
   careerVision     String?
   programingSkills Json?
