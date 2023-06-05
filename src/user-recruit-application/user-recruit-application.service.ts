@@ -7,6 +7,10 @@ import { CreateUserRecruitApplicationInput } from './dto/create-user-recruit-app
 export class UserRecruitApplicationService {
   constructor(private readonly prismaService: PrismaService) {}
 
+  findAll(): PrismaPromise<UserRecruitApplication[]> {
+    return this.prismaService.userRecruitApplication.findMany();
+  }
+
   create(
     input: CreateUserRecruitApplicationInput & { applicantId: string },
   ): PrismaPromise<UserRecruitApplication> {

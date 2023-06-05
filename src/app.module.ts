@@ -11,9 +11,17 @@ import { CorporationController } from './corporation/corporation.controller';
 import { CorporationService } from './corporation/corporation.service';
 import { PrismaService } from './prisma.service';
 import { EmployeeModule } from './employee/employee.module';
+import { ChatEventModule } from './chat-event/chat-event.module';
 
 @Module({
-  imports: [UserModule, UserRecruitModule, AuthModule, EmployeeModule],
+  imports: [
+    UserModule,
+    UserRecruitModule,
+    AuthModule,
+    EmployeeModule,
+    UserRecruitApplicationModule,
+    ChatEventModule,
+  ],
   controllers: [CorporationController],
   providers: [CorporationService, PrismaService],
 })

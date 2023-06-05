@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-export class CreateChatRoomParticipantInput {
+export class ChatRoomParticipantInput {
   @IsOptional()
   @IsString()
   userId?: string;

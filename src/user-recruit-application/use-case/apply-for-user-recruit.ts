@@ -6,8 +6,8 @@ import { UserRecruitService } from 'src/user-recruit/user-recruit.service';
 import { UserService } from 'src/user/user.service';
 import { APPLY_FIRST_MESSAGE } from '../constants';
 import { CreateUserRecruitApplicationInput } from '../dto/create-user-recruit-application.input';
-import { UserRecruitApplicationEntity } from '../entities/user-recruit-application.entity';
 import { UserRecruitApplicationService } from '../user-recruit-application.service';
+import { UserRecruitApplicationWithRoomIdEntity } from '../entities/user-recruit-application-with-room-id.entitiy';
 
 @Injectable()
 export class ApplyForUserRecruit {
@@ -23,7 +23,7 @@ export class ApplyForUserRecruit {
   async handle(
     authUserUid: string,
     input: CreateUserRecruitApplicationInput,
-  ): Promise<UserRecruitApplicationEntity> {
+  ): Promise<UserRecruitApplicationWithRoomIdEntity> {
     const user = await this.userService.findByFirebaseUID(authUserUid);
     const application = await this.userRecruitApplicationService.create({
       ...input,
@@ -55,6 +55,6 @@ export class ApplyForUserRecruit {
       senderId: applicantChatParticipant.id,
     });
 
-    return application;
+    return { ...application, roomId: chatRoom.id };
   }
 }

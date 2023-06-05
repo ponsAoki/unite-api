@@ -18,5 +18,6 @@ import { AuthMiddleware } from 'src/common/auth/auth.middleware';
     CreateUser,
     CreateUserPolicy,
   ],
+  exports: [UserService],
 })
 export class UserModule {}
