@@ -21,6 +21,7 @@ import { ChatEventModule } from './chat-event/chat-event.module';
     EmployeeModule,
     UserRecruitApplicationModule,
     ChatEventModule,
+    ChatRoomModule,
   ],
   controllers: [CorporationController],
   providers: [CorporationService, PrismaService],

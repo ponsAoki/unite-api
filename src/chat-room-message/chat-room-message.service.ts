@@ -8,7 +8,10 @@ export class ChatRoomMessageService {
   constructor(private readonly prismaService: PrismaService) {}
 
   findManyByRoomId(roomId: string): PrismaPromise<ChatRoomMessage[]> {
-    return this.prismaService.chatRoomMessage.findMany({ where: { roomId } });
+    return this.prismaService.chatRoomMessage.findMany({
+      where: { roomId },
+      orderBy: { createdAt: 'asc' },
+    });
   }
 
   create(input: CreateChatRoomMessageInput): PrismaPromise<ChatRoomMessage> {

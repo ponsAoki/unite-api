@@ -12,8 +12,8 @@ export class UserService {
     return this.prismaService.user.findMany();
   }
 
-  findById(firebaseUID: string): PrismaPromise<User | null> {
-    return this.prismaService.user.findUnique({ where: { firebaseUID } });
+  find(id: string): PrismaPromise<User | null> {
+    return this.prismaService.user.findUnique({ where: { id } });
   }
 
   findByFirebaseUID(firebaseUID: string): PrismaPromise<User | null> {
