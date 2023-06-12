@@ -5,7 +5,6 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import {} from '@nestjs/platform-socket.io';
 import { Server, Socket } from 'socket.io';
 import { ChatMessageInput } from './dto/chat-message.input';
 import { SendMessage } from './use-case/send-message';

@@ -4,7 +4,6 @@ import { UserService } from 'src/user/user.service';
 import { ChatMessageInput } from '../dto/chat-message.input';
 import { Server, Socket } from 'socket.io';
 import { AuthCheckPolicy } from '../policy/auth-check.policy';
-import { ChatRoomMessageEntity } from 'src/chat-room-message/entities/chat-room-message.entity';
 import { ChatRoomParticipantService } from 'src/chat-room-participant/chat-room-participant.service';
 
 @Injectable()
