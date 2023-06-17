@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { FirebaseAuth } from 'src/common/decorators/auth.decorator';
 import { CreateUserWithEmailInput } from './dto/create-user-with-email.input';
 import { UpdateUserInput } from './dto/update-user.input';
@@ -6,6 +14,7 @@ import { UserWithTokenEntity } from './entities/user-with-token.entity';
 import { UserEntity } from './entities/user.entity';
 import { CreateUserWithEmail } from './use-case/create-user-with-email';
 import { UserService } from './user.service';
+import { AuthGuard } from 'src/common/guards/auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -20,6 +29,7 @@ export class UserController {
   }
 
   @Get('find-by-firebase-uid')
+  @UseGuards(AuthGuard)
   async findByFirebaseUID(@FirebaseAuth() authUser: any): Promise<UserEntity> {
     return await this.userService.findByFirebaseUID(authUser.uid);
   }
@@ -27,7 +37,7 @@ export class UserController {
   // 認証使わない(SSRの際に使用する)
   @Get(':firebaseUID')
   async findByFirebaseUIDWithoutFirebaseAuth(
-    @Param('firebaseUID') firebaseUID: string
+    @Param('firebaseUID') firebaseUID: string,
   ) {
     return await this.userService.findById(firebaseUID);
   }
@@ -40,6 +50,7 @@ export class UserController {
   }
 
   @Put('update-by-firebase-uid')
+  @UseGuards(AuthGuard)
   async update(
     @FirebaseAuth() authUser: any,
     @Body() input: UpdateUserInput,
