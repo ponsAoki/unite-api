@@ -87,51 +87,84 @@ model InternshipExperience {
 }
 
 model User {
-  id                    String                 @id @default(cuid())
-  firebaseUID           String?                @unique
-  name                  String?
-  email                 String                 @unique
-  imageUrl              String?
-  age                   Int?
-  prefecture            String?
-  university            String?
-  undergraduate         String?
+  id               String  @id @default(cuid())
+  firebaseUID      String? @unique
+  name             String?
+  email            String  @unique
+  imageUrl         String?
+  age              Int?
+  prefecture       String?
+  university       String?
+  undergraduate    String?
   graduateYear         String?
-  selfPublicity         String?
-  careerVision          String?
-  programingSkills      Json?
-  developmentExperience DevelopmentExperience?
-  internshipExperience  InternshipExperience?
-  userRecruitApplicants UserRecruitApplicant[]
-  userRecruits          UserRecruit[]
+  selfPublicity    String?
+  careerVision     String?
+  programingSkills Json?
+
+  developmentExperience   DevelopmentExperience?
+  internshipExperience    InternshipExperience?
+  userRecruitApplications UserRecruitApplication[]
+  userRecruits            UserRecruit[]
+  chatParticipants        ChatRoomParticipant[]
 }
 
-model UserRecruitApplicant {
-  id            String @id @default(cuid())
-  userId        String
-  userRecruitId String
+model UserRecruitApplication {
+  id          String @id @default(cuid())
+  applicantId String
+  recruitId   String
 
-  user    User        @relation(fields: [userId], references: [id])
-  recruit UserRecruit @relation(fields: [userRecruitId], references: [id])
+  applicant User        @relation(fields: [applicantId], references: [id])
+  recruit   UserRecruit @relation(fields: [recruitId], references: [id])
 
-  @@unique([userId, userRecruitId])
+  @@unique([applicantId, recruitId])
 }
 
 model UserRecruit {
-  id                    String                 @id @default(cuid())
-  hackthonName          String?
-  headline              String
-  details               String?                @db.VarChar(500)
-  programingSkills      Json
-  developmentPeriod     String?
-  hackathonUrl          String?
-  numberOfApplicants    String
-  createdAt             DateTime               @default(now())
-  updatedAt             DateTime               @updatedAt
-  recruiterId           String
-  userRecruitApplicants UserRecruitApplicant[]
+  id                 String   @id @default(cuid())
+  hackthonName       String?
+  headline           String
+  details            String?  @db.VarChar(500)
+  programingSkills   Json
+  developmentPeriod  String?
+  hackathonUrl       String?
+  numberOfApplicants String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  recruiterId        String
 
-  recruiter User @relation(fields: [recruiterId], references: [id])
+  userRecruitApplications UserRecruitApplication[]
+  recruiter               User                     @relation(fields: [recruiterId], references: [id])
+}
+
+model ChatRoom {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  participants ChatRoomParticipant[]
+  messages     ChatRoomMessage[]
+}
+
+model ChatRoomParticipant {
+  id     String  @id @default(cuid())
+  roomId String
+  userId String?
+
+  room     ChatRoom          @relation(fields: [roomId], references: [id])
+  user     User?             @relation(fields: [userId], references: [id])
+  messages ChatRoomMessage[]
+}
+
+model ChatRoomMessage {
+  id        String   @id @default(cuid())
+  content   String   @db.Text()
+  roomId    String
+  senderId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  room   ChatRoom            @relation(fields: [roomId], references: [id])
+  sender ChatRoomParticipant @relation(fields: [senderId], references: [id])
 }
 
 

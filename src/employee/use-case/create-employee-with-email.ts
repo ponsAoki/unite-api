@@ -13,7 +13,7 @@ export class CreateEmployeeWithEmail {
     private readonly createEmployee: CreateEmployee,
     private readonly corporationService: CorporationService
   ) {}
-
+ 
   async handle(
     //passwordとemailが必須で要求されている。
     input: CreateEmployeeWithEmailInput,

@@ -17,5 +17,6 @@ import { UserService } from './user.service';
     CreateUser,
     CreateUserPolicy,
   ],
+  exports: [UserService],
 })
 export class UserModule {}

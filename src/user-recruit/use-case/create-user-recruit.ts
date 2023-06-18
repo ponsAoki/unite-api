@@ -1,8 +1,8 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { UserRecruitService } from 'src/user-recruit/user-recruit.service';
 import { UserService } from 'src/user/user.service';
-import { UserRecruitEntity } from '../entities/user-recruit.entity';
 import { CreateUserRecruitInput } from '../dto/create-user-recruit.input';
+import { UserRecruitEntity } from '../entities/user-recruit.entity';
 
 @Injectable()
 export class CreateUserRecruit {

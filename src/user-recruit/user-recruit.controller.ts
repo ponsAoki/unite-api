@@ -40,7 +40,7 @@ export class UserRecruitController {
 
   @Get(':id')
   async findById(@Param('id') id: string): Promise<UserRecruitEntity> {
-    return await this.userRecruitService.findById(id);
+    return await this.userRecruitService.find(id);
   }
 
   @Post()

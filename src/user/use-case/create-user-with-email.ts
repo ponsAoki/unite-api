@@ -16,10 +16,13 @@ export class CreateUserWithEmail {
     let authUser = null;
 
     try {
+      //firebase authのユーザーを作成
       authUser = await this.authService.createUser(input.email, input.password);
 
+      //フロント側でemailとパスワード以外を使ってサインインするためのトークン
       const token = await this.authService.createCustomToken(authUser.uid);
 
+      //MySQLのテーブルに新しいuserレコードを作成するための一連の処理
       const user = await this.createUser.handle({
         ...input,
         firebaseUID: authUser.uid,
