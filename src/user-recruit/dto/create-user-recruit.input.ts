@@ -1,4 +1,4 @@
-import { IsJSON, IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateUserRecruitInput {
   @IsNotEmpty()
@@ -12,7 +12,7 @@ export class CreateUserRecruitInput {
   @IsString()
   details?: string;
 
-  @IsJSON()
+  @IsArray()
   programingSkills: string[];
 
   @IsString()

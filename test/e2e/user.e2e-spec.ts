@@ -44,7 +44,7 @@ describe('User API', () => {
       await request(app.getHttpServer())
         .get('/user')
         .then((res) => {
-          expect(res.body.errors).toBeUndefined();
+          expect(res.error).toBeFalsy();
           expect(res.status).toBe(200);
 
           const resUsers = res.body;
@@ -64,7 +64,7 @@ describe('User API', () => {
       await request(app.getHttpServer())
         .get('/user/find-by-firebase-uid')
         .then((res) => {
-          expect(res.body.errors).toBeUndefined();
+          expect(res.error).toBeFalsy();
           expect(res.status).toBe(200);
 
           const resUser = res.body;
@@ -83,7 +83,7 @@ describe('User API', () => {
       await request(app.getHttpServer())
         .get('/user/firebaseUid1')
         .then((res) => {
-          expect(res.body.errors).toBeUndefined();
+          expect(res.error).toBeFalsy();
           expect(res.status).toBe(200);
 
           const resUser = res.body;
@@ -108,7 +108,7 @@ describe('User API', () => {
         .post('/user')
         .send(input)
         .then((res) => {
-          expect(res.body.errors).toBeUndefined();
+          expect(res.error).toBeFalsy();
           expect(res.status).toBe(201);
 
           const resUser = res.body;
@@ -152,7 +152,7 @@ describe('User API', () => {
         .put('/user/update-by-firebase-uid')
         .send(input)
         .then((res) => {
-          expect(res.body.errors).toBeUndefined();
+          expect(res.error).toBeFalsy();
           expect(res.status).toBe(200);
 
           const resUser = res.body;

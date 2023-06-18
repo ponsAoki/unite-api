@@ -34,7 +34,7 @@ export class UserRecruitController {
 
   @Get('my-recruits')
   @UseGuards(AuthGuard)
-  async findMyRecruit(@FirebaseAuth() authUser: any) {
+  async findMyRecruits(@FirebaseAuth() authUser: any) {
     return this.userRecruitService.findManyByFirebaseUID(authUser.uid);
   }
 

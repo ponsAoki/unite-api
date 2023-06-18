@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { UserRecruitService } from 'src/user-recruit/user-recruit.service';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class ManipulateUserRecruitPolicy {
       recruiterId,
     );
     if (!userRecruit) {
-      throw new Error('募集データを操作する権限がありません');
+      throw new ForbiddenException('募集データを操作する権限がありません');
     }
   }
 }
