@@ -1,14 +1,14 @@
-import { UserRecruitApplicant } from '@prisma/client';
+import { UserRecruitApplication } from '@prisma/client';
 
-export class TestUserRecruitApplicants {
-  create(num = 10): UserRecruitApplicant[] {
+export class TestUserRecruitApplications {
+  create(num = 10): UserRecruitApplication[] {
     return [...new Array(num)].map((_, n) => {
       const t = new Date();
       t.setSeconds(t.getSeconds() - num + n);
       return {
         id: `userRecruitApplicantId${n}`,
-        userId: `userId${n}`,
-        userRecruitId: `userRecruitId${n}`,
+        applicantId: `userId${n}`,
+        recruitId: `userRecruitId${n}`,
       };
     });
   }
