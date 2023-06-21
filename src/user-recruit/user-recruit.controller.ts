@@ -47,6 +47,7 @@ export class UserRecruitController {
   ) {
     const user = await this.userService.findByFirebaseUID(authUser.uid)
     return this.userRecruitService.findRelativeManybyUserId(user.id)
+
   }
 
   @Post()

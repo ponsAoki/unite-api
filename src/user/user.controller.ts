@@ -27,9 +27,9 @@ export class UserController {
   // 認証使わない(SSRの際に使用する)
   @Get(':firebaseUID')
   async findByFirebaseUIDWithoutFirebaseAuth(
-    @Param('firebaseUID') firebaseUID: string
+    @Param('firebaseUID') firebaseUID: string,
   ) {
-    return await this.userService.findById(firebaseUID);
+    return await this.userService.findByFirebaseUID(firebaseUID);
   }
 
   @Post()

@@ -30,6 +30,7 @@ export class UserRecruitService {
         userRecruitParticipant: true,
       }
     });
+
   }
 
   findManyByUserId(id: string): PrismaPromise<UserRecruit[]> {

@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL_DEV")
+  url      = env("DATABASE_URL")
 }
 
 generator erd {
@@ -98,24 +98,26 @@ model User {
   undergraduate          String?
   selfPublicity          String?
   careerVision           String?
+  graduateYear         String?
   programingSkills       Json?
   developmentExperience  DevelopmentExperience?
   internshipExperience   InternshipExperience?
-  userRecruitApplicants  UserRecruitApplicant[]
   userRecruitParticipant UserRecruitParticipant[]
   userRecruits           UserRecruit[]
   comments               Comment[]
+  userRecruitApplications UserRecruitApplication[]
+  chatParticipants        ChatRoomParticipant[]
 }
 
-model UserRecruitApplicant {
-  id            String @id @default(cuid())
-  userId        String
-  userRecruitId String
+model UserRecruitApplication {
+  id          String @id @default(cuid())
+  applicantId String
+  recruitId   String
 
-  user    User        @relation(fields: [userId], references: [id])
-  recruit UserRecruit @relation(fields: [userRecruitId], references: [id])
+  applicant User        @relation(fields: [applicantId], references: [id])
+  recruit   UserRecruit @relation(fields: [recruitId], references: [id])
 
-  @@unique([userId, userRecruitId])
+  @@unique([applicantId, recruitId])
 }
 
 model UserRecruitParticipant {
@@ -140,11 +142,43 @@ model UserRecruit {
   createdAt              DateTime                 @default(now())
   updatedAt              DateTime                 @updatedAt
   recruiterId            String
-  userRecruitApplicants  UserRecruitApplicant[]
+  userRecruitApplications UserRecruitApplication[]
   userRecruitParticipant UserRecruitParticipant[]
   product                Product[]           
   recruiter              User                     @relation(fields: [recruiterId], references: [id])
 }
+
+model ChatRoom {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  participants ChatRoomParticipant[]
+  messages     ChatRoomMessage[]
+}
+
+model ChatRoomParticipant {
+  id     String  @id @default(cuid())
+  roomId String
+  userId String?
+
+  room     ChatRoom          @relation(fields: [roomId], references: [id])
+  user     User?             @relation(fields: [userId], references: [id])
+  messages ChatRoomMessage[]
+}
+
+model ChatRoomMessage {
+  id        String   @id @default(cuid())
+  content   String   @db.Text()
+  roomId    String
+  senderId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  room   ChatRoom            @relation(fields: [roomId], references: [id])
+  sender ChatRoomParticipant @relation(fields: [senderId], references: [id])
+}
+
 
 model Corporation {
   id                    String     @id @default(cuid())
