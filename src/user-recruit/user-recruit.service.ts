@@ -3,29 +3,59 @@ import { PrismaPromise, UserRecruit } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { CreateUserRecruitInput } from './dto/create-user-recruit.input';
 import { UpdateUserRecruitInput } from './dto/update-user-recruit.input';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class UserRecruitService {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly userService: UserService
+  ) {}
 
   findAll(): PrismaPromise<UserRecruit[]> {
-    return this.prismaService.userRecruit.findMany();
+    return this.prismaService.userRecruit.findMany({
+      include: {
+        product: true,
+        userRecruitParticipant: true
+      }
+    });
   }
 
   findById(id: string): PrismaPromise<UserRecruit> {
-    return this.prismaService.userRecruit.findFirst({ where: { id } });
+    return this.prismaService.userRecruit.findFirst({
+      where: { id },
+      include: {
+        product: true,
+        recruiter: true,
+        userRecruitParticipant: true,
+      }
+    });
   }
 
-  findManyByFirebaseUID(firebaseUID): Promise<UserRecruit[]> {
+  findManyByUserId(id: string): PrismaPromise<UserRecruit[]> {
     return this.prismaService.userRecruit.findMany(
       {
         where: {
           recruiter: {
-            firebaseUID
+            id
           }
         }
       }
     )
+  }
+
+  //関連するrecruitの一覧取得
+  findRelativeManybyUserId(id: string): PrismaPromise<UserRecruit[]> {
+    return this. prismaService.userRecruit.findMany({
+      where: {
+        userRecruitParticipant: {
+          some: {
+            userId: id,
+            isApproved: true
+          }
+        }
+      }
+    })
   }
 
   findByIdAndRecruiterId(
