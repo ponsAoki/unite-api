@@ -1,9 +1,6 @@
 import { IsOptional, IsString } from "class-validator";
 
-export class createProductInput {
-  @IsString()
-  recruitId!: string;
-
+export class updateProductInput {
   @IsString()
   @IsOptional()
   headline: string;
@@ -11,5 +8,4 @@ export class createProductInput {
   @IsString()
   @IsOptional()
   detail: string;
-
 }

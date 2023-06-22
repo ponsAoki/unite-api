@@ -50,9 +50,9 @@ export class ProductService {
     return this.prismaService.product.findMany({
       where: {
         recruit: {
-          userRecruitApplicants: {
+          userRecruitApplications: {
             some: {
-              userId: id
+              applicantId: id
             }
           }
         }

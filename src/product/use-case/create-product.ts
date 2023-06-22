@@ -13,27 +13,8 @@ export class CreateProduct {
   ) {}
 
   async handle(file: Express.Multer.File, rest: any) {
-    // const bucket = admin.storage().bucket();
-    // const filename = `${Date.now()}_${file.originalname}`
 
     try {
-      // const fileUpload = bucket.file(filename);
-      // const options = {
-      //   destination: fileUpload,
-      //   resumable: false,
-      //   metadata: {
-      //     contentType: file.mimetype,
-      //   },
-      // };
-
-      // await fileUpload.save(file.buffer, options)
-
-      // const [ url ] = await fileUpload.getSignedUrl({
-      //   //ここは決めてないです
-      //   action: 'read',
-      //   expires: '03-01-2500',
-      // });
-
       const url = await this.uploadFileToFirebaseStorageService.handle(file)
 
       const input = {url, ...rest};
@@ -43,7 +24,6 @@ export class CreateProduct {
 
     } catch (error) {
       //firestorageに保存していた場合storageから削除する。
-
       throw new Error(`fileをfirebaseAuthに保存することができませんでした。 | ${error}`)
     }
   }

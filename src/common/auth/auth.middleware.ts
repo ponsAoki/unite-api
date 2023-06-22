@@ -14,7 +14,6 @@ export class AuthMiddleware implements NestMiddleware {
     try {
       //上記tokenをdecodeすると、クライアントが持っていた認証情報 (object) に変換される
       const decodedToken = await admin.auth().verifyIdToken(token);
-      console.log(decodedToken)
       req['firebaseAuth'] = decodedToken;
 
       next();

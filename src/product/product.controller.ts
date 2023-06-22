@@ -6,6 +6,8 @@ import { FirebaseAuth } from 'src/common/decorators/auth.decorator';
 import { UpdateProductService } from './use-case/update-product-service';
 import { Product } from '@prisma/client';
 import { UserService } from 'src/user/user.service';
+import { createProductInput } from './dto/create-product-input';
+import { updateProductInput } from './dto/update-product-input';
 
 @Controller('product')
 export class ProductController {
@@ -26,7 +28,7 @@ export class ProductController {
   @Get('my-products')
   async findMyProducts(
     @FirebaseAuth() authUser: any,
-  ) {
+  ): Promise<Product[]> {
     const user = await this.userService.findByFirebaseUID(authUser.uid)
     return await this.productService.findMyProducts(user.id)
   }
@@ -54,11 +56,9 @@ export class ProductController {
     @FirebaseAuth() authUser: any,
     @Param('id') id: string,
     @UploadedFile() file?: Express.Multer.File,
-    @Body('headline') headline?: string,
-    @Body('detail') detail?: string,
-  ) {
-    const rest = {headline, detail}
-    return this.updateProductService.handle(id, rest, file)
+    @Body() input?: updateProductInput
+  ): Promise<Product> {
+    return this.updateProductService.handle(id, input, file)
   }
 
   //productの削除
@@ -69,12 +69,9 @@ export class ProductController {
   @UseInterceptors(FileInterceptor('file'))
   async create(
     @UploadedFile() file: Express.Multer.File,
-    @Body('headline') headline: string,
-    @Body('detail') detail: string,
-    @Body('recruitId') recruitId: string,
-  ) {
-    const rest = {headline, detail, recruitId}
+    @Body() input: createProductInput
+  ): Promise<Product> {
     //use-caseでimageをfirebaseStorageに登録する処理に移る
-    return await this.createProduct.handle(file, rest)
+    return await this.createProduct.handle(file, input)
   }
 }

@@ -37,7 +37,6 @@ export class UserRecruitController {
     @FirebaseAuth() authUser: any
   ) {
     const user = await this.userService.findByFirebaseUID(authUser.uid)
-    console.log(user)
     return this.userRecruitService.findManyByUserId(user.id)
   }
 

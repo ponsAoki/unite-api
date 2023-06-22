@@ -21,7 +21,7 @@ export class UserRecruitParticipantService {
   }
 
   async create(userId: string, input: CreateUserRecruitParticipantInput) {
-    const user = await this.userService.findById(userId)
+    const user = await this.userService.find(userId)
     return this.prismaService.userRecruitParticipant.create({
       data: {
         userRecruitId: input.userRecruitId,
