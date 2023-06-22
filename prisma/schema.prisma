@@ -106,6 +106,7 @@ model User {
   userRecruitApplications UserRecruitApplication[]
   userRecruits            UserRecruit[]
   chatParticipants        ChatRoomParticipant[]
+  userTORecruitLikes      UserTORecruitLike[]
 }
 
 model UserRecruitApplication {
@@ -133,6 +134,7 @@ model UserRecruit {
   recruiterId        String
 
   userRecruitApplications UserRecruitApplication[]
+  userTORecruitLikes      UserTORecruitLike[]
   recruiter               User                     @relation(fields: [recruiterId], references: [id])
 }
 
@@ -190,4 +192,12 @@ model Employee {
   introduction          String?                @db.VarChar(2000)
   phoneNumber           String?
   belongToCorporation   Corporation @relation(fields: [corporationId], references: [id])
+}
+
+model UserTORecruitLike {
+  id                   String               @id @default(cuid())
+  userId               String
+  recruitId            String
+  user                 User @relation(fields: [userId], references: [id])
+  recruit              UserRecruit @relation(fields: [recruitId], references: [id])
 }

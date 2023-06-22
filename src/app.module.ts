@@ -10,6 +10,7 @@ import { CorporationService } from './corporation/corporation.service';
 import { PrismaService } from './prisma.service';
 import { EmployeeModule } from './employee/employee.module';
 import { ChatEventModule } from './chat-event/chat-event.module';
+import { UserToRecruitLikeModule } from './user-to-recruit-like/user-to-recruit-like.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ChatEventModule } from './chat-event/chat-event.module';
     UserRecruitApplicationModule,
     ChatEventModule,
     ChatRoomModule,
+    UserToRecruitLikeModule,
   ],
   controllers: [CorporationController],
   providers: [CorporationService, PrismaService],
