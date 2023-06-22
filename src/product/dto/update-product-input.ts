@@ -1,6 +1,6 @@
 import { IsOptional, IsString } from "class-validator";
 
-export class updateProductInput {
+export class UpdateProductInput {
   @IsString()
   @IsOptional()
   headline: string;
