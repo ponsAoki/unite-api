@@ -6,7 +6,6 @@ import { CreateUser } from './use-case/create-user';
 import { CreateUserWithEmail } from './use-case/create-user-with-email';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
-import { AuthMiddleware } from 'src/common/auth/auth.middleware';
 
 @Module({
   controllers: [UserController],

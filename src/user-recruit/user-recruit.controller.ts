@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { FirebaseAuth } from 'src/common/decorators/auth.decorator';
 import { CreateUserRecruitInput } from './dto/create-user-recruit.input';
@@ -15,6 +16,7 @@ import { CreateUserRecruit } from './use-case/create-user-recruit';
 import { DeleteUserRecruit } from './use-case/delete-user-recruit';
 import { UpdateUserRecruit } from './use-case/update-user-recruit';
 import { UserRecruitService } from './user-recruit.service';
+import { AuthGuard } from 'src/common/guards/auth.guard';
 
 @Controller('user-recruit')
 export class UserRecruitController {
@@ -31,8 +33,9 @@ export class UserRecruitController {
   }
 
   @Get('my-recruits')
-  async findMyRecruit(@FirebaseAuth() authUser: any) {
-    return this.userRecruitService.findManyByFirebaseUID(authUser.uid)
+  @UseGuards(AuthGuard)
+  async findMyRecruits(@FirebaseAuth() authUser: any) {
+    return this.userRecruitService.findManyByFirebaseUID(authUser.uid);
   }
 
   @Get(':id')
@@ -41,6 +44,7 @@ export class UserRecruitController {
   }
 
   @Post()
+  @UseGuards(AuthGuard)
   async create(
     @FirebaseAuth() authUser: any,
     @Body() input: CreateUserRecruitInput,
@@ -49,6 +53,7 @@ export class UserRecruitController {
   }
 
   @Put(':id')
+  @UseGuards(AuthGuard)
   async update(
     @FirebaseAuth() authUser: any,
     @Param('id') id: string,
@@ -58,6 +63,7 @@ export class UserRecruitController {
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard)
   async delete(
     @FirebaseAuth() authUser: any,
     @Param('id') id: string,

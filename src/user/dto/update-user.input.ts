@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class UpdateUserInput {
   @IsString()
@@ -41,7 +47,7 @@ export class UpdateUserInput {
   @IsOptional()
   careerVision?: string;
 
-  @IsString()
+  @IsArray()
   @IsOptional()
-  programingSkills?: object;
+  programingSkills?: string[];
 }
