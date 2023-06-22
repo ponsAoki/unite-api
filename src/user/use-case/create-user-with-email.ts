@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { AuthService } from 'src/common/auth/auth.service';
 import { CreateUserWithEmailInput } from '../dto/create-user-with-email.input';
 import { UserWithTokenEntity } from '../entities/user-with-token.entity';
@@ -34,7 +34,7 @@ export class CreateUserWithEmail {
       if (authUser?.uid) {
         await this.authService.deleteUser(authUser.uid);
       }
-      throw new Error(`ユーザー登録に失敗しました: ${err}`);
+      throw new InternalServerErrorException({ message: err.message });
     }
   }
 }
