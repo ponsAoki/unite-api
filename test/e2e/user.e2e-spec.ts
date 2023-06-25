@@ -6,6 +6,7 @@ import { createTestData, deleteAllTable } from '../fixture-handler';
 import { TestUsers } from '../fixture/user';
 import { CreateUserWithEmailInput } from 'src/user/dto/create-user-with-email.input';
 import { UpdateUserInput } from 'src/user/dto/update-user.input';
+import { EXIST_MAIL_ADDRESS } from 'src/common/constants/message';
 
 initTest();
 
@@ -93,7 +94,7 @@ describe('User API', () => {
     });
   });
 
-  describe('create a user', () => {
+  describe('create a user with email and password', () => {
     beforeEach(async () => {
       await createThisTestData();
     });
@@ -120,7 +121,7 @@ describe('User API', () => {
         });
     });
 
-    it('should fail in creating a user because email already registered', async () => {
+    it('should fail in creating a user because email already exists', async () => {
       const input: CreateUserWithEmailInput = {
         email: 'test0@test.com',
         password: 'newPassword',
@@ -130,8 +131,60 @@ describe('User API', () => {
         .post('/user')
         .send(input)
         .then((res) => {
-          expect(res.error).toBeDefined();
-          expect(res.status).toBe(500);
+          expect(res.error).toBeTruthy();
+          expect(res.status).toBe(400);
+          expect(res.body.message).toBe(EXIST_MAIL_ADDRESS);
+        });
+    });
+  });
+
+  describe('create a user with google or github', () => {
+    it('should not create a user because already the user exists', async () => {
+      await createThisTestData();
+
+      const beforeUsers = await prisma.user.findMany();
+
+      await request(app.getHttpServer())
+        .post('/user/create-with-google-or-github')
+        .then(async (res) => {
+          expect(res.error).toBeFalsy();
+          expect(res.status).toBe(201);
+
+          const afterUsers = await prisma.user.findMany();
+          expect(afterUsers.length).toBe(beforeUsers.length);
+        });
+    });
+
+    it('should success in creating a user', async () => {
+      await request(app.getHttpServer())
+        .post('/user/create-with-google-or-github')
+        .then((res) => {
+          expect(res.error).toBeFalsy();
+          expect(res.status).toBe(201);
+
+          const resUser = res.body;
+          expect(resUser).toMatchObject({
+            email: 'test0@test.com',
+            name: 'name0',
+            imageUrl: 'imageUrl0',
+          });
+        });
+    });
+
+    it('should fail in creating a user because email already exists', async () => {
+      await createThisTestData();
+
+      await prisma.user.update({
+        where: { id: 'userId0' },
+        data: { firebaseUID: 'firebaseUid10' },
+      });
+
+      await request(app.getHttpServer())
+        .post('/user/create-with-google-or-github')
+        .then(async (res) => {
+          expect(res.error).toBeTruthy();
+          expect(res.status).toBe(400);
+          expect(res.body.message).toBe(EXIST_MAIL_ADDRESS);
         });
     });
   });

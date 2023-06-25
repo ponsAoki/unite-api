@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserService } from '../user.service';
+import { EXIST_MAIL_ADDRESS } from 'src/common/constants/message';
 
 @Injectable()
 export class CreateUserPolicy {
@@ -11,7 +12,7 @@ export class CreateUserPolicy {
     if (!user) return;
 
     if (user.firebaseUID) {
-      throw new Error('すでに登録済みのユーザーのメールアドレスです');
+      throw new BadRequestException(EXIST_MAIL_ADDRESS);
     }
   }
 }

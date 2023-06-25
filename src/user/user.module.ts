@@ -6,6 +6,7 @@ import { CreateUser } from './use-case/create-user';
 import { CreateUserWithEmail } from './use-case/create-user-with-email';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
+import { CreateUserWithGoogleOrGithubService } from './use-case/create-user-with-google-or-github.service';
 
 @Module({
   controllers: [UserController],
@@ -16,6 +17,7 @@ import { UserService } from './user.service';
     AuthService,
     CreateUser,
     CreateUserPolicy,
+    CreateUserWithGoogleOrGithubService,
   ],
   exports: [UserService],
 })
