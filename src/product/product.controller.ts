@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProduct} from './use-case/create-product';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -7,7 +7,9 @@ import { UpdateProductService } from './use-case/update-product-service';
 import { Product } from '@prisma/client';
 import { UserService } from 'src/user/user.service';
 import { createProductInput } from './dto/create-product-input';
-import { updateProductInput } from './dto/update-product-input';
+import { UpdateProductInput } from './dto/update-product-input';
+import { Request } from 'express';
+import { AuthGuard } from 'src/common/guards/auth.guard';
 
 @Controller('product')
 export class ProductController {
@@ -55,8 +57,8 @@ export class ProductController {
   async update(
     @FirebaseAuth() authUser: any,
     @Param('id') id: string,
-    @UploadedFile() file?: Express.Multer.File,
-    @Body() input?: updateProductInput
+    @UploadedFile() file?: Request,
+    @Body() input?: UpdateProductInput
   ): Promise<Product> {
     return this.updateProductService.handle(id, input, file)
   }
