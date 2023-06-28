@@ -87,26 +87,26 @@ model InternshipExperience {
 }
 
 model User {
-  id               String  @id @default(cuid())
-  firebaseUID      String? @unique
-  name             String?
-  email            String  @unique
-  imageUrl         String?
-  age              Int?
-  prefecture       String?
-  university       String?
-  undergraduate    String?
+  id                     String                   @id @default(cuid())
+  firebaseUID            String?                  @unique
+  name                   String?
+  email                  String                   @unique
+  imageUrl               String?
+  age                    Int?
+  prefecture             String?
+  university             String?
+  undergraduate          String?
+  selfPublicity          String?
+  careerVision           String?
   graduateYear         String?
-  selfPublicity    String?
-  careerVision     String?
-  programingSkills Json?
-
-  developmentExperience   DevelopmentExperience?
-  internshipExperience    InternshipExperience?
+  programingSkills       Json?
+  developmentExperience  DevelopmentExperience?
+  internshipExperience   InternshipExperience?
+  userRecruitParticipant UserRecruitParticipant[]
+  userRecruits           UserRecruit[]
+  comments               Comment[]
   userRecruitApplications UserRecruitApplication[]
-  userRecruits            UserRecruit[]
   chatParticipants        ChatRoomParticipant[]
-  userTORecruitLikes      UserTORecruitLike[]
 }
 
 model UserRecruitApplication {
@@ -120,22 +120,33 @@ model UserRecruitApplication {
   @@unique([applicantId, recruitId])
 }
 
-model UserRecruit {
-  id                 String   @id @default(cuid())
-  hackthonName       String?
-  headline           String
-  details            String?  @db.VarChar(500)
-  programingSkills   Json
-  developmentPeriod  String?
-  hackathonUrl       String?
-  numberOfApplicants String
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-  recruiterId        String
+model UserRecruitParticipant {
+  id            String @id @default(cuid())
+  userId        String
+  userRecruitId String
+  isApproved    Boolean @default(false)
 
+  user    User        @relation(fields: [userId], references: [id])
+  recruit UserRecruit @relation(fields: [userRecruitId], references: [id])
+}
+
+model UserRecruit {
+  id                     String                   @id @default(cuid())
+  hackthonName           String?
+  headline               String
+  details                String?                  @db.VarChar(500)
+  programingSkills       Json
+  developmentPeriod      String?
+  hackathonUrl           String?
+  numberOfApplicants     String
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @updatedAt
+  recruiterId            String
   userRecruitApplications UserRecruitApplication[]
-  userTORecruitLikes      UserTORecruitLike[]
-  recruiter               User                     @relation(fields: [recruiterId], references: [id])
+  userRecruitParticipant UserRecruitParticipant[]
+  product                Product[]           
+  recruiter              User                     @relation(fields: [recruiterId], references: [id])
+  userToRecruitLikes     UserToRecruitLike[]
 }
 
 model ChatRoom {
@@ -171,33 +182,54 @@ model ChatRoomMessage {
 
 
 model Corporation {
-  id                    String                 @id @default(cuid())
+  id                    String     @id @default(cuid())
   sharedPassword        String?
   name                  String?
-  email                 String                 @unique
+  email                 String     @unique
   imageUrl              String?
-  DescriptionOfBusiness String?                @db.Text()
+  DescriptionOfBusiness String?    @db.Text()
   location              String?
   phoneNumber           String?
   employees             Employee[]
 }
 
 model Employee {
-  id                    String                 @id @default(cuid())
-  firebaseUID           String?                @unique
-  corporationId         String
-  name                  String?
-  email                 String                 @unique
-  imageUrl              String?
-  introduction          String?                @db.VarChar(2000)
-  phoneNumber           String?
-  belongToCorporation   Corporation @relation(fields: [corporationId], references: [id])
+  id                  String      @id @default(cuid())
+  firebaseUID         String?     @unique
+  corporationId       String
+  name                String?
+  email               String      @unique
+  imageUrl            String?
+  introduction        String?     @db.VarChar(2000)
+  phoneNumber         String?
+  belongToCorporation Corporation @relation(fields: [corporationId], references: [id])
 }
 
-model UserTORecruitLike {
-  id                   String               @id @default(cuid())
-  userId               String
-  recruitId            String
-  user                 User @relation(fields: [userId], references: [id])
-  recruit              UserRecruit @relation(fields: [recruitId], references: [id])
+model Product {
+  id        String      @id @default(cuid())
+  recruitId String      @unique
+  headline  String
+  url       String      @db.VarChar(1000)
+  detail    String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  comment   Comment[]
+  recruit   UserRecruit @relation(fields: [recruitId], references: [id])
 }
+
+model Comment {
+  id        String   @id @default(cuid())
+  productId String
+  userId    String
+  content   String   @db.Text()
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  product   Product  @relation(fields: [productId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model UserToRecruitLike {
+  id String @id @default(cuid())
+  recruitId String
+  recruit UserRecruit @relation(fields: [recruitId], references: [id])
+} 
