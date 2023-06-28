@@ -20,11 +20,11 @@ export class UserRecruitParticipantService {
     });
   }
 
-  async create(userId: string, input: CreateUserRecruitParticipantInput) {
+  create(userId: string, input: CreateUserRecruitParticipantInput) {
     return this.prismaService.userRecruitParticipant.create({
       data: {
         userRecruitId: input.userRecruitId,
-        userId,
+        userId: userId,
       },
     });
   }

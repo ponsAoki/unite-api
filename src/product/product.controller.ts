@@ -18,6 +18,7 @@ import { Product } from '@prisma/client';
 import { UserService } from 'src/user/user.service';
 import { createProductInput } from './dto/create-product-input';
 import { UpdateProductInput } from './dto/update-product-input';
+import { Request } from 'express';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 
 @Controller('product')
@@ -58,10 +59,11 @@ export class ProductController {
 
   //情報の編集
   @Put(':id')
+  @UseGuards(AuthGuard)
   async update(
     @FirebaseAuth() authUser: any,
     @Param('id') id: string,
-    @UploadedFile() file?: Express.Multer.File,
+    @UploadedFile() file?: Request,
     @Body() input?: UpdateProductInput,
   ): Promise<Product> {
     return this.updateProductService.handle(id, input, file);

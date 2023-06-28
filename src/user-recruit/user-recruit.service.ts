@@ -27,7 +27,11 @@ export class UserRecruitService {
       include: {
         product: true,
         recruiter: true,
-        userRecruitParticipant: true,
+        userRecruitParticipant: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
   }
