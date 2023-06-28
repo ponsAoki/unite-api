@@ -1,12 +1,15 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { FirebaseAuth } from 'src/common/decorators/auth.decorator';
 import { CreateUserRecruitParticipantInput } from './dto/create-user-recruit-participant-input';
 import { UserRecruitParticipantService } from './user-recruit-participant.service';
+import { AuthGuard } from 'src/common/guards/auth.guard';
+import { UserService } from 'src/user/user.service';
 
 @Controller('user-recruit-participant')
 export class UserRecruitParticipantController {
   constructor(
-    private readonly userRecruitParticipantService: UserRecruitParticipantService
+    private readonly userRecruitParticipantService: UserRecruitParticipantService,
+    private readonly userService: UserService
   ) {}
 
   @Get()
@@ -23,12 +26,13 @@ export class UserRecruitParticipantController {
 
   //参加者から参加依頼を出したときに走る
   @Post('applyForJoin')
+  @UseGuards(AuthGuard)
   async create(
     @FirebaseAuth() authUser: any,
     @Body() input: CreateUserRecruitParticipantInput
   ) {
-
-    return await this.userRecruitParticipantService.create(authUser.uid, input)
+    const user = await this.userService.findByFirebaseUID(authUser.uid)
+    return await this.userRecruitParticipantService.create(user.id, input)
   }
 
   //recruitの募集主が承認を押した時に状態をtrueにする。

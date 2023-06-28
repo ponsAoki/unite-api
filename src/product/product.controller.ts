@@ -28,6 +28,7 @@ export class ProductController {
 
   //自分が作成したプロダクトを一覧取得
   @Get('my-products')
+  @UseGuards(AuthGuard)
   async findMyProducts(
     @FirebaseAuth() authUser: any,
   ): Promise<Product[]> {
@@ -37,6 +38,7 @@ export class ProductController {
 
   //自分が関連しているプロダクトを一覧取得
   @Get('find-related-products')
+  @UseGuards(AuthGuard)
   async findRelatedProducts(
     @FirebaseAuth() authUser: any
   ): Promise<Product[]> {
@@ -54,6 +56,7 @@ export class ProductController {
 
   //情報の編集
   @Put(':id')
+  @UseGuards(AuthGuard)
   async update(
     @FirebaseAuth() authUser: any,
     @Param('id') id: string,
