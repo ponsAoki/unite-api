@@ -10,24 +10,23 @@ export class UserRecruitParticipantService {
     private readonly userService: UserService,
   ) {}
   findAll() {
-    return this.prismaService.userRecruitParticipant.findMany()
+    return this.prismaService.userRecruitParticipant.findMany();
   }
 
   findManyByRecruitId(userRecruitId: string) {
     return this.prismaService.userRecruitParticipant.findMany({
       where: { userRecruitId },
-      include: { user: true }
-    })
+      include: { user: true },
+    });
   }
 
   async create(userId: string, input: CreateUserRecruitParticipantInput) {
-    const user = await this.userService.find(userId)
     return this.prismaService.userRecruitParticipant.create({
       data: {
         userRecruitId: input.userRecruitId,
-        userId: user.id
-      }
-    })
+        userId,
+      },
+    });
   }
 
   approveParticipant(id: string) {
@@ -35,7 +34,7 @@ export class UserRecruitParticipantService {
       where: { id },
       data: {
         isApproved: true,
-      }
-    })
+      },
+    });
   }
 }

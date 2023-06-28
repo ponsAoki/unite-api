@@ -7,6 +7,7 @@ import { CreateUserWithEmail } from './use-case/create-user-with-email';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { CreateUserWithGoogleOrGithubService } from './use-case/create-user-with-google-or-github.service';
+import { UploadFileToFirebaseStorage } from 'src/common/file/uplpad-fIle-to-firebaseStorage';
 
 @Module({
   controllers: [UserController],
@@ -18,6 +19,7 @@ import { CreateUserWithGoogleOrGithubService } from './use-case/create-user-with
     CreateUser,
     CreateUserPolicy,
     CreateUserWithGoogleOrGithubService,
+    UploadFileToFirebaseStorage,
   ],
   exports: [UserService],
 })

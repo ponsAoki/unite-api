@@ -1,13 +1,24 @@
-import { Body, Controller, Get, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ProductService } from './product.service';
-import { CreateProduct} from './use-case/create-product';
+import { CreateProduct } from './use-case/create-product';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FirebaseAuth } from 'src/common/decorators/auth.decorator';
 import { UpdateProductService } from './use-case/update-product-service';
 import { Product } from '@prisma/client';
 import { UserService } from 'src/user/user.service';
 import { createProductInput } from './dto/create-product-input';
-import { updateProductInput } from './dto/update-product-input';
+import { UpdateProductInput } from './dto/update-product-input';
+import { AuthGuard } from 'src/common/guards/auth.guard';
 
 @Controller('product')
 export class ProductController {
@@ -15,8 +26,7 @@ export class ProductController {
     private readonly productService: ProductService,
     private readonly createProduct: CreateProduct,
     private readonly updateProductService: UpdateProductService,
-    private readonly userService: UserService
-
+    private readonly userService: UserService,
   ) {}
 
   @Get()
@@ -26,28 +36,24 @@ export class ProductController {
 
   //自分が作成したプロダクトを一覧取得
   @Get('my-products')
-  async findMyProducts(
-    @FirebaseAuth() authUser: any,
-  ): Promise<Product[]> {
-    const user = await this.userService.findByFirebaseUID(authUser.uid)
-    return await this.productService.findMyProducts(user.id)
+  @UseGuards(AuthGuard)
+  async findMyProducts(@FirebaseAuth() authUser: any): Promise<Product[]> {
+    const user = await this.userService.findByFirebaseUID(authUser.uid);
+    return await this.productService.findMyProducts(user.id);
   }
 
   //自分が関連しているプロダクトを一覧取得
   @Get('find-related-products')
-  async findRelatedProducts(
-    @FirebaseAuth() authUser: any
-  ): Promise<Product[]> {
-    const user = await this.userService.findByFirebaseUID(authUser.uid)
-    return await this.productService.findRelatedProducts(user.id)
+  @UseGuards(AuthGuard)
+  async findRelatedProducts(@FirebaseAuth() authUser: any): Promise<Product[]> {
+    const user = await this.userService.findByFirebaseUID(authUser.uid);
+    return await this.productService.findRelatedProducts(user.id);
   }
 
   // 一件取得
   @Get('findone/:id')
-  async findOneById(
-    @Param('id') id: string
-  ): Promise<Product> {
-    return await this.productService.findOne(id)
+  async findOneById(@Param('id') id: string): Promise<Product> {
+    return await this.productService.findOne(id);
   }
 
   //情報の編集
@@ -56,9 +62,9 @@ export class ProductController {
     @FirebaseAuth() authUser: any,
     @Param('id') id: string,
     @UploadedFile() file?: Express.Multer.File,
-    @Body() input?: updateProductInput
+    @Body() input?: UpdateProductInput,
   ): Promise<Product> {
-    return this.updateProductService.handle(id, input, file)
+    return this.updateProductService.handle(id, input, file);
   }
 
   //productの削除
@@ -69,9 +75,9 @@ export class ProductController {
   @UseInterceptors(FileInterceptor('file'))
   async create(
     @UploadedFile() file: Express.Multer.File,
-    @Body() input: createProductInput
+    @Body() input: createProductInput,
   ): Promise<Product> {
     //use-caseでimageをfirebaseStorageに登録する処理に移る
-    return await this.createProduct.handle(file, input)
+    return await this.createProduct.handle(file, input);
   }
 }

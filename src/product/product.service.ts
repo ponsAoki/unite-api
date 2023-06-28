@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { PrismaPromise, Product } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { createProductInput } from './dto/create-product-input';
-import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class ProductService {

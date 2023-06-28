@@ -1,14 +1,13 @@
-import { Injectable } from "@nestjs/common";
-import * as admin from "firebase-admin"
+import { Injectable } from '@nestjs/common';
+import * as admin from 'firebase-admin';
 
 //fileをfirebaseStorageに保存してurlとして返す。
 //(テーブルにurlとして保存)
 @Injectable()
 export class UploadFileToFirebaseStorage {
-
   async handle(file: Express.Multer.File) {
     const bucket = admin.storage().bucket();
-    const fileName = `${Date.now()}_${file.originalname}`
+    const fileName = `${Date.now()}_${file.originalname}`;
 
     try {
       const fileUpload = bucket.file(fileName);
@@ -20,17 +19,19 @@ export class UploadFileToFirebaseStorage {
         },
       };
 
-      await fileUpload.save(file.buffer, options)
+      await fileUpload.save(file.buffer, options);
 
-      const [ url ] = await fileUpload.getSignedUrl({
+      const [url] = await fileUpload.getSignedUrl({
         //ここは決めてないです
         action: 'read',
         expires: '03-01-2500',
       });
 
-      return url
+      return url;
     } catch (error) {
-      throw new Error(`fileをfirebaseStorageに保存することができませんでした。| ${error}`)
+      throw new Error(
+        `fileをfirebaseStorageに保存することができませんでした。| ${error}`,
+      );
     }
   }
 }

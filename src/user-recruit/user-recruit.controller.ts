@@ -37,16 +37,15 @@ export class UserRecruitController {
   @Get('my-recruits')
   @UseGuards(AuthGuard)
   async findMyRecruits(@FirebaseAuth() authUser: any) {
-    return this.userRecruitService.findManyByFirebaseUID(authUser.uid);
+    const recruiter = await this.userService.findByFirebaseUID(authUser.uid);
+    return this.userRecruitService.findManyByUserId(recruiter.id);
   }
 
   @Get('related-recruits')
-  async findRelativeManybyUserId(
-    @FirebaseAuth() authUser: any
-  ) {
-    const user = await this.userService.findByFirebaseUID(authUser.uid)
-    return this.userRecruitService.findRelativeManybyUserId(user.id)
-
+  @UseGuards(AuthGuard)
+  async findRelativeManybyUserId(@FirebaseAuth() authUser: any) {
+    const user = await this.userService.findByFirebaseUID(authUser.uid);
+    return this.userRecruitService.findRelativeManybyUserId(user.id);
   }
 
   @Post()
@@ -61,7 +60,7 @@ export class UserRecruitController {
   @Get('findOne/:id')
   async findById(
     @Param('id') id: string,
-    @FirebaseAuth() authUser: any
+    @FirebaseAuth() authUser: any,
   ): Promise<UserRecruitEntity> {
     return await this.userRecruitService.findById(id);
   }

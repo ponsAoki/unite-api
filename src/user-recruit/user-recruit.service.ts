@@ -9,15 +9,15 @@ import { UserService } from 'src/user/user.service';
 export class UserRecruitService {
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly userService: UserService
+    private readonly userService: UserService,
   ) {}
 
   findAll(): PrismaPromise<UserRecruit[]> {
     return this.prismaService.userRecruit.findMany({
       include: {
         product: true,
-        userRecruitParticipant: true
-      }
+        userRecruitParticipant: true,
+      },
     });
   }
 
@@ -28,35 +28,30 @@ export class UserRecruitService {
         product: true,
         recruiter: true,
         userRecruitParticipant: true,
-      }
+      },
     });
-
   }
 
-  findManyByUserId(id: string): PrismaPromise<UserRecruit[]> {
-    return this.prismaService.userRecruit.findMany(
-      {
-        where: {
-          recruiter: {
-            id
-          }
-        }
-      }
-    )
+  findManyByUserId(recruiterId: string): PrismaPromise<UserRecruit[]> {
+    return this.prismaService.userRecruit.findMany({
+      where: {
+        recruiterId,
+      },
+    });
   }
 
   //関連するrecruitの一覧取得
   findRelativeManybyUserId(id: string): PrismaPromise<UserRecruit[]> {
-    return this. prismaService.userRecruit.findMany({
+    return this.prismaService.userRecruit.findMany({
       where: {
         userRecruitParticipant: {
           some: {
             userId: id,
-            isApproved: true
-          }
-        }
-      }
-    })
+            isApproved: true,
+          },
+        },
+      },
+    });
   }
 
   findByIdAndRecruiterId(
