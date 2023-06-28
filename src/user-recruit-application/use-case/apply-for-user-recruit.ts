@@ -42,7 +42,7 @@ export class ApplyForUserRecruit {
       });
 
     // 募集者をroomの参加者として追加
-    const recruit = await this.userRecruitService.find(input.recruitId);
+    const recruit = await this.userRecruitService.findById(input.recruitId);
     await this.chatRoomParticipantService.create({
       roomId: chatRoom.id,
       userId: recruit.recruiterId,

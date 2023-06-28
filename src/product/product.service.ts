@@ -79,7 +79,9 @@ export class ProductService {
     })
   }
 
-  create(input: createProductInput): PrismaPromise<Product> {
-    return this.prismaService.product.create({data: {...input}})
+  create(input: { recruitId: string, headline: string, detail: string, url: string}): PrismaPromise<Product> {
+    return this.prismaService.product.create({
+      data: {...input}
+    })
   }
 }
