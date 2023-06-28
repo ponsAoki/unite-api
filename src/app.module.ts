@@ -8,7 +8,12 @@ import { CorporationController } from './corporation/corporation.controller';
 import { CorporationService } from './corporation/corporation.service';
 import { PrismaService } from './prisma.service';
 import { EmployeeModule } from './employee/employee.module';
+
 import { ChatEventModule } from './chat-event/chat-event.module';
+import { ProductModule } from './product/product.module';
+import { CommentModule } from './comment/comment.module';
+import { UserRecruitParticipantModule } from './user-recruit-participant/user-recruit-participant.module';
+
 
 @Module({
   imports: [
@@ -19,6 +24,9 @@ import { ChatEventModule } from './chat-event/chat-event.module';
     UserRecruitApplicationModule,
     ChatEventModule,
     ChatRoomModule,
+    ProductModule,
+    CommentModule,
+    UserRecruitParticipantModule
   ],
   controllers: [CorporationController],
   providers: [CorporationService, PrismaService],

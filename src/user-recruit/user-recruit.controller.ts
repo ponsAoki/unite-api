@@ -17,6 +17,7 @@ import { DeleteUserRecruit } from './use-case/delete-user-recruit';
 import { UpdateUserRecruit } from './use-case/update-user-recruit';
 import { UserRecruitService } from './user-recruit.service';
 import { AuthGuard } from 'src/common/guards/auth.guard';
+import { UserService } from 'src/user/user.service';
 
 @Controller('user-recruit')
 export class UserRecruitController {
@@ -25,6 +26,7 @@ export class UserRecruitController {
     private readonly createUserRecruit: CreateUserRecruit,
     private readonly updateUserRecruitService: UpdateUserRecruit,
     private readonly deleteUserRecruitService: DeleteUserRecruit,
+    private readonly userService: UserService,
   ) {}
 
   @Get()
@@ -35,12 +37,18 @@ export class UserRecruitController {
   @Get('my-recruits')
   @UseGuards(AuthGuard)
   async findMyRecruits(@FirebaseAuth() authUser: any) {
-    return this.userRecruitService.findManyByFirebaseUID(authUser.uid);
+    const user = await this.userService.findByFirebaseUID(authUser.uid)
+    return this.userRecruitService.findManyByUserId(user.id);
   }
 
-  @Get(':id')
-  async findById(@Param('id') id: string): Promise<UserRecruitEntity> {
-    return await this.userRecruitService.find(id);
+  @Get('related-recruits')
+  @UseGuards(AuthGuard)
+  async findRelativeManybyUserId(
+    @FirebaseAuth() authUser: any
+  ) {
+    const user = await this.userService.findByFirebaseUID(authUser.uid)
+    return this.userRecruitService.findRelativeManybyUserId(user.id)
+
   }
 
   @Post()
@@ -50,6 +58,14 @@ export class UserRecruitController {
     @Body() input: CreateUserRecruitInput,
   ): Promise<UserRecruitEntity> {
     return await this.createUserRecruit.handle(authUser.uid, input);
+  }
+
+  @Get('findOne/:id')
+  async findById(
+    @Param('id') id: string,
+    @FirebaseAuth() authUser: any
+  ): Promise<UserRecruitEntity> {
+    return await this.userRecruitService.findById(id);
   }
 
   @Put(':id')
