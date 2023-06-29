@@ -48,7 +48,15 @@ export class UserRecruitController {
   ) {
     const user = await this.userService.findByFirebaseUID(authUser.uid)
     return this.userRecruitService.findRelativeManybyUserId(user.id)
+  }
 
+  @Get('liked-recruits')
+  @UseGuards(AuthGuard)
+  async findLikedRecruits(
+    @FirebaseAuth() authUser: any
+  ) {
+    const user = await this.userService.findByFirebaseUID(authUser.uid);
+    return this.userRecruitService.findLikedRecruitsByUserId(user.id)
   }
 
   @Post()
@@ -61,6 +69,7 @@ export class UserRecruitController {
   }
 
   @Get('findOne/:id')
+  @UseGuards(AuthGuard)
   async findById(
     @Param('id') id: string,
     @FirebaseAuth() authUser: any

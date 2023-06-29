@@ -107,6 +107,7 @@ model User {
   comments               Comment[]
   userRecruitApplications UserRecruitApplication[]
   chatParticipants        ChatRoomParticipant[]
+  userToRecruitLike      UserToRecruitLike[]
 }
 
 model UserRecruitApplication {
@@ -231,5 +232,7 @@ model Comment {
 model UserToRecruitLike {
   id String @id @default(cuid())
   recruitId String
+  userId String
+  user User @relation(fields: [userId], references: [id])
   recruit UserRecruit @relation(fields: [recruitId], references: [id])
 } 
