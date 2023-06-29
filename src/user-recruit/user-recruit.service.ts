@@ -9,7 +9,6 @@ import { UserService } from 'src/user/user.service';
 export class UserRecruitService {
   constructor(
     private readonly prismaService: PrismaService,
-    private readonly userService: UserService
   ) {}
 
   findAll(): PrismaPromise<UserRecruit[]> {
