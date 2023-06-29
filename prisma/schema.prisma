@@ -99,6 +99,7 @@ model User {
   selfPublicity           String?
   careerVision            String?
   graduateYear            String?
+  githubAccount           String?
   programingSkills        Json?
   developmentExperience   DevelopmentExperience?
   internshipExperience    InternshipExperience?
