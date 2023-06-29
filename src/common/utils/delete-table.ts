@@ -5,8 +5,11 @@ export const deleteAllTable = async (prisma: PrismaClient): Promise<void> => {
   const deleteUserRecruits = prisma.userRecruit.deleteMany();
   const deleteUserRecruitApplications =
     prisma.userRecruitApplication.deleteMany();
+  const deleteUserRecruitParticipants =
+    prisma.userRecruitParticipant.deleteMany();
 
   await prisma.$transaction([
+    deleteUserRecruitParticipants,
     deleteUserRecruitApplications,
     deleteUserRecruits,
     deleteUsers,

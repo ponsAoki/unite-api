@@ -1,14 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { CreateUserRecruitParticipantInput } from './dto/create-user-recruit-participant-input';
-import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class UserRecruitParticipantService {
-  constructor(
-    private readonly prismaService: PrismaService,
-    private readonly userService: UserService,
-  ) {}
+  constructor(private readonly prismaService: PrismaService) {}
   findAll() {
     return this.prismaService.userRecruitParticipant.findMany();
   }

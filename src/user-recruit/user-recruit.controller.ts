@@ -41,11 +41,21 @@ export class UserRecruitController {
     return this.userRecruitService.findManyByUserId(recruiter.id);
   }
 
+  @Get('owned-recruits-by-id/:userId')
+  async findOwnedRecruits(@Param('userId') userId: string) {
+    return this.userRecruitService.findManyByUserId(userId);
+  }
+
   @Get('related-recruits')
   @UseGuards(AuthGuard)
-  async findRelativeManybyUserId(@FirebaseAuth() authUser: any) {
+  async findMyRelativeMany(@FirebaseAuth() authUser: any) {
     const user = await this.userService.findByFirebaseUID(authUser.uid);
     return this.userRecruitService.findRelativeManybyUserId(user.id);
+  }
+
+  @Get('related-recruits-by-id/:userId')
+  async findRelativeManyByUserId(@Param('userId') userId: string) {
+    return this.userRecruitService.findRelativeManybyUserId(userId);
   }
 
   @Post()

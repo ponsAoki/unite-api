@@ -26,9 +26,11 @@ describe('UserRecruit API', () => {
   });
 
   const createThisTestData = async (): Promise<void> => {
-    const { createUsers, createUserRecruits } = createTestData(prisma);
+    const { createUsers, createUserRecruits, createUserRecruitParticipants } =
+      createTestData(prisma);
     await createUsers();
     await createUserRecruits();
+    await createUserRecruitParticipants();
   };
 
   describe('find all user recruits', () => {
@@ -60,7 +62,7 @@ describe('UserRecruit API', () => {
     });
   });
 
-  describe('find own user recruits', () => {
+  describe('find my owned user recruits', () => {
     beforeEach(async () => {
       await createThisTestData();
     });
@@ -91,6 +93,63 @@ describe('UserRecruit API', () => {
     });
   });
 
+  describe('find owned user recruits by userId', () => {
+    beforeEach(async () => {
+      await createThisTestData();
+    });
+
+    it('should return a user object', async () => {
+      await prisma.userRecruit.create({
+        data: {
+          hackthonName: 'hackthonName10',
+          headline: 'headline10',
+          details: 'details10',
+          programingSkills: ['HTML', 'CSS', 'JAVA_SCRIPT'],
+          developmentPeriod: 'developmentPeriod10',
+          hackathonUrl: 'hackathonUrl10',
+          numberOfApplicants: 'numberOfApplicants10',
+          recruiterId: 'userId0',
+        },
+      });
+
+      await request(app.getHttpServer())
+        .get('/user-recruit/owned-recruits-by-id/userId0')
+        .then((res) => {
+          expect(res.error).toBeFalsy();
+          expect(res.status).toBe(200);
+
+          const resUserRecruits = res.body;
+          expect(resUserRecruits.length).toBe(2);
+        });
+    });
+  });
+
+  describe('find related user recruits by userId', () => {
+    beforeEach(async () => {
+      await createThisTestData();
+    });
+
+    it('should return a user object', async () => {
+      const participant = await prisma.userRecruitParticipant.findFirst({
+        where: { userId: 'userId0' },
+      });
+      await prisma.userRecruitParticipant.update({
+        where: { id: participant.id },
+        data: { isApproved: true },
+      });
+
+      await request(app.getHttpServer())
+        .get('/user-recruit/related-recruits-by-id/userId0')
+        .then((res) => {
+          expect(res.error).toBeFalsy();
+          expect(res.status).toBe(200);
+
+          const resUserRecruits = res.body;
+          expect(resUserRecruits.length).toBe(1);
+        });
+    });
+  });
+
   describe('find one user recruit by id', () => {
     beforeEach(async () => {
       await createThisTestData();
@@ -98,7 +157,7 @@ describe('UserRecruit API', () => {
 
     it('should return a user object', async () => {
       await request(app.getHttpServer())
-        .get('/user-recruit/userRecruitId0')
+        .get('/user-recruit/findOne/userRecruitId0')
         .then((res) => {
           expect(res.error).toBeFalsy();
           expect(res.status).toBe(200);
@@ -151,6 +210,9 @@ describe('UserRecruit API', () => {
     });
 
     it('should fail in creating a user recruit because operator user can not exist', async () => {
+      await prisma.userRecruitParticipant.delete({
+        where: { id: 'userRecruitParticipantId0' },
+      });
       await prisma.userRecruit.delete({ where: { id: 'userRecruitId0' } });
       await prisma.user.delete({ where: { id: 'userId0' } });
 
@@ -206,6 +268,9 @@ describe('UserRecruit API', () => {
     });
 
     it('should fail in updating a user recruit because operator user can not exist', async () => {
+      await prisma.userRecruitParticipant.delete({
+        where: { id: 'userRecruitParticipantId0' },
+      });
       await prisma.userRecruit.delete({
         where: { id: 'userRecruitId0' },
       });
@@ -262,6 +327,10 @@ describe('UserRecruit API', () => {
     });
 
     it('should success in deleting a user recruit', async () => {
+      await prisma.userRecruitParticipant.delete({
+        where: { id: 'userRecruitParticipantId0' },
+      });
+
       await request(app.getHttpServer())
         .delete('/user-recruit/userRecruitId0')
         .then((res) => {
@@ -283,6 +352,9 @@ describe('UserRecruit API', () => {
     });
 
     it('should fail in deleting a user recruit because operator user can not exist', async () => {
+      await prisma.userRecruitParticipant.delete({
+        where: { id: 'userRecruitParticipantId0' },
+      });
       await prisma.userRecruit.delete({
         where: { id: 'userRecruitId0' },
       });

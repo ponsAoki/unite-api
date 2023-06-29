@@ -36,6 +36,11 @@ export class UserController {
     return await this.userService.findAll();
   }
 
+  @Get('find-by-id/:id')
+  async findById(@Param('id') id: string): Promise<UserEntity> {
+    return await this.userService.find(id);
+  }
+
   @Get('find-by-firebase-uid')
   @UseGuards(AuthGuard)
   async findByFirebaseUID(@FirebaseAuth() authUser: any): Promise<UserEntity> {
@@ -79,7 +84,7 @@ export class UserController {
     @FirebaseAuth() authUser: any,
     @UploadedFile() imageFile: Express.Multer.File,
     @Body() input: UpdateUserInput,
-  ): Promise<any> {
+  ): Promise<UserEntity> {
     if (imageFile) {
       const imageUrl = await this.uploadFileToFirebaseStorage.handle(imageFile);
       input = { ...input, imageUrl };
