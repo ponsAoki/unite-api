@@ -15,12 +15,15 @@ import { UserEntity } from './entities/user.entity';
 import { CreateUserWithEmail } from './use-case/create-user-with-email';
 import { UserService } from './user.service';
 import { AuthGuard } from 'src/common/guards/auth.guard';
+import { CreateUserWithGoogleOrGithubInput } from './dto/create-user-with-google-or-github.input';
+import { CreateUserWithGoogleOrGithubService } from './use-case/create-user-with-google-or-github.service';
 
 @Controller('user')
 export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly createUserWithEmail: CreateUserWithEmail,
+    private readonly createUserWithGoogleOrGithubService: CreateUserWithGoogleOrGithubService,
   ) {}
 
   @Get()
@@ -43,10 +46,25 @@ export class UserController {
   }
 
   @Post()
-  async create(
+  async createWithEmailAndPassword(
     @Body() input: CreateUserWithEmailInput,
   ): Promise<UserWithTokenEntity> {
     return await this.createUserWithEmail.handle(input);
+  }
+
+  @Post('create-with-google-or-github')
+  @UseGuards(AuthGuard)
+  async createWithGoogleOrGithub(
+    @FirebaseAuth() authUser: any,
+  ): Promise<UserEntity> {
+    //TODO: authUserの型をそもそも判定しておきたい
+    const input: CreateUserWithGoogleOrGithubInput = {
+      firebaseUID: authUser.uid,
+      email: authUser.email,
+      name: authUser.name,
+      imageUrl: authUser.picture,
+    };
+    return await this.createUserWithGoogleOrGithubService.handle(input);
   }
 
   @Put('update-by-firebase-uid')

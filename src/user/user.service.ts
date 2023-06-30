@@ -3,6 +3,7 @@ import { PrismaPromise, User } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
+import { CreateUserWithGoogleOrGithubInput } from './dto/create-user-with-google-or-github.input';
 
 @Injectable()
 export class UserService {
@@ -28,7 +29,9 @@ export class UserService {
     return this.prismaService.user.findFirst({ where: { email } });
   }
 
-  create(input: CreateUserInput): PrismaPromise<User> {
+  create(
+    input: CreateUserInput | CreateUserWithGoogleOrGithubInput,
+  ): PrismaPromise<User> {
     return this.prismaService.user.create({ data: input });
   }
 
