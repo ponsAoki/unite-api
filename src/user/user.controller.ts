@@ -85,8 +85,6 @@ export class UserController {
     @Body() input: UpdateUserInput,
     @UploadedFile() imageFile?: Express.Multer.File,
   ): Promise<any> {
-    console.log('get request');
-
     if (imageFile) {
       const user = await this.userService.findByFirebaseUID(authUser.uid);
 
