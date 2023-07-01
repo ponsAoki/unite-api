@@ -63,7 +63,7 @@ export class ProductController {
   async update(
     @FirebaseAuth() authUser: any,
     @Param('id') id: string,
-    @UploadedFile() file?: Request,
+    @UploadedFile() file?: Express.Multer.File,
     @Body() input?: UpdateProductInput,
   ): Promise<Product> {
     return this.updateProductService.handle(id, input, file);

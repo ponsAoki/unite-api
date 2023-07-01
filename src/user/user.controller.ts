@@ -20,7 +20,7 @@ import { AuthGuard } from 'src/common/guards/auth.guard';
 import { CreateUserWithGoogleOrGithubInput } from './dto/create-user-with-google-or-github.input';
 import { CreateUserWithGoogleOrGithubService } from './use-case/create-user-with-google-or-github.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UploadFileToFirebaseStorage } from 'src/common/file/uplpad-fIle-to-firebaseStorage';
+import { UpdateFileToFirebaseStorage } from 'src/common/file/update-file-service';
 
 @Controller('user')
 export class UserController {
@@ -28,7 +28,7 @@ export class UserController {
     private readonly userService: UserService,
     private readonly createUserWithEmail: CreateUserWithEmail,
     private readonly createUserWithGoogleOrGithubService: CreateUserWithGoogleOrGithubService,
-    private readonly uploadFileToFirebaseStorage: UploadFileToFirebaseStorage,
+    private readonly updateFileToFirebaseStorage: UpdateFileToFirebaseStorage,
   ) {}
 
   @Get()
@@ -82,12 +82,24 @@ export class UserController {
   @UseInterceptors(FileInterceptor('imageFile'))
   async update(
     @FirebaseAuth() authUser: any,
-    @UploadedFile() imageFile: Express.Multer.File,
     @Body() input: UpdateUserInput,
-  ): Promise<UserEntity> {
+    @UploadedFile() imageFile?: Express.Multer.File,
+  ): Promise<any> {
+    console.log('get request');
+
     if (imageFile) {
-      const imageUrl = await this.uploadFileToFirebaseStorage.handle(imageFile);
-      input = { ...input, imageUrl };
+      const user = await this.userService.findByFirebaseUID(authUser.uid);
+
+      //firebaseのstorageに保存 & 画像url生成
+      const newImageUrl = await this.updateFileToFirebaseStorage.handle(
+        imageFile,
+        user.imageUrl,
+      );
+
+      input = {
+        ...input,
+        imageUrl: newImageUrl,
+      };
     }
 
     return await this.userService.updateByFirebaseUID(authUser.uid, input);
