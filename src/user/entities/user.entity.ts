@@ -11,6 +11,7 @@ export class UserEntity implements User {
   university: string;
   undergraduate: string;
   graduateYear: string;
+  githubAccount: string;
   selfPublicity: string;
   careerVision: string;
   programingSkills: Prisma.JsonValue;

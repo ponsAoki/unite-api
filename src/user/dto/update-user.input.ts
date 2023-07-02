@@ -41,6 +41,10 @@ export class UpdateUserInput {
 
   @IsString()
   @IsOptional()
+  githubAccount?: string;
+
+  @IsString()
+  @IsOptional()
   selfPublicity?: string;
 
   @IsString()
