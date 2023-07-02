@@ -10,6 +10,7 @@ import { PrismaService } from './prisma.service';
 import { EmployeeModule } from './employee/employee.module';
 
 import { ChatEventModule } from './chat-event/chat-event.module';
+import { UserToRecruitLikeModule } from './user-to-recruit-like/user-to-recruit-like.module';
 import { ProductModule } from './product/product.module';
 import { CommentModule } from './comment/comment.module';
 import { UserRecruitParticipantModule } from './user-recruit-participant/user-recruit-participant.module';
@@ -24,6 +25,7 @@ import { UserRecruitParticipantModule } from './user-recruit-participant/user-re
     UserRecruitApplicationModule,
     ChatEventModule,
     ChatRoomModule,
+    UserToRecruitLikeModule,
     ProductModule,
     CommentModule,
     UserRecruitParticipantModule
