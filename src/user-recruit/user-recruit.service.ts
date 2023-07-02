@@ -9,6 +9,7 @@ import { UserService } from 'src/user/user.service';
 export class UserRecruitService {
   constructor(
     private readonly prismaService: PrismaService,
+    private readonly userService: UserService,
   ) {}
 
   findAll(): PrismaPromise<UserRecruit[]> {
@@ -29,8 +30,8 @@ export class UserRecruitService {
         recruiter: true,
         userRecruitParticipant: {
           include: {
-            user: true
-          }
+            user: true,
+          },
         },
         userToRecruitLikes: true,
       }
@@ -65,7 +66,7 @@ export class UserRecruitService {
 
   //関連するrecruitの一覧取得
   findRelativeManybyUserId(id: string): PrismaPromise<UserRecruit[]> {
-    return this. prismaService.userRecruit.findMany({
+    return this.prismaService.userRecruit.findMany({
       where: {
         userRecruitParticipant: {
           some: {

@@ -1,9 +1,8 @@
-import { Controller, Get, Param } from '@nestjs/common';
-import { ChatRoomParticipantService } from './chat-room-participant.service';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { ChatRoomParticipantEntity } from './entities/chat-room-participant.entity';
-import { ChatRoomParticipantInput } from './dto/chat-room-participant.input';
 import { FirebaseAuth } from 'src/common/decorators/auth.decorator';
 import { FindChatRoomParticipantByRoomId } from './use-case/find-chat-room-participant-by-room-id';
+import { AuthGuard } from 'src/common/guards/auth.guard';
 
 @Controller('chat-room-participant')
 export class ChatRoomParticipantController {
@@ -12,6 +11,7 @@ export class ChatRoomParticipantController {
   ) {}
 
   @Get(':roomId')
+  @UseGuards(AuthGuard)
   async findByRoomId(
     @FirebaseAuth() authUser: any,
     @Param('roomId') roomId: string,

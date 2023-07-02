@@ -17,6 +17,7 @@ export class TestUsers {
         university: `university${n}`,
         undergraduate: `undergraduate${n}`,
         graduateYear: `graduateYear${n}`,
+        githubAccount: `githubAccount${n}`,
         selfPublicity: `selfPublicity${n}`,
         careerVision: `name${n}`,
         programingSkills: ['HTML', 'CSS', 'JavaScript'],

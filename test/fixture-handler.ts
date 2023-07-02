@@ -3,6 +3,7 @@ import { TestUsers } from './fixture/user';
 import { deleteAllTable as _deleteAllTable } from 'src/common/utils/delete-table';
 import { TestUserRecruits } from './fixture/user-recruit';
 import { TestUserRecruitApplications } from './fixture/user-recruit-applicant';
+import { TestUserRecruitParticipants } from './fixture/user-recruit-participant';
 
 export const createTestData = (prisma: PrismaClient) => {
   const createUsers = async (num = 10) => {
@@ -21,7 +22,18 @@ export const createTestData = (prisma: PrismaClient) => {
     });
   };
 
-  return { createUsers, createUserRecruits, createUserRecruitApplicants };
+  const createUserRecruitParticipants = async (num = 10) => {
+    await prisma.userRecruitParticipant.createMany({
+      data: new TestUserRecruitParticipants().create(num),
+    });
+  };
+
+  return {
+    createUsers,
+    createUserRecruits,
+    createUserRecruitApplicants,
+    createUserRecruitParticipants,
+  };
 };
 
 export const deleteAllTable = async (prisma: PrismaClient): Promise<void> => {
