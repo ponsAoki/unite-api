@@ -1,24 +1,18 @@
-import { Injectable } from "@nestjs/common";
-import { ProductService } from "src/product/product.service";
+import { Injectable } from '@nestjs/common';
+import { CommentService } from '../comment.service';
 
 @Injectable()
 export class CheckForMyComment {
-  constructor(
-    private readonly productService: ProductService,
-  ) {}
+  constructor(private readonly commentService: CommentService) {}
 
-  async handle(id: string, userId: string) {
-    let isMyCommentExist = false
-    const product = await this.productService.findOne(id);
-    const comments = product.comment;
-    for(let i = 0; i < comments.length; i++) {
-      if (comments[i].userId === userId) {
-        isMyCommentExist = true;
-        break
-      }
-    }
+  async handle(productId: string, userId: string) {
+    const comments = await this.commentService.findManyByProductId(productId);
+
+    const isMyCommentExist = comments.find(
+      (comment) => comment.userId === userId,
+    );
+
     if (!isMyCommentExist) return;
-
-    throw new Error("commentはすでに存在している為作成することができません。")
+    throw new Error('commentはすでに存在している為作成することができません。');
   }
 }
