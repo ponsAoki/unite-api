@@ -37,4 +37,10 @@ export class UserRecruitParticipantService {
       }
     })
   }
+
+  rejectParticipant(id: string) {
+    return this.prismaService.userRecruitParticipant.delete({
+      where: { id }
+    })
+  }
 }

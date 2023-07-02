@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { FirebaseAuth } from 'src/common/decorators/auth.decorator';
 import { CreateUserRecruitParticipantInput } from './dto/create-user-recruit-participant-input';
 import { UserRecruitParticipantService } from './user-recruit-participant.service';
@@ -44,4 +44,10 @@ export class UserRecruitParticipantController {
   }
 
   //recruitの募集主が拒否した場合にテーブルを破棄する。
+  @Delete(':id/reject')
+  async rejectParticipant(
+    @Param('id') id: string
+  ) {
+    return await this.userRecruitParticipantService.rejectParticipant(id)
+  }
 }

@@ -6,13 +6,14 @@ import { UserToRecruitLike } from '@prisma/client';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { DeleteUserToRecruitLikeService } from './use-case/delete-user-to-recruit-like';
 import { UserService } from 'src/user/user.service';
+import { CreateUserToRecruitLike } from './use-case/create-user-to-recruit-like';
 
 @Controller('user-to-recruit-like')
 export class UserToRecruitLikeController {
   constructor(
     private readonly userToRecruitLikeService: UserToRecruitLikeService,
-    private readonly deleteUserToRecruitLikeService: DeleteUserToRecruitLikeService,
-    private readonly userService: UserService
+    private readonly createUserToRecruitLike: CreateUserToRecruitLike,
+    private readonly deleteUserToRecruitLike: DeleteUserToRecruitLikeService,
   ) {}
 
   @Post()
@@ -20,17 +21,17 @@ export class UserToRecruitLikeController {
   async createLike(
     @FirebaseAuth() authUser: any,
     @Body() input: CreateUserToRecruitLikeInput
-  ): Promise<UserToRecruitLike> {
-    const user = await this.userService.findByFirebaseUID(authUser.uid)
-    return await this.userToRecruitLikeService.create(user.id, input.recruitId)
+  ): Promise<void> {
+    return await this.createUserToRecruitLike.handle(authUser.uid, input.recruitId)
   }
 
   @Delete(':recruitId')
   @UseGuards(AuthGuard)
-  async deleteLile(
+  async deleteLike(
     @FirebaseAuth() authUser: any,
     @Param('recruitId') recruitId: string
   ): Promise<void> {
-    return this.deleteUserToRecruitLikeService.handle(authUser.uid, recruitId)
+    return this.deleteUserToRecruitLike.handle(authUser.uid, recruitId)
+    // return this.userToRecruitLikeService.delete(recruitId)
   }
 }

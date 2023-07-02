@@ -55,6 +55,9 @@ export class UserRecruitService {
           recruiter: {
             id
           }
+        },
+        include: {
+          userRecruitParticipant: true,
         }
       }
     )
@@ -70,6 +73,9 @@ export class UserRecruitService {
             isApproved: true
           }
         }
+      },
+      include: {
+        recruiter: true,
       }
     })
   }

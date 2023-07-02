@@ -14,17 +14,8 @@ export class DeleteUserToRecruitLikeService {
 
   async handle(userId: string, recruitId: string) {
     const user = await this.userService.findByFirebaseUID(userId)
+    const specificLike = await this.userToRecruitLikeService.findOne(user.id, recruitId)
 
-    //特定のrecruitのいいねを取得する
-    const likedRecruit = await this.userRecruitService.findLikedRecruitById(recruitId);
-    //テーブル設計的に一つのrecruitに対して複数回いいねを押せるようになっているため
-    const myLiked = likedRecruit.userToRecruitLikes.filter((userToRecruitLike) => {
-      return userToRecruitLike.userId === user.id
-    })
-
-    //２つ以上の場合はエラーを投げる
-    if (myLiked.length > 1) throw new Error('同じプロダクトに対して2回以上いいねしてしまっています。')
-
-    await this.userToRecruitLikeService.delete(myLiked[0].id)
+    await this.userToRecruitLikeService.delete(specificLike.id)
   }
 }
