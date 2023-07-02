@@ -75,6 +75,25 @@ describe('User API', () => {
     });
   });
 
+  describe('find one user by id', () => {
+    beforeEach(async () => {
+      await createThisTestData();
+    });
+
+    it('should return a user object', async () => {
+      await request(app.getHttpServer())
+        .get('/user/find-by-id/userId0')
+        .then((res) => {
+          expect(res.error).toBeFalsy();
+          expect(res.status).toBe(200);
+
+          const resUser = res.body;
+          const firstUser = new TestUsers().create(1)[0];
+          expect(resUser).toMatchObject(firstUser);
+        });
+    });
+  });
+
   describe('find one user by firebase uid without auth verification', () => {
     beforeEach(async () => {
       await createThisTestData();

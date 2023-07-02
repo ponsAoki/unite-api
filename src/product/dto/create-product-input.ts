@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from "class-validator";
+import { IsOptional, IsString } from 'class-validator';
 
 export class createProductInput {
   @IsString()
@@ -12,4 +12,7 @@ export class createProductInput {
   @IsOptional()
   detail: string;
 
+  @IsString()
+  @IsOptional()
+  url: string;
 }

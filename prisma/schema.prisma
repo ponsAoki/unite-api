@@ -87,24 +87,25 @@ model InternshipExperience {
 }
 
 model User {
-  id                     String                   @id @default(cuid())
-  firebaseUID            String?                  @unique
-  name                   String?
-  email                  String                   @unique
-  imageUrl               String?
-  age                    Int?
-  prefecture             String?
-  university             String?
-  undergraduate          String?
-  selfPublicity          String?
-  careerVision           String?
-  graduateYear         String?
-  programingSkills       Json?
-  developmentExperience  DevelopmentExperience?
-  internshipExperience   InternshipExperience?
-  userRecruitParticipant UserRecruitParticipant[]
-  userRecruits           UserRecruit[]
-  comments               Comment[]
+  id                      String                   @id @default(cuid())
+  firebaseUID             String?                  @unique
+  name                    String?
+  email                   String                   @unique
+  imageUrl                String?                  @db.VarChar(2000)
+  age                     Int?
+  prefecture              String?
+  university              String?
+  undergraduate           String?
+  selfPublicity           String?
+  careerVision            String?
+  graduateYear            String?
+  githubAccount           String?
+  programingSkills        Json?
+  developmentExperience   DevelopmentExperience?
+  internshipExperience    InternshipExperience?
+  userRecruitParticipant  UserRecruitParticipant[]
+  userRecruits            UserRecruit[]
+  comments                Comment[]
   userRecruitApplications UserRecruitApplication[]
   chatParticipants        ChatRoomParticipant[]
 }
@@ -121,7 +122,7 @@ model UserRecruitApplication {
 }
 
 model UserRecruitParticipant {
-  id            String @id @default(cuid())
+  id            String  @id @default(cuid())
   userId        String
   userRecruitId String
   isApproved    Boolean @default(false)
@@ -131,21 +132,21 @@ model UserRecruitParticipant {
 }
 
 model UserRecruit {
-  id                     String                   @id @default(cuid())
-  hackthonName           String?
-  headline               String
-  details                String?                  @db.VarChar(500)
-  programingSkills       Json
-  developmentPeriod      String?
-  hackathonUrl           String?
-  numberOfApplicants     String
-  createdAt              DateTime                 @default(now())
-  updatedAt              DateTime                 @updatedAt
-  recruiterId            String
+  id                      String                   @id @default(cuid())
+  hackthonName            String?
+  headline                String
+  details                 String?                  @db.VarChar(500)
+  programingSkills        Json
+  developmentPeriod       String?
+  hackathonUrl            String?
+  numberOfApplicants      String
+  createdAt               DateTime                 @default(now())
+  updatedAt               DateTime                 @updatedAt
+  recruiterId             String
   userRecruitApplications UserRecruitApplication[]
-  userRecruitParticipant UserRecruitParticipant[]
-  product                Product[]           
-  recruiter              User                     @relation(fields: [recruiterId], references: [id])
+  userRecruitParticipant  UserRecruitParticipant[]
+  product                 Product[]
+  recruiter               User                     @relation(fields: [recruiterId], references: [id])
 }
 
 model ChatRoom {
@@ -179,7 +180,6 @@ model ChatRoomMessage {
   sender ChatRoomParticipant @relation(fields: [senderId], references: [id])
 }
 
-
 model Corporation {
   id                    String     @id @default(cuid())
   sharedPassword        String?
@@ -198,7 +198,7 @@ model Employee {
   corporationId       String
   name                String?
   email               String      @unique
-  imageUrl            String?
+  imageUrl            String?     @db.VarChar(2000)
   introduction        String?     @db.VarChar(2000)
   phoneNumber         String?
   belongToCorporation Corporation @relation(fields: [corporationId], references: [id])
@@ -208,7 +208,7 @@ model Product {
   id        String      @id @default(cuid())
   recruitId String      @unique
   headline  String
-  url       String      @db.VarChar(1000)
+  url       String      @db.VarChar(2000)
   detail    String
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
