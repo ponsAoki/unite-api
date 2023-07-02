@@ -16,8 +16,9 @@ export class UserRecruitService {
     return this.prismaService.userRecruit.findMany({
       include: {
         product: true,
-        userRecruitParticipant: true,
-      },
+        recruiter: true,
+        userRecruitParticipant: true
+      }
     });
   }
 
@@ -32,16 +33,35 @@ export class UserRecruitService {
             user: true,
           },
         },
-      },
+        userToRecruitLikes: true,
+      }
     });
   }
 
-  findManyByUserId(recruiterId: string): PrismaPromise<UserRecruit[]> {
-    return this.prismaService.userRecruit.findMany({
-      where: {
-        recruiterId,
-      },
-    });
+  //いいねしているrecruitを探す
+  findLikedRecruitById(id: string) {
+    return this.prismaService.userRecruit.findFirst({
+      where: { id },
+      include: {
+        userToRecruitLikes: true
+      }
+    })
+  }
+
+  //自分が作成したrecruitの一覧取得
+  findManyByUserId(id: string): PrismaPromise<UserRecruit[]> {
+    return this.prismaService.userRecruit.findMany(
+      {
+        where: {
+          recruiter: {
+            id
+          }
+        },
+        include: {
+          userRecruitParticipant: true,
+        }
+      }
+    )
   }
 
   //関連するrecruitの一覧取得
@@ -51,11 +71,27 @@ export class UserRecruitService {
         userRecruitParticipant: {
           some: {
             userId: id,
-            isApproved: true,
-          },
-        },
+            isApproved: true
+          }
+        }
       },
-    });
+      include: {
+        recruiter: true,
+      }
+    })
+  }
+
+  //自分がいいねしたrecruitの一覧取得
+  findLikedRecruitsByUserId(id: string): PrismaPromise<UserRecruit[]> {
+    return this.prismaService.userRecruit.findMany({
+      where: {
+        userToRecruitLikes: {
+          some: {
+            userId: id,
+          }
+        }
+      }
+    })
   }
 
   findByIdAndRecruiterId(

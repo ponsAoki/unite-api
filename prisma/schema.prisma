@@ -108,6 +108,7 @@ model User {
   comments                Comment[]
   userRecruitApplications UserRecruitApplication[]
   chatParticipants        ChatRoomParticipant[]
+  userToRecruitLike      UserToRecruitLike[]
 }
 
 model UserRecruitApplication {
@@ -144,9 +145,10 @@ model UserRecruit {
   updatedAt               DateTime                 @updatedAt
   recruiterId             String
   userRecruitApplications UserRecruitApplication[]
-  userRecruitParticipant  UserRecruitParticipant[]
-  product                 Product[]
-  recruiter               User                     @relation(fields: [recruiterId], references: [id])
+  userRecruitParticipant UserRecruitParticipant[]
+  product                Product[]           
+  recruiter              User                     @relation(fields: [recruiterId], references: [id])
+  userToRecruitLikes     UserToRecruitLike[]
 }
 
 model ChatRoom {
@@ -226,3 +228,11 @@ model Comment {
   product   Product  @relation(fields: [productId], references: [id])
   user      User     @relation(fields: [userId], references: [id])
 }
+
+model UserToRecruitLike {
+  id String @id @default(cuid())
+  recruitId String
+  userId String
+  user User @relation(fields: [userId], references: [id])
+  recruit UserRecruit @relation(fields: [recruitId], references: [id])
+} 
