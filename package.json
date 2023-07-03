@@ -12,7 +12,7 @@
     "migrate:e2e": "dotenv -e .env.e2e npm run migrate",
     "migrate:e2e-reset": "dotenv -e .env.e2e npx prisma migrate reset",
     "generate": "npx prisma generate",
-    "start": "nest start",
+    "start": "node deploy-migration.js && nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -21,8 +21,7 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json -i",
-    "postinstall": "if [ \"$RUN_DEPLOY_MIGRATIONS\" = \"true\" ]; then npx prisma migrate deploy && npx prisma generate; fi"
+    "test:e2e": "jest --config ./test/jest-e2e.json -i"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
