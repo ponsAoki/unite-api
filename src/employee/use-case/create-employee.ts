@@ -15,7 +15,7 @@ export class CreateEmployee {
   ) {}
 
   async handle(input: CreateEmployeeInput, corporationId: string): Promise<EmployeeEntity> {
-    await this.createEmployeePolicy.handle (input.email)
+    await this.createEmployeePolicy.handle(input.email)
     const employee = await this.employeeService.create({
       email: input.email,
       firebaseUID: input.firebaseUID

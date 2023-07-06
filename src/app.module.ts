@@ -14,6 +14,7 @@ import { UserToRecruitLikeModule } from './user-to-recruit-like/user-to-recruit-
 import { ProductModule } from './product/product.module';
 import { CommentModule } from './comment/comment.module';
 import { UserRecruitParticipantModule } from './user-recruit-participant/user-recruit-participant.module';
+import { CorporateAuthModule } from './common/auth/corporation/corporate-auth.module';
 
 
 @Module({
@@ -28,7 +29,8 @@ import { UserRecruitParticipantModule } from './user-recruit-participant/user-re
     UserToRecruitLikeModule,
     ProductModule,
     CommentModule,
-    UserRecruitParticipantModule
+    UserRecruitParticipantModule,
+    CorporateAuthModule
   ],
   controllers: [CorporationController],
   providers: [CorporationService, PrismaService],
