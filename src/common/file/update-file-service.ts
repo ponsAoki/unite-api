@@ -10,8 +10,10 @@ export class UpdateFileToFirebaseStorage {
   ) {}
 
   async handle(file: Express.Multer.File, fileUrl?: string) {
-    //まず保存中のファイルを削除
-    await this.deleteFileToFirebaseStorageService.handle(fileUrl);
+    //すでに画像を登録している場合は、firebaseに保存されている画像ファイルを削除
+    if (fileUrl) {
+      await this.deleteFileToFirebaseStorageService.handle(fileUrl);
+    }
 
     //新しいfileからfirebaseStoreに保存してurlを取得
     const uploadFile = file;
