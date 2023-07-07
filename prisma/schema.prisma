@@ -117,7 +117,7 @@ model UserRecruitApplication {
   recruitId   String
 
   applicant User        @relation(fields: [applicantId], references: [id])
-  recruit   UserRecruit @relation(fields: [recruitId], references: [id])
+  recruit   UserRecruit @relation(fields: [recruitId], references: [id], onDelete: Cascade)
 
   @@unique([applicantId, recruitId])
 }
@@ -129,7 +129,7 @@ model UserRecruitParticipant {
   isApproved    Boolean @default(false)
 
   user    User        @relation(fields: [userId], references: [id])
-  recruit UserRecruit @relation(fields: [userRecruitId], references: [id])
+  recruit UserRecruit @relation(fields: [userRecruitId], references: [id], onDelete: Cascade)
 }
 
 model UserRecruit {
@@ -215,7 +215,7 @@ model Product {
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
   comment   Comment[]
-  recruit   UserRecruit @relation(fields: [recruitId], references: [id])
+  recruit   UserRecruit @relation(fields: [recruitId], references: [id], onDelete: Cascade)
 }
 
 model Comment {
@@ -225,7 +225,7 @@ model Comment {
   content   String   @db.Text()
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  product   Product  @relation(fields: [productId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id])
 }
 
@@ -234,5 +234,5 @@ model UserToRecruitLike {
   recruitId String
   userId String
   user User @relation(fields: [userId], references: [id])
-  recruit UserRecruit @relation(fields: [recruitId], references: [id])
+  recruit UserRecruit @relation(fields: [recruitId], references: [id], onDelete: Cascade)
 } 
