@@ -164,7 +164,7 @@ describe('User API', () => {
       const beforeUsers = await prisma.user.findMany();
 
       await request(app.getHttpServer())
-        .post('/user/create-with-google-or-github')
+        .post('/user/sign-in-with-google-or-github')
         .then(async (res) => {
           expect(res.error).toBeFalsy();
           expect(res.status).toBe(201);
@@ -176,7 +176,7 @@ describe('User API', () => {
 
     it('should success in creating a user', async () => {
       await request(app.getHttpServer())
-        .post('/user/create-with-google-or-github')
+        .post('/user/sign-in-with-google-or-github')
         .then((res) => {
           expect(res.error).toBeFalsy();
           expect(res.status).toBe(201);
@@ -190,6 +190,24 @@ describe('User API', () => {
         });
     });
 
+    it('should success in creating a user and add github account column because of github provider', async () => {
+      await request(app.getHttpServer())
+        .post('/user/sign-in-with-google-or-github')
+        .send({ githubAccount: 'githubAccount0' })
+        .then((res) => {
+          expect(res.error).toBeFalsy();
+          expect(res.status).toBe(201);
+
+          const resUser = res.body;
+          expect(resUser).toMatchObject({
+            email: 'test0@test.com',
+            name: 'name0',
+            imageUrl: 'imageUrl0',
+            githubAccount: 'githubAccount0',
+          });
+        });
+    });
+
     it('should fail in creating a user because email already exists', async () => {
       await createThisTestData();
 
@@ -199,7 +217,7 @@ describe('User API', () => {
       });
 
       await request(app.getHttpServer())
-        .post('/user/create-with-google-or-github')
+        .post('/user/sign-in-with-google-or-github')
         .then(async (res) => {
           expect(res.error).toBeTruthy();
           expect(res.status).toBe(400);
