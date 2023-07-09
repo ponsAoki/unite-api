@@ -25,7 +25,7 @@ export class EmployeeController {
   @Get('find-by-firebaseUID')
   @UseGuards(CorporateAUthGurd)
   async findByFirebaseUID(@FirebaseAuth() authEmployee: any): Promise<EmployeeEntity | null> {
-    return await this.employeeService.findByFirebaseUID(authEmployee.firebaseUID)
+    return await this.employeeService.findByFirebaseUID(authEmployee.uid)
   }
   //社員情報の更新
   @Put('update-by-firebase-uid')

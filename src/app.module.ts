@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ChatRoomModule } from './chat-room/chat-room.module';
-import { AuthModule } from './common/auth/auth.module';
+import { AuthModule } from './common/auth/user/auth.module';
 import { UserRecruitApplicationModule } from './user-recruit-application/user-recruit-application.module';
 import { UserRecruitModule } from './user-recruit/user-recruit.module';
 import { UserModule } from './user/user.module';
@@ -14,7 +14,7 @@ import { UserToRecruitLikeModule } from './user-to-recruit-like/user-to-recruit-
 import { ProductModule } from './product/product.module';
 import { CommentModule } from './comment/comment.module';
 import { UserRecruitParticipantModule } from './user-recruit-participant/user-recruit-participant.module';
-import { CorporateAuthModule } from './common/auth/corporation/corporate-auth.module';
+import { CorporateAuthModule } from './common/auth/employee/corporate-auth.module';
 
 
 @Module({

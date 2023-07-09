@@ -1,8 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { AuthUtil } from './common/auth/auth.util';
+import { AuthUtil } from './common/auth/user/auth.util';
 import { PrismaService } from './prisma.service';
-import { CorporateAuthUtil } from './common/auth/corporation/corporateAuth.util';
+import { CorporateAuthUtil } from './common/auth/employee/corporateAuth.util';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

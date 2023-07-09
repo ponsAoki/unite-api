@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as dotenv from 'dotenv';
 import { AppModule } from '../src/app.module';
 import { UtilService } from '../src/common/utils/util.service';
-import { AuthService } from '../src/common/auth/auth.service';
+import { AuthService } from '../src/common/auth/user/auth.service';
 import { UtilServiceMock } from './mock/util.service.mock';
 import { AuthServiceMock } from './mock/auth.service.mock';
 import { PrismaService } from '../src/prisma.service';

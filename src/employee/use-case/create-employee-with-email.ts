@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common";
-import { AuthService } from "src/common/auth/auth.service";
+import { AuthService } from "src/common/auth/user/auth.service";
 import { CreateEmployeeWithEmailInput } from "src/employee/dto/create-employee-with-email.input";
 import { EmployeeWithTokenEntity } from "src/employee/entities/employee-with-token.entity";
 import { CreateEmployee } from "./create-employee";
 import { CorporationService } from "src/corporation/corporation.service";
-import { CorporateAuthService } from "src/common/auth/corporation/corporate-auth.service";
+import { CorporateAuthService } from "src/common/auth/employee/corporate-auth.service";
 import { FAIL_TO_FIND_CORPORATION } from "src/common/constants/message";
 
 //firebaseでemailとpasswordから認証する
