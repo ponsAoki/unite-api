@@ -14,6 +14,7 @@ import { UserToRecruitLikeModule } from './user-to-recruit-like/user-to-recruit-
 import { ProductModule } from './product/product.module';
 import { CommentModule } from './comment/comment.module';
 import { UserRecruitParticipantModule } from './user-recruit-participant/user-recruit-participant.module';
+import { EmployeeToProductLikeModule } from './employee-to-product-like/employee-to-product-like.module';
 
 
 @Module({
@@ -28,7 +29,8 @@ import { UserRecruitParticipantModule } from './user-recruit-participant/user-re
     UserToRecruitLikeModule,
     ProductModule,
     CommentModule,
-    UserRecruitParticipantModule
+    UserRecruitParticipantModule,
+    EmployeeToProductLikeModule
   ],
   controllers: [CorporationController],
   providers: [CorporationService, PrismaService],
