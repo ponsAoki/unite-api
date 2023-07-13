@@ -9,6 +9,7 @@ import { EmployeeService } from './employee.service';
 import { CreateEmployeePolicy } from './policy/create-employee-policy';
 import { CorporateAuthService } from 'src/common/auth/employee/corporate-auth.service';
 
+
 @Module({
   controllers: [EmployeeController],
   providers: [
@@ -18,7 +19,7 @@ import { CorporateAuthService } from 'src/common/auth/employee/corporate-auth.se
     CorporateAuthService,
     CreateEmployee,
     CorporationService,
-    CreateEmployeePolicy
+    CreateEmployeePolicy,
   ]
 })
 export class EmployeeModule {}

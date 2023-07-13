@@ -6,8 +6,7 @@ import { CreateEmployeeWithEmail } from './use-case/create-employee-with-email';
 import { FirebaseAuth } from 'src/common/decorators/auth.decorator';
 import { EmployeeEntity } from './entities/employee.entity';
 import { UpdateEmployeeInput } from './dto/update-employee.input';
-import { AuthGuard } from 'src/common/guards/auth.guard';
-import { CorporateAUthGurd } from 'src/common/guards/corporateAuth.guard';
+import { CorporateAuthGuard } from 'src/common/guards/corporateAuth.guard';
 
 @Controller('employee')
 export class EmployeeController {
@@ -23,13 +22,13 @@ export class EmployeeController {
   }
   //一意となる社員の取得
   @Get('find-by-firebaseUID')
-  @UseGuards(CorporateAUthGurd)
+  @UseGuards(CorporateAuthGuard)
   async findByFirebaseUID(@FirebaseAuth() authEmployee: any): Promise<EmployeeEntity | null> {
     return await this.employeeService.findByFirebaseUID(authEmployee.uid)
   }
   //社員情報の更新
   @Put('update-by-firebase-uid')
-  @UseGuards(CorporateAUthGurd)
+  @UseGuards(CorporateAuthGuard)
   async update(
     @FirebaseAuth() authEmployee: any,
     @Body() input: UpdateEmployeeInput
