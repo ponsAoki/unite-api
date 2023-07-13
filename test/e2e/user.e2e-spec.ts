@@ -1,4 +1,4 @@
-import { INestApplication } from '@nestjs/common';
+import { Body, INestApplication } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { initTest, initTestApplication } from '../init';
 import * as request from 'supertest';
@@ -7,6 +7,7 @@ import { TestUsers } from '../fixture/user';
 import { CreateUserWithEmailInput } from 'src/user/dto/create-user-with-email.input';
 import { UpdateUserInput } from 'src/user/dto/update-user.input';
 import { EXIST_MAIL_ADDRESS } from 'src/common/constants/message';
+import { readFileSync } from 'fs';
 
 initTest();
 
@@ -235,6 +236,7 @@ describe('User API', () => {
       const input: UpdateUserInput = {
         email: 'test0@test.com',
         name: 'john',
+        age: 21,
         programingSkills: ['Python', 'Go', 'Rust'],
       };
 
@@ -249,7 +251,25 @@ describe('User API', () => {
           expect(resUser).toMatchObject({
             email: 'test0@test.com',
             name: 'john',
+            age: 21,
             programingSkills: ['Python', 'Go', 'Rust'],
+          });
+        });
+    });
+
+    //ファイル (アイコン画像) を送信できるかを単体でチェック
+    it('should success in updating a user image url', async () => {
+      await request(app.getHttpServer())
+        .put('/user/update-by-firebase-uid')
+        .set({ 'Content-Type': 'multipart/form-data' })
+        .attach('imageFile', 'test/files/test_image_1.png')
+        .then((res) => {
+          expect(res.error).toBeFalsy();
+          expect(res.status).toBe(200);
+
+          const resUser = res.body;
+          expect(resUser).toMatchObject({
+            imageUrl: 'fileUrl0',
           });
         });
     });

@@ -7,7 +7,7 @@ import { CreateUserWithEmail } from './use-case/create-user-with-email';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { UpdateFileToFirebaseStorage } from 'src/common/file/update-file-service';
-import { DeleteFileToFirebaseStorage } from 'src/common/file/delete-file-to-firebaseStorage';
+import { DeleteFileToFirebaseStorage } from 'src/common/file/delete-file-to-firebase-storage';
 import { UploadFileToFirebaseStorage } from 'src/common/file/uplpad-fIle-to-firebaseStorage';
 import { SignInWithGoogleOrGithubService } from './use-case/sign-in-with-google-or-github.service';
 

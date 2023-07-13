@@ -47,11 +47,11 @@ export class UserService {
 
   updateByFirebaseUID(
     firebaseUID: string,
-    input: UpdateUserInput,
+    input: UpdateUserInput & { age: number },
   ): PrismaPromise<User> {
     return this.prismaService.user.update({
       where: { firebaseUID },
-      data: { ...input, age: input.age ? Number(input.age) : undefined },
+      data: input,
     });
   }
 }

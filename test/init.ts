@@ -9,6 +9,12 @@ import { AuthServiceMock } from './mock/auth.service.mock';
 import { PrismaService } from '../src/prisma.service';
 import { AuthGuardMock } from './mock/auth.guard.mock';
 import { AuthGuard } from 'src/common/guards/auth.guard';
+import { UpdateFileToFirebaseStorage } from 'src/common/file/update-file-service';
+import { UpdateFileToFirebaseStorageMock } from './mock/update-file-to-firebase-storage.mock';
+import { DeleteFileToFirebaseStorage } from 'src/common/file/delete-file-to-firebase-storage';
+import { DeleteFileToFirebaseStorageMock } from './mock/delete-file-from-firebase-strage.mock';
+import { UploadFileToFirebaseStorage } from 'src/common/file/uplpad-fIle-to-firebaseStorage';
+import { UploadFileToFirebaseStorageMock } from './mock/upload-file-service.mock';
 
 export const initTest = (): void => {
   dotenv.config({ path: __dirname + '/../.env.e2e', override: true });
@@ -18,12 +24,18 @@ export const initTestApplication = async () => {
   const testingModuleBuilder = Test.createTestingModule({
     imports: [AppModule],
   })
-    // Services
+    // Serviceクラスをモッキング
     .overrideProvider(UtilService)
     .useClass(UtilServiceMock)
     .overrideProvider(AuthService)
     .useClass(AuthServiceMock)
-    // Guards
+    .overrideProvider(UpdateFileToFirebaseStorage)
+    .useClass(UpdateFileToFirebaseStorageMock)
+    .overrideProvider(DeleteFileToFirebaseStorage)
+    .useClass(DeleteFileToFirebaseStorageMock)
+    .overrideProvider(UploadFileToFirebaseStorage)
+    .useClass(UploadFileToFirebaseStorageMock)
+    // Guardクラスをモッキング
     .overrideGuard(AuthGuard)
     .useClass(AuthGuardMock);
 

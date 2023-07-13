@@ -103,10 +103,19 @@ export class UserController {
       input = {
         ...input,
         imageUrl: newImageUrl,
-        age: Number(input.age),
       };
     }
 
-    return await this.userService.updateByFirebaseUID(authUser.uid, input);
+    if (input.age) {
+      input = {
+        ...input,
+        age: parseInt(input.age as string),
+      };
+    }
+
+    return await this.userService.updateByFirebaseUID(
+      authUser.uid,
+      input as UpdateUserInput & { age: number },
+    );
   }
 }
