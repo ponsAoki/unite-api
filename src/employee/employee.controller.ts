@@ -6,7 +6,7 @@ import { CreateEmployeeWithEmail } from './use-case/create-employee-with-email';
 import { FirebaseAuth } from 'src/common/decorators/auth.decorator';
 import { EmployeeEntity } from './entities/employee.entity';
 import { UpdateEmployeeInput } from './dto/update-employee.input';
-import { CorporateAuthGuard } from 'src/common/guards/corporateAuth.guard';
+import { CorporateAuthGuard } from 'src/common/guards/corporate-auth.guard';
 import { Employee } from '@prisma/client';
 import { EmployeeFirebaseAuth } from 'src/common/decorators/employeeAuth.decorator';
 

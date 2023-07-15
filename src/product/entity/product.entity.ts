@@ -8,6 +8,5 @@ export class ProductEntity implements Product {
   detail: string;
   createdAt: Date;
   updatedAt: Date;
-  likes: number | undefined;
   comment: Comment[];
 }
