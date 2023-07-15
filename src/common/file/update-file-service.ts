@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DeleteFileToFirebaseStorage } from 'src/common/file/delete-file-to-firebaseStorage';
+import { DeleteFileToFirebaseStorage } from 'src/common/file/delete-file-to-firebase-storage';
 import { UploadFileToFirebaseStorage } from 'src/common/file/uplpad-fIle-to-firebaseStorage';
 
 @Injectable()
