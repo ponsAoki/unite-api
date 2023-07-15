@@ -106,16 +106,14 @@ export class UserController {
       };
     }
 
-    if (input.age) {
-      input = {
-        ...input,
-        age: parseInt(input.age as string),
-      };
-    }
+    input = {
+      ...input,
+      age: input.age ? parseInt(input.age as string) : null,
+    };
 
     return await this.userService.updateByFirebaseUID(
       authUser.uid,
-      input as UpdateUserInput & { age: number },
+      input as UpdateUserInput & { age: number | null },
     );
   }
 }
