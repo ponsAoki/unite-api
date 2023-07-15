@@ -12,7 +12,17 @@ export class ProductService {
   findMany(): PrismaPromise<Product[]> {
     return this.prismaService.product.findMany({
       include: {
-        comment: true
+        comment: true,
+        recruit: {
+          include: {
+            recruiter: true,
+            userRecruitParticipant: {
+              include: {
+                user: true
+              }
+            },
+          }
+        },
       }
     })
   }

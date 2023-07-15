@@ -20,6 +20,8 @@ import { createProductInput } from './dto/create-product-input';
 import { UpdateProductInput } from './dto/update-product-input';
 import { Request } from 'express';
 import { AuthGuard } from 'src/common/guards/auth.guard';
+import { CorporateAuthGuard } from 'src/common/guards/corporateAuth.guard';
+import { EmployeeFirebaseAuth } from 'src/common/decorators/employeeAuth.decorator';
 
 @Controller('product')
 export class ProductController {
@@ -81,5 +83,16 @@ export class ProductController {
   ): Promise<Product> {
     //use-caseでimageをfirebaseStorageに登録する処理に移る
     return await this.createProduct.handle(file, input);
+  }
+
+  //企業側(従業員)が一件取得する
+  @Get('employee/findOne/:id')
+  @UseGuards(CorporateAuthGuard)
+  async findOne(
+    @Param('id') id: string,
+    @EmployeeFirebaseAuth() employee
+  ) {
+    //ここの処理はemployeeが取得できるか確認のためなのでマージする前に消します🙇‍♀️
+    console.log("従業員情報を取得できているか確認する",employee)
   }
 }

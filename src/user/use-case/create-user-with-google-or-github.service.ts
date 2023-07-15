@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserService } from '../user.service';
 import { CreateUserWithGoogleOrGithubInput } from '../dto/create-user-with-google-or-github.input';
 import { CreateUser } from './create-user';
-import { AuthService } from 'src/common/auth/auth.service';
+import { AuthService } from 'src/common/auth/user/auth.service';
 
 @Injectable()
 export class CreateUserWithGoogleOrGithubService {

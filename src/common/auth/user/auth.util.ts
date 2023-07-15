@@ -21,6 +21,7 @@ export class AuthUtil {
     admin.initializeApp({
       credential: admin.credential.cert(firebaseConfig),
       storageBucket: process.env.FIREBASE_DEV_STORAGE_BUCKET,
-    });
+    }, 'user');
   }
 }
+

@@ -17,15 +17,29 @@ export class EmployeeService {
   }
 
   findByFirebaseUID(firebaseUID: string): Promise<Employee | null> {
-    return this,this.prismaService.employee.findUnique({ where: { firebaseUID}})
+    return this.prismaService.employee.findUnique({ 
+      where: { firebaseUID },
+      include: {
+        belongToCorporation: true
+      }
+    })
   }
 
-  updateByFirebaseUID(
-    firebaseUID: string,
+  findById(id: string): Promise<Employee | null> {
+    return this.prismaService.employee.findUnique({ 
+      where: { id },
+      include: {
+        belongToCorporation: true
+      }
+    })
+  }
+
+  updateById(
+    id: string,
     input: UpdateEmployeeInput,
   ) {
     return this.prismaService.employee.update({
-      where: { firebaseUID },
+      where: { id },
       data: input
     })
   }

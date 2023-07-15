@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from 'src/common/auth/auth.service';
+import { AuthService } from 'src/common/auth/user/auth.service';
 import { PrismaService } from 'src/prisma.service';
 import { CreateUserPolicy } from './policy/create-user.policy';
 import { CreateUser } from './use-case/create-user';

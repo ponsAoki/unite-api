@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ChatRoomModule } from './chat-room/chat-room.module';
-import { AuthModule } from './common/auth/auth.module';
+import { AuthModule } from './common/auth/user/auth.module';
 import { UserRecruitApplicationModule } from './user-recruit-application/user-recruit-application.module';
 import { UserRecruitModule } from './user-recruit/user-recruit.module';
 import { UserModule } from './user/user.module';
@@ -15,6 +15,7 @@ import { ProductModule } from './product/product.module';
 import { CommentModule } from './comment/comment.module';
 import { UserRecruitParticipantModule } from './user-recruit-participant/user-recruit-participant.module';
 import { EmployeeToProductLikeModule } from './employee-to-product-like/employee-to-product-like.module';
+import { CorporateAuthModule } from './common/auth/employee/corporate-auth.module';
 
 
 @Module({
@@ -30,7 +31,8 @@ import { EmployeeToProductLikeModule } from './employee-to-product-like/employee
     ProductModule,
     CommentModule,
     UserRecruitParticipantModule,
-    EmployeeToProductLikeModule
+    EmployeeToProductLikeModule,
+    CorporateAuthModule
   ],
   controllers: [CorporationController],
   providers: [CorporationService, PrismaService],

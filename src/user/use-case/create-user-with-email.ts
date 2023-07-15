@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { AuthService } from 'src/common/auth/auth.service';
+import { AuthService } from 'src/common/auth/user/auth.service';
 import { CreateUserWithEmailInput } from '../dto/create-user-with-email.input';
 import { UserWithTokenEntity } from '../entities/user-with-token.entity';
 import { CreateUser } from './create-user';

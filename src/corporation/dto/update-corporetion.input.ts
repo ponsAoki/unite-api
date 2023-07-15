@@ -2,10 +2,11 @@ import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class UpdateCorporationInput {
   @IsString()
-  @IsNotEmpty()
-  email!: string;
+  @IsOptional()
+  email?: string;
 
   @IsString()
+  @IsOptional()
   sharedPassword?: string;
 
   @IsString()
