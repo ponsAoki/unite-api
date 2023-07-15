@@ -13,6 +13,12 @@ import { CorporateAuthGuard } from 'src/common/guards/corporate-auth.guard';
 import { CorporateAuthGuardMock } from './mock/corporation/corporateAuth.guard.mock';
 import { CorporateAuthService } from 'src/common/auth/employee/corporate-auth.service';
 import { CorporateAuthServiceMock } from './mock/corporation/corporateAuth.service.mock';
+import { UpdateFileToFirebaseStorage } from 'src/common/file/update-file-service';
+import { UpdateFileToFirebaseStorageMock } from './mock/update-file-to-firebase-storage.mock';
+import { DeleteFileToFirebaseStorage } from 'src/common/file/delete-file-to-firebase-storage';
+import { DeleteFileToFirebaseStorageMock } from './mock/delete-file-from-firebase-strage.mock';
+import { UploadFileToFirebaseStorage } from 'src/common/file/uplpad-fIle-to-firebaseStorage';
+import { UploadFileToFirebaseStorageMock } from './mock/upload-file-service.mock';
 
 export const initTest = (): void => {
   dotenv.config({ path: __dirname + '/../.env.e2e', override: true });
@@ -22,14 +28,20 @@ export const initTestApplication = async () => {
   const testingModuleBuilder = Test.createTestingModule({
     imports: [AppModule],
   })
-    // Services
+    // Serviceクラスをモッキング
     .overrideProvider(UtilService)
     .useClass(UtilServiceMock)
     .overrideProvider(AuthService)
     .useClass(AuthServiceMock)
     .overrideProvider(CorporateAuthService)
     .useClass(CorporateAuthServiceMock)
-    // Guards
+    // Guardクラスをモッキング
+    .overrideProvider(UpdateFileToFirebaseStorage)
+    .useClass(UpdateFileToFirebaseStorageMock)
+    .overrideProvider(DeleteFileToFirebaseStorage)
+    .useClass(DeleteFileToFirebaseStorageMock)
+    .overrideProvider(UploadFileToFirebaseStorage)
+    .useClass(UploadFileToFirebaseStorageMock)
     .overrideGuard(AuthGuard)
     .useClass(AuthGuardMock)
     .overrideGuard(CorporateAuthGuard)

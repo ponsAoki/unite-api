@@ -3,7 +3,10 @@ import { CreateUserInput } from '../dto/create-user.input';
 import { UserEntity } from '../entities/user.entity';
 import { CreateUserPolicy } from '../policy/create-user.policy';
 import { UserService } from '../user.service';
-import { CreateUserWithGoogleOrGithubInput } from '../dto/create-user-with-google-or-github.input';
+import {
+  SignInWithGithubInput,
+  SignInWithGoogleInput,
+} from '../dto/sign-in-with-google-or-github.input';
 
 @Injectable()
 export class CreateUser {
@@ -13,7 +16,7 @@ export class CreateUser {
   ) {}
 
   async handle(
-    input: CreateUserInput | CreateUserWithGoogleOrGithubInput,
+    input: CreateUserInput | SignInWithGoogleInput | SignInWithGithubInput,
   ): Promise<UserEntity> {
     //同じemailで登録されているユーザーが既に存在しないかチェック
     await this.createUserPolicy.handle(input.email);

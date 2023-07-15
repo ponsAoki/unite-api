@@ -1,18 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { UserService } from '../user.service';
-import { CreateUserWithGoogleOrGithubInput } from '../dto/create-user-with-google-or-github.input';
+import {
+  SignInWithGithubInput,
+  SignInWithGoogleInput,
+} from '../dto/sign-in-with-google-or-github.input';
 import { CreateUser } from './create-user';
 import { AuthService } from 'src/common/auth/user/auth.service';
 
 @Injectable()
-export class CreateUserWithGoogleOrGithubService {
+export class SignInWithGoogleOrGithubService {
   constructor(
     private readonly userService: UserService,
     private readonly createUser: CreateUser,
     private readonly authService: AuthService,
   ) {}
 
-  async handle(input: CreateUserWithGoogleOrGithubInput) {
+  async handle(input: SignInWithGoogleInput | SignInWithGithubInput) {
     //すでに同じfirebaseUIDを持つuserがいる = 2回目以降のサインインなので、return
     const user = await this.userService.findByFirebaseUID(input.firebaseUID);
     if (user) return;
