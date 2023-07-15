@@ -4,7 +4,7 @@ import { EmployeeWithTokenEntity } from "src/employee/entities/employee-with-tok
 import { CreateEmployee } from "./create-employee";
 import { CorporationService } from "src/corporation/corporation.service";
 import { CorporateAuthService } from "src/common/auth/employee/corporate-auth.service";
-import { FAIL_TO_FIND_CORPORATION } from "src/common/constants/message";
+import { FAIL_TO_CREATE_EMPLOYEE, FAIL_TO_FIND_CORPORATION } from "src/common/constants/message";
 
 //firebaseでemailとpasswordから認証する
 @Injectable()
@@ -24,7 +24,6 @@ export class CreateEmployeeWithEmail {
     //企業が設定した共有パスワードから企業を取得する。
     const corporation = await this.corporationService.findBySharedPassword(input.sharedPassword);
 
-    //フロントにエラー文を送れるようにしたい。
     if (!corporation) throw Error(FAIL_TO_FIND_CORPORATION)
 
     try {
@@ -43,7 +42,7 @@ export class CreateEmployeeWithEmail {
       if (authEmployee?.uid) {
         await this.corporateAuthService.deleteEmployee(authEmployee.uid);
       }
-      throw Error(`ユーザー登録に失敗しました: ${err}`);
+      throw Error(FAIL_TO_CREATE_EMPLOYEE);
     }
   }
 }

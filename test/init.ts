@@ -9,7 +9,7 @@ import { AuthServiceMock } from './mock/user/auth.service.mock';
 import { PrismaService } from '../src/prisma.service';
 import { AuthGuardMock } from './mock/user/auth.guard.mock';
 import { AuthGuard } from 'src/common/guards/auth.guard';
-import { CorporateAuthGuard } from 'src/common/guards/corporateAuth.guard';
+import { CorporateAuthGuard } from 'src/common/guards/corporate-auth.guard';
 import { CorporateAuthGuardMock } from './mock/corporation/corporateAuth.guard.mock';
 import { CorporateAuthService } from 'src/common/auth/employee/corporate-auth.service';
 import { CorporateAuthServiceMock } from './mock/corporation/corporateAuth.service.mock';
