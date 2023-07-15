@@ -1,7 +1,7 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { CreateUserInput } from './create-user.input';
 
-export class CreateUserWithGoogleOrGithubInput implements CreateUserInput {
+export class SignInWithGoogleInput implements CreateUserInput {
   @IsString()
   @IsNotEmpty()
   firebaseUID!: string;
@@ -17,4 +17,10 @@ export class CreateUserWithGoogleOrGithubInput implements CreateUserInput {
   @IsString()
   @IsNotEmpty()
   imageUrl!: string;
+}
+
+export class SignInWithGithubInput extends SignInWithGoogleInput {
+  @IsString()
+  @IsOptional()
+  githubAccount?: string;
 }
