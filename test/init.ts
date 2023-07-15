@@ -3,12 +3,16 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as dotenv from 'dotenv';
 import { AppModule } from '../src/app.module';
 import { UtilService } from '../src/common/utils/util.service';
-import { AuthService } from '../src/common/auth/auth.service';
+import { AuthService } from '../src/common/auth/user/auth.service';
 import { UtilServiceMock } from './mock/util.service.mock';
-import { AuthServiceMock } from './mock/auth.service.mock';
+import { AuthServiceMock } from './mock/user/auth.service.mock';
 import { PrismaService } from '../src/prisma.service';
-import { AuthGuardMock } from './mock/auth.guard.mock';
+import { AuthGuardMock } from './mock/user/auth.guard.mock';
 import { AuthGuard } from 'src/common/guards/auth.guard';
+import { CorporateAuthGuard } from 'src/common/guards/corporate-auth.guard';
+import { CorporateAuthGuardMock } from './mock/corporation/corporateAuth.guard.mock';
+import { CorporateAuthService } from 'src/common/auth/employee/corporate-auth.service';
+import { CorporateAuthServiceMock } from './mock/corporation/corporateAuth.service.mock';
 import { UpdateFileToFirebaseStorage } from 'src/common/file/update-file-service';
 import { UpdateFileToFirebaseStorageMock } from './mock/update-file-to-firebase-storage.mock';
 import { DeleteFileToFirebaseStorage } from 'src/common/file/delete-file-to-firebase-storage';
@@ -29,15 +33,19 @@ export const initTestApplication = async () => {
     .useClass(UtilServiceMock)
     .overrideProvider(AuthService)
     .useClass(AuthServiceMock)
+    .overrideProvider(CorporateAuthService)
+    .useClass(CorporateAuthServiceMock)
+    // Guardクラスをモッキング
     .overrideProvider(UpdateFileToFirebaseStorage)
     .useClass(UpdateFileToFirebaseStorageMock)
     .overrideProvider(DeleteFileToFirebaseStorage)
     .useClass(DeleteFileToFirebaseStorageMock)
     .overrideProvider(UploadFileToFirebaseStorage)
     .useClass(UploadFileToFirebaseStorageMock)
-    // Guardクラスをモッキング
     .overrideGuard(AuthGuard)
-    .useClass(AuthGuardMock);
+    .useClass(AuthGuardMock)
+    .overrideGuard(CorporateAuthGuard)
+    .useClass(CorporateAuthGuardMock);
 
   const moduleFixture: TestingModule = await testingModuleBuilder.compile();
 

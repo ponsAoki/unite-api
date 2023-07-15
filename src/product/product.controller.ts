@@ -20,6 +20,8 @@ import { createProductInput } from './dto/create-product-input';
 import { UpdateProductInput } from './dto/update-product-input';
 import { Request } from 'express';
 import { AuthGuard } from 'src/common/guards/auth.guard';
+import { CorporateAuthGuard } from 'src/common/guards/corporate-auth.guard';
+import { EmployeeFirebaseAuth } from 'src/common/decorators/employeeAuth.decorator';
 
 @Controller('product')
 export class ProductController {
@@ -72,14 +74,4 @@ export class ProductController {
   //productの削除
   //ここはランキング機能を作る時に再利用されると困るため削除apiは準備していないです。
 
-  //Productの作成
-  @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
-  async create(
-    @UploadedFile() file: Express.Multer.File,
-    @Body() input: createProductInput,
-  ): Promise<Product> {
-    //use-caseでimageをfirebaseStorageに登録する処理に移る
-    return await this.createProduct.handle(file, input);
-  }
 }

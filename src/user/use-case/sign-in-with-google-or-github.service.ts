@@ -5,7 +5,7 @@ import {
   SignInWithGoogleInput,
 } from '../dto/sign-in-with-google-or-github.input';
 import { CreateUser } from './create-user';
-import { AuthService } from 'src/common/auth/auth.service';
+import { AuthService } from 'src/common/auth/user/auth.service';
 
 @Injectable()
 export class SignInWithGoogleOrGithubService {
