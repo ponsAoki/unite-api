@@ -14,7 +14,7 @@ export class UpdateUserInput {
   imageUrl?: string;
 
   @IsOptional()
-  age?: string | number;
+  age?: string | number | null;
 
   @IsString()
   @IsOptional()
