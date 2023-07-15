@@ -21,7 +21,7 @@ export class CorporateAuthService {
   }
 
   //firebaseAuthから登録したuserを削除する
-  deleteUser(uid: string): Promise<void> {
+  deleteEmployee(uid: string): Promise<void> {
     return admin.app('employee').auth().deleteUser(uid);
   }
 }

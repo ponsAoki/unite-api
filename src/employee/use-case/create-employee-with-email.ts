@@ -1,5 +1,4 @@
 import { Injectable } from "@nestjs/common";
-import { AuthService } from "src/common/auth/user/auth.service";
 import { CreateEmployeeWithEmailInput } from "src/employee/dto/create-employee-with-email.input";
 import { EmployeeWithTokenEntity } from "src/employee/entities/employee-with-token.entity";
 import { CreateEmployee } from "./create-employee";
@@ -42,7 +41,7 @@ export class CreateEmployeeWithEmail {
       return {...employee, token}
     } catch (err){
       if (authEmployee?.uid) {
-        await this.corporateAuthService.deleteUser(authEmployee.uid);
+        await this.corporateAuthService.deleteEmployee(authEmployee.uid);
       }
       throw Error(`ユーザー登録に失敗しました: ${err}`);
     }

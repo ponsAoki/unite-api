@@ -7,6 +7,8 @@ import { FirebaseAuth } from 'src/common/decorators/auth.decorator';
 import { EmployeeEntity } from './entities/employee.entity';
 import { UpdateEmployeeInput } from './dto/update-employee.input';
 import { CorporateAuthGuard } from 'src/common/guards/corporateAuth.guard';
+import { Employee } from '@prisma/client';
+import { EmployeeFirebaseAuth } from 'src/common/decorators/employeeAuth.decorator';
 
 @Controller('employee')
 export class EmployeeController {
@@ -23,17 +25,17 @@ export class EmployeeController {
   //一意となる社員の取得
   @Get('find-by-firebaseUID')
   @UseGuards(CorporateAuthGuard)
-  async findByFirebaseUID(@FirebaseAuth() authEmployee: any): Promise<EmployeeEntity | null> {
-    return await this.employeeService.findByFirebaseUID(authEmployee.uid)
+  async findById(@EmployeeFirebaseAuth() employee: Employee): Promise<EmployeeEntity | null> {
+    return await this.employeeService.findById(employee.id)
   }
   //社員情報の更新
-  @Put('update-by-firebase-uid')
+  @Put('update-by-firebaseUID')
   @UseGuards(CorporateAuthGuard)
   async update(
-    @FirebaseAuth() authEmployee: any,
+    @EmployeeFirebaseAuth() employee: Employee,
     @Body() input: UpdateEmployeeInput
   ) {
-    return await this.employeeService.updateByFirebaseUID(authEmployee.uid, input)
+    return await this.employeeService.updateById(employee.id, input)
   }
   //会社に属する社員の登録
   @Post()

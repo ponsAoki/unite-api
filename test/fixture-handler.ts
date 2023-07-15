@@ -4,6 +4,8 @@ import { deleteAllTable as _deleteAllTable } from 'src/common/utils/delete-table
 import { TestUserRecruits } from './fixture/user-recruit';
 import { TestUserRecruitApplications } from './fixture/user-recruit-applicant';
 import { TestUserRecruitParticipants } from './fixture/user-recruit-participant';
+import { TestEmployee } from './fixture/employee';
+import { TestCorporation } from './fixture/corporation';
 
 export const createTestData = (prisma: PrismaClient) => {
   const createUsers = async (num = 10) => {
@@ -28,11 +30,25 @@ export const createTestData = (prisma: PrismaClient) => {
     });
   };
 
+  const createCorporations = async (num = 10) => {
+    await prisma.corporation.createMany({
+      data: new TestCorporation().create(num)
+    })
+  }
+
+  const createEmployees = async (num = 10) => {
+    await prisma.employee.createMany({
+      data: new TestEmployee().create(num)
+    })
+  } 
+
   return {
     createUsers,
     createUserRecruits,
     createUserRecruitApplicants,
     createUserRecruitParticipants,
+    createCorporations,
+    createEmployees,
   };
 };
 

@@ -28,8 +28,8 @@ export class CorporateAuthGuard implements CanActivate {
           const employee = await this.employeeService.findByFirebaseUID(decodedToken.uid)
           request['employee'] = employee
 
-          //decodedTokenで真偽値を確認するべきか？employeeが存在するかしないかで確認するべきか？
-          return !! decodedToken
+          //decodedTokenとemployeeが確認できた際にtrueを返す。
+          return !!decodedToken && !!employee
 
         })
         .catch(() => {
