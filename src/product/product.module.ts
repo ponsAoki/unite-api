@@ -8,6 +8,7 @@ import { UpdateProductService } from './use-case/update-product-service';
 import { UpdateFileToFirebaseStorage } from '../common/file/update-file-service';
 import { UserService } from 'src/user/user.service';
 import { UploadFileToFirebaseStorage } from 'src/common/file/uplpad-fIle-to-firebaseStorage';
+import { EmployeeService } from 'src/employee/employee.service';
 import { DeleteFileToFirebaseStorage } from 'src/common/file/delete-file-to-firebase-storage';
 
 @Module({
@@ -22,6 +23,7 @@ import { DeleteFileToFirebaseStorage } from 'src/common/file/delete-file-to-fire
     DeleteFileToFirebaseStorage,
     UserService,
     UploadFileToFirebaseStorage,
-  ],
+    EmployeeService
+  ]
 })
 export class ProductModule {}

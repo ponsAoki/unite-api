@@ -10,18 +10,22 @@ export class CreateCorporationInput {
   sharedPassword!: string;
 
   @IsString()
-  name: string;
+  @IsOptional()
+  name?: string;
 
   @IsString()
   @IsOptional()
   imageUrl?: string;
 
   @IsString()
-  DescriptionOfBusiness: string;
+  @IsOptional()
+  DescriptionOfBusiness?: string;
 
   @IsString()
-  location: string;
+  @IsOptional()
+  location?: string;
 
   @IsString()
-  phoneNumber: string;
+  @IsOptional()
+  phoneNumber?: string;
 }

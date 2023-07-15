@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Corporation, PrismaPromise } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
-import { CreateUserInput } from 'src/user/dto/create-user.input';
 import { UpdateCorporationInput } from './dto/update-corporetion.input';
 import { CorporationEntity } from './entities/corporation.entity';
 import { CreateCorporationInput } from './dto/create-corporation.input';
