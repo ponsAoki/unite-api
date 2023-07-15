@@ -47,7 +47,7 @@ export class UserService {
 
   updateByFirebaseUID(
     firebaseUID: string,
-    input: UpdateUserInput & { age: number },
+    input: UpdateUserInput & { age: number | null },
   ): PrismaPromise<User> {
     return this.prismaService.user.update({
       where: { firebaseUID },
