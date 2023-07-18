@@ -16,10 +16,12 @@ import { CommentModule } from './comment/comment.module';
 import { UserRecruitParticipantModule } from './user-recruit-participant/user-recruit-participant.module';
 import { EmployeeToProductLikeModule } from './employee-to-product-like/employee-to-product-like.module';
 import { CorporateAuthModule } from './common/auth/employee/corporate-auth.module';
-
+import { PeriodLikeSumModule } from './period-like-sum/period-like-sum.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     UserModule,
     UserRecruitModule,
     AuthModule,
@@ -32,7 +34,8 @@ import { CorporateAuthModule } from './common/auth/employee/corporate-auth.modul
     CommentModule,
     UserRecruitParticipantModule,
     EmployeeToProductLikeModule,
-    CorporateAuthModule
+    CorporateAuthModule,
+    PeriodLikeSumModule,
   ],
   controllers: [CorporationController],
   providers: [CorporationService, PrismaService],

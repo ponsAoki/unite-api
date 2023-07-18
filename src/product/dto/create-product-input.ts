@@ -5,14 +5,11 @@ export class createProductInput {
   recruitId!: string;
 
   @IsString()
-  @IsOptional()
-  headline: string;
+  headline!: string;
 
   @IsString()
-  @IsOptional()
-  detail: string;
+  detail!: string;
 
   @IsString()
-  @IsOptional()
-  url: string;
+  url!: string;
 }

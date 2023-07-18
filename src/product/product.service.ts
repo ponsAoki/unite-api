@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaPromise, Product } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
-import { createProductInput } from './dto/create-product-input';
 
 @Injectable()
 export class ProductService {
@@ -35,7 +34,8 @@ export class ProductService {
           include: {
             user: true
           }
-        }
+        },
+        employeeToProductLikes: true,
       }
     });
   }
@@ -55,7 +55,7 @@ export class ProductService {
     return myProducts
   }
 
-  async findRelatedProducts(id: string) {
+  findRelatedProducts(id: string) {
     return this.prismaService.product.findMany({
       where: {
         recruit: {
@@ -69,14 +69,21 @@ export class ProductService {
     })
   }
 
-  // findOneIncludeComment(id: string):PrismaPromise<Product> {
-  //   return this.prismaService.product.findUnique({
-  //     where: { id },
-  //     include: {
-  //       comment: true,
-  //     }
-  //   })
-  // }
+  //いいねを含む募集を全件取得
+  findAllIncludeLikes() {
+    return this.prismaService.product.findMany({
+      where: {
+        employeeToProductLikes: {
+          some: {}
+        }
+      },
+      include: {
+        employeeToProductLikes: true,
+        periodLikeSum: true
+      },
+    })
+  }
+
 
   update(
     id: string,

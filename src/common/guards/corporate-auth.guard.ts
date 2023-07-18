@@ -3,7 +3,6 @@ import { Observable } from "rxjs";
 import { NOT_FOUND_T0KEN, NOT_VALID_TOKEN } from "../constants/message";
 import * as admin from 'firebase-admin'
 import { EmployeeService } from "src/employee/employee.service";
-import { Employee } from "@prisma/client";
 
 @Injectable()
 export class CorporateAuthGuard implements CanActivate {

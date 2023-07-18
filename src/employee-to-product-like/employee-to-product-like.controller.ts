@@ -1,23 +1,25 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
-import { EmployeeToProductLikeService } from './employee-to-product-like.service';
-import { AuthGuard } from 'src/common/guards/auth.guard';
-import { FirebaseAuth } from 'src/common/decorators/auth.decorator';
 import { CreateEmployeeToProductLikeInput } from './dto/create-employee-to-product-like.input';
+import { CorporateAuthGuard } from 'src/common/guards/corporate-auth.guard';
+import { EmployeeFirebaseAuth } from 'src/common/decorators/employeeAuth.decorator';
+import { Employee } from '@prisma/client';
+import { CreateEmployeeToProductLike } from './use-case/create-employee-to-product-like';
 
 @Controller('employee-to-product-like')
 export class EmployeeToProductLikeController {
   constructor(
-    private readonly employeeToProductLikeService: EmployeeToProductLikeService
+    private readonly createEmployeeToProductLike: CreateEmployeeToProductLike
   ) {}
 
+  //いいねを押す。
   @Post()
-  @UseGuards(AuthGuard) //企業側のguardに変更する
+  @UseGuards(CorporateAuthGuard) //企業側のguardに変更する
   async createLike(
-    @FirebaseAuth() authUser: any,
+    @EmployeeFirebaseAuth() employee: Employee,
     @Body() input: CreateEmployeeToProductLikeInput
   ) {
     //FirebaseUIDからId(主キー)を取得する
-    return await this.employeeToProductLikeService.create(authUser.uid, input.productId)
+    return await this.createEmployeeToProductLike.handle(employee.id, input.productId)
   }
 
 }

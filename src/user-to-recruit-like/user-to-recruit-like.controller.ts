@@ -32,6 +32,5 @@ export class UserToRecruitLikeController {
     @Param('recruitId') recruitId: string
   ): Promise<void> {
     return this.deleteUserToRecruitLike.handle(authUser.uid, recruitId)
-    // return this.userToRecruitLikeService.delete(recruitId)
   }
 }
