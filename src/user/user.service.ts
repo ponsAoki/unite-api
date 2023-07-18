@@ -3,7 +3,10 @@ import { PrismaPromise, User } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
-import { CreateUserWithGoogleOrGithubInput } from './dto/create-user-with-google-or-github.input';
+import {
+  SignInWithGithubInput,
+  SignInWithGoogleInput,
+} from './dto/sign-in-with-google-or-github.input';
 
 @Injectable()
 export class UserService {
@@ -30,7 +33,7 @@ export class UserService {
   }
 
   create(
-    input: CreateUserInput | CreateUserWithGoogleOrGithubInput,
+    input: CreateUserInput | SignInWithGoogleInput | SignInWithGithubInput,
   ): PrismaPromise<User> {
     return this.prismaService.user.create({ data: input });
   }
@@ -38,13 +41,13 @@ export class UserService {
   updateById(id: string, input: UpdateUserInput): PrismaPromise<User> {
     return this.prismaService.user.update({
       where: { id },
-      data: input,
+      data: { ...input, age: input.age ? Number(input.age) : undefined },
     });
   }
 
   updateByFirebaseUID(
     firebaseUID: string,
-    input: UpdateUserInput,
+    input: UpdateUserInput & { age: number | null },
   ): PrismaPromise<User> {
     return this.prismaService.user.update({
       where: { firebaseUID },

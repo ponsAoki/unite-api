@@ -17,17 +17,20 @@ import { UserEntity } from './entities/user.entity';
 import { CreateUserWithEmail } from './use-case/create-user-with-email';
 import { UserService } from './user.service';
 import { AuthGuard } from 'src/common/guards/auth.guard';
-import { CreateUserWithGoogleOrGithubInput } from './dto/create-user-with-google-or-github.input';
-import { CreateUserWithGoogleOrGithubService } from './use-case/create-user-with-google-or-github.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UpdateFileToFirebaseStorage } from 'src/common/file/update-file-service';
+import {
+  SignInWithGithubInput,
+  SignInWithGoogleInput,
+} from './dto/sign-in-with-google-or-github.input';
+import { SignInWithGoogleOrGithubService } from './use-case/sign-in-with-google-or-github.service';
 
 @Controller('user')
 export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly createUserWithEmail: CreateUserWithEmail,
-    private readonly createUserWithGoogleOrGithubService: CreateUserWithGoogleOrGithubService,
+    private readonly signInWithGoogleOrGithubService: SignInWithGoogleOrGithubService,
     private readonly updateFileToFirebaseStorage: UpdateFileToFirebaseStorage,
   ) {}
 
@@ -62,19 +65,22 @@ export class UserController {
     return await this.createUserWithEmail.handle(input);
   }
 
-  @Post('create-with-google-or-github')
+  @Post('sign-in-with-google-or-github')
   @UseGuards(AuthGuard)
-  async createWithGoogleOrGithub(
+  async signInWithGoogleOrGithub(
     @FirebaseAuth() authUser: any,
+    @Body() githubInput?: { githubAccount: string },
   ): Promise<UserEntity> {
     //TODO: authUserの型をそもそも判定しておきたい
-    const input: CreateUserWithGoogleOrGithubInput = {
+    const signInInput: SignInWithGoogleInput | SignInWithGithubInput = {
       firebaseUID: authUser.uid,
       email: authUser.email,
       name: authUser.name,
       imageUrl: authUser.picture,
+      githubAccount: githubInput.githubAccount,
     };
-    return await this.createUserWithGoogleOrGithubService.handle(input);
+
+    return await this.signInWithGoogleOrGithubService.handle(signInInput);
   }
 
   @Put('update-by-firebase-uid')
@@ -100,6 +106,14 @@ export class UserController {
       };
     }
 
-    return await this.userService.updateByFirebaseUID(authUser.uid, input);
+    input = {
+      ...input,
+      age: input.age ? parseInt(input.age as string) : null,
+    };
+
+    return await this.userService.updateByFirebaseUID(
+      authUser.uid,
+      input as UpdateUserInput & { age: number | null },
+    );
   }
 }

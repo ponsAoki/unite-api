@@ -1,15 +1,9 @@
-import {
-  IsArray,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsArray, IsOptional, IsString } from 'class-validator';
 
 export class UpdateUserInput {
   @IsString()
-  @IsNotEmpty()
-  email!: string;
+  @IsOptional()
+  email?: string;
 
   @IsString()
   @IsOptional()
@@ -19,9 +13,8 @@ export class UpdateUserInput {
   @IsOptional()
   imageUrl?: string;
 
-  @IsNumber()
   @IsOptional()
-  age?: number;
+  age?: string | number | null;
 
   @IsString()
   @IsOptional()
@@ -53,5 +46,5 @@ export class UpdateUserInput {
 
   @IsArray()
   @IsOptional()
-  programingSkills?: string[];
+  programingSkills?: string[] | undefined;
 }
