@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import * as admin from 'firebase-admin';
-import { NOT_FOUND_T0KEN, NOT_VALID_TOKEN } from '../constants/message';
+import { NOT_FOUND_TOKEN, INVALID_TOKEN } from '../constants/message';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -16,7 +16,7 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     // Authorizationヘッダーの値がundefined or nullだったらエラー返す
     if (!request.headers.authorization)
-      throw new UnauthorizedException(NOT_FOUND_T0KEN);
+      throw new UnauthorizedException(NOT_FOUND_TOKEN);
 
     //Authorizationヘッダーに`Bearer token`のように設定されているはずなので、下記のようにしてtokenを取得
     const token = request.headers.authorization.split(' ')[1];
@@ -31,7 +31,7 @@ export class AuthGuard implements CanActivate {
         return !!decodedToken;
       })
       .catch(() => {
-        throw new UnauthorizedException(NOT_VALID_TOKEN);
+        throw new UnauthorizedException(INVALID_TOKEN);
       });
 
     return promise;
