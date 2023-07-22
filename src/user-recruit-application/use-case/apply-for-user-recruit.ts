@@ -4,10 +4,10 @@ import { ChatRoomParticipantService } from 'src/chat-room-participant/chat-room-
 import { ChatRoomService } from 'src/chat-room/chat-room.service';
 import { UserRecruitService } from 'src/user-recruit/user-recruit.service';
 import { UserService } from 'src/user/user.service';
-import { APPLY_FIRST_MESSAGE } from '../constants';
 import { CreateUserRecruitApplicationInput } from '../dto/create-user-recruit-application.input';
 import { UserRecruitApplicationService } from '../user-recruit-application.service';
 import { UserRecruitApplicationWithRoomIdEntity } from '../entities/user-recruit-application-with-room-id.entitiy';
+import { APPLY_FIRST_MESSAGE } from 'src/common/constants/message';
 
 @Injectable()
 export class ApplyForUserRecruit {

@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
 import { Observable } from "rxjs";
-import { NOT_FOUND_T0KEN, NOT_VALID_TOKEN } from "../constants/message";
+import { NOT_FOUND_TOKEN, INVALID_TOKEN } from "../constants/message";
 import * as admin from 'firebase-admin'
 import { EmployeeService } from "src/employee/employee.service";
 
@@ -11,7 +11,7 @@ export class CorporateAuthGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
       const request = context.switchToHttp().getRequest()
 
-      if (!request.headers.authorization) throw new UnauthorizedException(NOT_FOUND_T0KEN);
+      if (!request.headers.authorization) throw new UnauthorizedException(NOT_FOUND_TOKEN);
 
       //user側と同じ仕組み
       const token = request.headers.authorization.split(' ')[1];
@@ -32,7 +32,7 @@ export class CorporateAuthGuard implements CanActivate {
 
         })
         .catch(() => {
-          throw new UnauthorizedException(NOT_VALID_TOKEN);
+          throw new UnauthorizedException(INVALID_TOKEN);
         });
       
       return promise

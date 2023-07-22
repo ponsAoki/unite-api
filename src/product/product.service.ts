@@ -73,9 +73,7 @@ export class ProductService {
   findAllIncludeLikes() {
     return this.prismaService.product.findMany({
       where: {
-        employeeToProductLikes: {
-          some: {}
-        }
+        employeeToProductLikes: {}
       },
       include: {
         employeeToProductLikes: true,

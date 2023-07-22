@@ -14,6 +14,7 @@ export class CreateOrUpdateLikeSumJob {
   @Cron('30 * * * * *')
   async handle(): Promise<void> {
     //likeテーブルを持つproductを全件取得する。
+    console.log("30秒に一回job化")
     const productsWithLikes = await this.productService.findAllIncludeLikes();
   
     // productsWithLikesが存在しない場合、処理を終了する
@@ -28,11 +29,7 @@ export class CreateOrUpdateLikeSumJob {
       productsWithLikes.map(async (product) => {
         const totalLikes = product.employeeToProductLikes.length;
 
-        if(product.periodLikeSum.length === 0) {
-          await this.periodLikeSumService.create(product.id, totalLikes)
-        } else {
-          await this.periodLikeSumService.update(product.periodLikeSum[0].id, totalLikes)
-        }
+        await this.periodLikeSumService.upsert(product.id, totalLikes, product.periodLikeSum[0].id);
       })
     )
   }

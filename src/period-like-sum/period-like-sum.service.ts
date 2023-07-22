@@ -7,22 +7,16 @@ export class PeriodLikeSumService {
     private readonly prismaService: PrismaService
   ) {}
 
-  //新規作成
-  create(productId: string, totalLikes: number) {
-    return this.prismaService.periodLikeSum.create({
-      data: {
+  //更新or新規作成
+  upsert( productId: string, totalLikes: number, id?: string,) {
+    return this.prismaService.periodLikeSum.upsert({
+      where: {id},
+      update: {
+        likesCount: totalLikes
+      },
+      create: {
         productId,
-        likesCount: totalLikes
-      }
-    })
-  }
-
-  //countの更新
-  update(id: string, totalLikes: number) {
-    return this.prismaService.periodLikeSum.update({
-      where: { id },
-      data: {
-        likesCount: totalLikes
+        likesCount: totalLikes,
       }
     })
   }
