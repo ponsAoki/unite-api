@@ -19,7 +19,6 @@ export class CreateOrUpdateLikeSumJob {
   
     // productsWithLikesが存在しない場合、処理を終了する
     if (productsWithLikes.length === 0) {
-      console.log("ないのでreturnします!!")
       return;
     }
 
@@ -28,8 +27,9 @@ export class CreateOrUpdateLikeSumJob {
       //LikeSumが存在しない為新しくテーブル作成する。存在しない場合は更新
       productsWithLikes.map(async (product) => {
         const totalLikes = product.employeeToProductLikes.length;
+        const specificId = product.periodLikeSum[0].id;
 
-        await this.periodLikeSumService.upsert(product.id, totalLikes, product.periodLikeSum[0].id);
+        await this.periodLikeSumService.upsert(product.id, totalLikes, specificId);
       })
     )
   }
