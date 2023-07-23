@@ -6,7 +6,7 @@ export class TestUserRecruitApplications {
       const t = new Date();
       t.setSeconds(t.getSeconds() - num + n);
       return {
-        id: `userRecruitApplicantId${n}`,
+        id: `userRecruitApplicationId${n}`,
         applicantId: `userId${n}`,
         recruitId: `userRecruitId${n}`,
       };
