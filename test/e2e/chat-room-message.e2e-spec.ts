@@ -74,8 +74,6 @@ describe('ChatRoomMessage API', () => {
       await request(app.getHttpServer())
         .get(`/chat-room-message/${roomId}`)
         .then(async (res) => {
-          console.log('port: ', app.getHttpServer());
-
           expect(res.error).toBeFalsy();
           expect(res.status).toBe(200);
 

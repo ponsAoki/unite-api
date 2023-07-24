@@ -9,8 +9,6 @@ import { TestCorporation } from './fixture/corporation';
 import { TestChatRooms } from './fixture/chat-room';
 import { TestChatRoomParticipants } from './fixture/chat-room-participant';
 import { TestChatRoomMessages } from './fixture/chat-room-message';
-import { INestApplication } from '@nestjs/common';
-import { io } from 'socket.io-client';
 
 export const createTestData = (prisma: PrismaClient) => {
   const createUsers = async (num = 10) => {
@@ -80,13 +78,4 @@ export const createTestData = (prisma: PrismaClient) => {
 
 export const deleteAllTable = async (prisma: PrismaClient): Promise<void> => {
   await _deleteAllTable(prisma);
-};
-
-export const getWebsocketClient = (
-  app: INestApplication,
-  namespace?: string,
-) => {
-  return io(`http://localhost/8080`, {
-    autoConnect: true,
-  });
 };

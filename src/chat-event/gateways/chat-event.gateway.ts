@@ -5,18 +5,19 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
-import { ChatMessageInput } from './dto/chat-message.input';
-import { SendMessage } from './use-case/send-message';
+import { ChatMessageInput } from '../dto/chat-message.input';
+import { SendMessageService } from '../use-case/send-message.service';
 import { UseGuards } from '@nestjs/common';
-import { ChatSenderGuard } from './guards/chat-sender.guard';
+import { ChatSenderGuard } from '../guards/chat-sender.guard';
 import { ChatSender } from 'src/chat-event/decorators/chat-sender.decorator';
-import { ChatSenderInput } from './dto/chat-sender.input';
+import { ChatSenderInput } from '../dto/chat-sender.input';
+import { ChatRoomMessageEntity } from 'src/chat-room-message/entities/chat-room-message.entity';
 
 @WebSocketGateway({
   cors: { origin: [process.env.UNITE_API_URL, process.env.UNITE_FRONT_URL] },
 })
 export class ChatEventGateway {
-  constructor(private readonly sendMessage: SendMessage) {}
+  constructor(private readonly sendMessageService: SendMessageService) {}
 
   @WebSocketServer()
   server: Server;
@@ -26,7 +27,7 @@ export class ChatEventGateway {
   async handleMessage(
     @ChatSender() sender: ChatSenderInput,
     @MessageBody() input: ChatMessageInput,
-  ): Promise<void> {
-    await this.sendMessage.handle(this.server, sender, input);
+  ): Promise<ChatRoomMessageEntity> {
+    return await this.sendMessageService.handle(this.server, sender, input);
   }
 }
