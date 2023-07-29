@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ChatRoomMessage, PrismaPromise } from '@prisma/client';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from '../prisma.service';
 import { CreateChatRoomMessageInput } from './dto/create-chat-room-message.input';
 
 @Injectable()

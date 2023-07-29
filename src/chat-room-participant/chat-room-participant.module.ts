@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { ChatRoomParticipantService } from './chat-room-participant.service';
 import { ChatRoomParticipantController } from './chat-room-participant.controller';
-import { FindChatRoomParticipantByRoomId } from './use-case/find-chat-room-participant-by-room-id';
+import { FindChatRoomParticipantByRoomIdAndUserId } from './use-case/find-chat-room-participant-by-room-id-and-user-id';
 import { UserModule } from 'src/user/user.module';
 
 @Module({
@@ -10,7 +10,7 @@ import { UserModule } from 'src/user/user.module';
   providers: [
     ChatRoomParticipantService,
     PrismaService,
-    FindChatRoomParticipantByRoomId,
+    FindChatRoomParticipantByRoomIdAndUserId,
   ],
   controllers: [ChatRoomParticipantController],
   exports: [ChatRoomParticipantService],

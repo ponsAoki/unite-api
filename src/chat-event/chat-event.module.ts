@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { ChatEventGateway } from './chat-event.gateway';
-import { SendMessage } from './use-case/send-message';
+import { ChatEventGateway } from './gateways/chat-event.gateway';
+import { SendMessageService } from './use-case/send-message.service';
 import { ChatRoomMessageModule } from 'src/chat-room-message/chat-room-message.module';
 import { UserModule } from 'src/user/user.module';
 import { ChatRoomParticipantModule } from 'src/chat-room-participant/chat-room-participant.module';
@@ -13,6 +13,7 @@ import { EmployeeModule } from 'src/employee/employee.module';
     ChatRoomParticipantModule,
     EmployeeModule,
   ],
-  providers: [ChatEventGateway, SendMessage],
+  providers: [ChatEventGateway, SendMessageService],
+  exports: [SendMessageService],
 })
 export class ChatEventModule {}
