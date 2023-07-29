@@ -11,7 +11,7 @@ export class TestCorporation {
         name: `name${n}`,
         email: `testcorporate${n}@gmail.com`,
         imageUrl: `imageURL${n}`,
-        DescriptionOfBusiness: `DescriptionOfBusiness${n}`,
+        descriptionOfBusiness: `DescriptionOfBusiness${n}`,
         location: `location${n}`,
         phoneNumber: `000-0000-000${n}`
       }

@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { ConflictException, Injectable } from "@nestjs/common";
 import { EmployeeToProductLikeService } from "../employee-to-product-like.service";
 import { ALREADY_EXISTS_LIKE } from "src/common/constants/message";
 
@@ -13,9 +13,8 @@ export class CreateEmployeeToProductLike {
     const specificLike = await this.employeeToProductService.findOne(employeeId, productId);
 
     if (specificLike !== null) {
-      throw Error(ALREADY_EXISTS_LIKE);
+      throw new ConflictException(ALREADY_EXISTS_LIKE);
     }
-
     await this.employeeToProductService.create(employeeId, productId);
   }
 }

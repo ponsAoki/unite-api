@@ -14,7 +14,6 @@ export class CreateOrUpdateLikeSumJob {
   @Cron('30 * * * * *')
   async handle(): Promise<void> {
     //likeテーブルを持つproductを全件取得する。
-    console.log("30秒に一回job化")
     const productsWithLikes = await this.productService.findAllIncludeLikes();
   
     // productsWithLikesが存在しない場合、処理を終了する

@@ -18,8 +18,7 @@ export class EmployeeToProductLikeController {
     @EmployeeFirebaseAuth() employee: Employee,
     @Body() input: CreateEmployeeToProductLikeInput
   ) {
-    //FirebaseUIDからId(主キー)を取得する
-    return await this.createEmployeeToProductLike.handle(employee.id, input.productId)
+      return await this.createEmployeeToProductLike.handle(employee.id, input.productId)
   }
 
 }
