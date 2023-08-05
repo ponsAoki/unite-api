@@ -55,13 +55,13 @@ export class ProductService {
     return myProducts
   }
 
-  findRelatedProducts(id: string) {
+  findRelatedProducts(id: string): PrismaPromise<Product[]> {
     return this.prismaService.product.findMany({
       where: {
         recruit: {
-          userRecruitApplications: {
+          userRecruitParticipant: {
             some: {
-              applicantId: id
+              userId: id
             }
           }
         }
@@ -70,7 +70,7 @@ export class ProductService {
   }
 
   //いいねを含む募集を全件取得
-  findAllIncludeLikes() {
+  findAllIncludeLikes(): PrismaPromise<Product[]> {
     return this.prismaService.product.findMany({
       where: {
         employeeToProductLikes: {}

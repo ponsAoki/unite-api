@@ -9,7 +9,7 @@ export class DeleteUserToRecruitLikeService {
     private readonly userToRecruitLikeService: UserToRecruitLikeService
   ) {}
 
-  async handle(userId: string, recruitId: string) {
+  async handle(userId: string, recruitId: string): Promise<void> {
     const user = await this.userService.findByFirebaseUID(userId)
     const specificLike = await this.userToRecruitLikeService.findOne(user.id, recruitId)
 

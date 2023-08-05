@@ -12,3 +12,5 @@ export const ALREADY_EXISTS_LIKE = 'いいねはすでに存在します。'
 //学生ユーザーから募集主への最初のチャットメッセージ
 export const APPLY_FIRST_MESSAGE =
   '初めまして！\nぜひ一度話を聞いてみたいと思い、メッセージを送らせていただきました！';
+
+export const FAIL_TO_DELETE_COMMENT = 'このコメントを削除することはできません'

@@ -9,7 +9,4 @@ export class CreateCommentInput {
   @IsString()
   content!: string;
 
-  @IsString()
-  @IsOptional()
-  userId: string
 }
