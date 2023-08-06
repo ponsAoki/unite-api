@@ -59,6 +59,17 @@ export class ProductController {
     return await this.productService.findOne(id);
   }
 
+  //Productの作成
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file'))
+  async create(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() input: createProductInput,
+  ): Promise<Product> {
+    //use-caseでimageをfirebaseStorageに登録する処理に移る
+    return await this.createProduct.handle(file, input);
+  }
+
   //情報の編集
   @Put(':id')
   @UseGuards(AuthGuard)
@@ -73,5 +84,4 @@ export class ProductController {
 
   //productの削除
   //ここはランキング機能を作る時に再利用されると困るため削除apiは準備していないです。
-
 }
