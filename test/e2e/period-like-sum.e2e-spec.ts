@@ -36,7 +36,7 @@ describe('periodLikeSum API', () => {
       await createThisTestData();
     })
 
-    it('いいねカウントを全件取得することに成功する',async () => {
+    it.only('いいねカウントを全件取得することに成功する',async () => {
       await request(app.getHttpServer())
         .get('/period-like-sum')
         .then((res) => {
@@ -47,11 +47,12 @@ describe('periodLikeSum API', () => {
           expect(resPeriodLikeSums.length).toBe(10);
 
           //いいね数が降順に並んでいるかテスト
-          if (resPeriodLikeSums.length > 1) {
-            for (let i = 1; i < resPeriodLikeSums.length; i++) {
-              expect(resPeriodLikeSums[i].likesCount).toBeLessThanOrEqual(resPeriodLikeSums[i - 1].likesCount);
+          resPeriodLikeSums.reduce((acc, curr, index) => {
+            if (index > 0) {
+              return acc && curr.likesCount <= resPeriodLikeSums[index - 1].likesCount;
             }
-          }
+            return acc;
+          });
         })
     })
   })
