@@ -5,7 +5,7 @@ import { URL } from 'url';
 @Injectable()
 export class DeleteFileToFirebaseStorage {
   async handle(fileUrl: string) {
-    const bucket = admin.storage().bucket();
+    const bucket = admin.app('user').storage().bucket();
 
     try {
       //↓ fileUrlからfirebase storageに保存されているファイル名を抽出し、そのファイル名を持ったファイルがすでにfirebase storageに存在すれば削除する (存在しなければ早期return)
