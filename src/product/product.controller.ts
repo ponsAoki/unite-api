@@ -66,7 +66,7 @@ export class ProductController {
   ) {
     return await this.productService.findOne(id)
   }
-
+  
   //情報の編集
   @Put(':id')
   @UseGuards(AuthGuard)
@@ -92,5 +92,4 @@ export class ProductController {
 
   //productの削除
   //ここはランキング機能を作る時に再利用されると困るため削除apiは準備していないです。
-
 }
