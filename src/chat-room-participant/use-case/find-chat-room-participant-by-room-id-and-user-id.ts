@@ -4,7 +4,7 @@ import { ChatRoomParticipantEntity } from '../entities/chat-room-participant.ent
 import { ChatRoomParticipantService } from '../chat-room-participant.service';
 
 @Injectable()
-export class FindChatRoomParticipantByRoomId {
+export class FindChatRoomParticipantByRoomIdAndUserId {
   constructor(
     private readonly userService: UserService,
     private readonly chatRoomParticipantService: ChatRoomParticipantService,

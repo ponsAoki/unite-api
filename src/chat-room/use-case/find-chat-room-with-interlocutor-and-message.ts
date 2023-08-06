@@ -24,39 +24,39 @@ export class FindManyChatRoomsWithInterlocutorAndMessage {
       await this.chatRoomParticipantService.findManyByUserId(operatorUser.id);
 
     return await Promise.all(
-      ownParticipants.map(async (participant) => {
-        const room = await this.chatRoomService.find(participant.roomId);
-        if (!room) throw new Error('chat room not found');
+      ownParticipants
+        .map(async (participant) => {
+          const room = await this.chatRoomService.find(participant.roomId);
+          if (!room) return;
 
-        const interlocutor =
-          await this.chatRoomParticipantService.findInterlocutor(
-            room.id,
-            operatorUser.id,
+          const interlocutor =
+            await this.chatRoomParticipantService.findInterlocutor(
+              room.id,
+              operatorUser.id,
+            );
+          if (!interlocutor) return;
+
+          const interlocutorUser = await this.userService.find(
+            interlocutor.userId,
           );
-        if (!interlocutor) {
-          throw new Error('interlocutor participant not found');
-        }
+          if (!interlocutorUser) return;
 
-        const interlocutorUser = await this.userService.find(
-          interlocutor.userId,
-        );
-        if (!interlocutorUser) throw new Error('interlocutor user not found');
+          const messages = await this.chatRoomMessageService.findManyByRoomId(
+            room.id,
+          );
+          const latestMessage = messages[messages.length - 1];
 
-        const messages = await this.chatRoomMessageService.findManyByRoomId(
-          room.id,
-        );
-        const latestMessage = messages[messages.length - 1];
+          const lastDate = latestMessage.createdAt;
 
-        const lastDate = latestMessage.createdAt;
-
-        return {
-          ...room,
-          interlocutorName: interlocutorUser.name,
-          interlocutorImageUrl: interlocutorUser.imageUrl,
-          latestMessage: latestMessage.content,
-          lastDate,
-        };
-      }),
+          return {
+            ...room,
+            interlocutorName: interlocutorUser.name,
+            interlocutorImageUrl: interlocutorUser.imageUrl,
+            latestMessage: latestMessage.content,
+            lastDate,
+          };
+        })
+        .filter(async (roomInfo) => !!(await roomInfo)),
     );
   }
 }
