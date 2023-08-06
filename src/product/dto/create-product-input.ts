@@ -1,18 +1,19 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class createProductInput {
   @IsString()
+  @IsNotEmpty()
   recruitId!: string;
 
   @IsString()
-  @IsOptional()
-  headline: string;
+  @IsNotEmpty()
+  headline!: string;
 
   @IsString()
-  @IsOptional()
-  detail: string;
+  @IsNotEmpty()
+  detail!: string;
 
   @IsString()
-  @IsOptional()
-  url: string;
+  @IsNotEmpty()
+  url!: string;
 }

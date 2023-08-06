@@ -6,6 +6,9 @@ import { TestUserRecruitApplications } from './fixture/user-recruit-application'
 import { TestUserRecruitParticipants } from './fixture/user-recruit-participant';
 import { TestEmployee } from './fixture/employee';
 import { TestCorporation } from './fixture/corporation';
+import { TestEmployeeToProductLike } from './fixture/employee-to-product-like';
+import { TestProduct } from './fixture/product';
+import { TestPeriodLikeSum } from './fixture/period-like-sum';
 import { TestChatRooms } from './fixture/chat-room';
 import { TestChatRoomParticipants } from './fixture/chat-room-participant';
 import { TestChatRoomMessages } from './fixture/chat-room-message';
@@ -33,6 +36,11 @@ export const createTestData = (prisma: PrismaClient) => {
     });
   };
 
+  const createProducts = async (num = 10) => {
+    await prisma.product.createMany({
+      data: new TestProduct().create(num),
+    })
+  }
   const createCorporations = async (num = 10) => {
     await prisma.corporation.createMany({
       data: new TestCorporation().create(num),
@@ -63,13 +71,28 @@ export const createTestData = (prisma: PrismaClient) => {
     });
   };
 
+  const createEmployeeToProductLike = async (num=10) => {
+    await prisma.employeeToProductLike.createMany({
+      data: new TestEmployeeToProductLike().create(num) 
+    })
+  }
+
+  const createPeriodLikeSum = async (num=10) => {
+    await prisma.periodLikeSum.createMany({
+      data: new TestPeriodLikeSum().create(num)
+    })
+  }
+
   return {
     createUsers,
     createUserRecruits,
     createUserRecruitApplications,
     createUserRecruitParticipants,
+    createProducts,
     createCorporations,
     createEmployees,
+    createEmployeeToProductLike,
+    createPeriodLikeSum,
     createChatRooms,
     createChatRoomParticipants,
     createChatRoomMessages,
