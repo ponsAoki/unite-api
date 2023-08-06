@@ -6,7 +6,7 @@ import * as admin from 'firebase-admin';
 @Injectable()
 export class UploadFileToFirebaseStorage {
   async handle(file: Express.Multer.File) {
-    const bucket = admin.storage().bucket();
+    const bucket = admin.app('user').storage().bucket();
     const fileName = `${Date.now()}_${file.originalname}`;
 
     try {
