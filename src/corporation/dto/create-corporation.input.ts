@@ -19,7 +19,7 @@ export class CreateCorporationInput {
 
   @IsString()
   @IsOptional()
-  DescriptionOfBusiness?: string;
+  descriptionOfBusiness?: string;
 
   @IsString()
   @IsOptional()

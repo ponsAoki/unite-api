@@ -1,6 +1,7 @@
-import { Injectable } from "@nestjs/common";
+import { ConflictException, Injectable } from "@nestjs/common";
 import { UserService } from "src/user/user.service";
 import { UserToRecruitLikeService } from "../user-to-recruit-like.service";
+import { ALREADY_EXISTS_LIKE } from "src/common/constants/message";
 
 @Injectable()
 export class CreateUserToRecruitLike {
@@ -17,7 +18,7 @@ export class CreateUserToRecruitLike {
 
     //いいねテーブルが存在したらエラーを返す
     if (specificLike !== null) {
-      throw new Error('すでにいいねしてあります。')
+      throw new ConflictException(ALREADY_EXISTS_LIKE);
     }
 
     await this.userToRecruitLikeService.create(user.id, recruitId)

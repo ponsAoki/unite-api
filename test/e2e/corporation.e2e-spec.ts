@@ -107,7 +107,7 @@ describe('corporation API', () => {
     it('should success in updating a corporation',async () => {
       const input: UpdateCorporationInput = {
         imageUrl: 'updateImage',
-        DescriptionOfBusiness: 'updateDescriptionOfBusiness',
+        descriptionOfBusiness: 'updateDescriptionOfBusiness',
         location: 'updatepre'
       }
 

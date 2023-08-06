@@ -3,7 +3,7 @@ import { ProductService } from '../product.service';
 import { UpdateFileToFirebaseStorage } from '../../common/file/update-file-service';
 
 @Injectable()
-export class UpdateProductService {
+export class UpdateProduct {
   constructor(
     private readonly productService: ProductService,
     private readonly updateFileToFirebaseStorage: UpdateFileToFirebaseStorage,

@@ -6,7 +6,7 @@ export class CorporationEntity implements Corporation {
   name: string;
   email: string;
   imageUrl: string;
-  DescriptionOfBusiness: string;
+  descriptionOfBusiness: string;
   location: string;
   phoneNumber: string;
 }
