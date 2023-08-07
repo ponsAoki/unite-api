@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaPromise } from '@prisma/client';
+import { EmployeeToProductLike, PrismaPromise } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
@@ -8,7 +8,7 @@ export class EmployeeToProductLikeService {
     private readonly prismaService: PrismaService,
   ) {}
 
-  findOne(employeeId: string, productId: string) {
+  findOne(employeeId: string, productId: string): PrismaPromise<EmployeeToProductLike> {
     return this.prismaService.employeeToProductLike.findFirst({
       where: {
         employeeId,
@@ -17,7 +17,7 @@ export class EmployeeToProductLikeService {
     })
   }
 
-  create(employeeId: string, productId: string): PrismaPromise<any> {
+  create(employeeId: string, productId: string): PrismaPromise<EmployeeToProductLike> {
     return this.prismaService.employeeToProductLike.create({
       data: { employeeId, productId}
     })

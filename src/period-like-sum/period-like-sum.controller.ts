@@ -1,11 +1,11 @@
 import { Controller, Get } from '@nestjs/common';
 import { PeriodLikeSum } from '@prisma/client';
-import { PeriodLikeSumJobService } from './period-like-sum.job.service';
+import { PeriodLikeSumService } from './period-like-sum.service';
 
 @Controller('period-like-sum')
 export class PeriodLikeSumController {
   constructor(
-    private readonly periodLikeSumJobService: PeriodLikeSumJobService,
+    private readonly periodLikeSumJobService: PeriodLikeSumService,
   ) {}
 
   //全件取得(job化されている)

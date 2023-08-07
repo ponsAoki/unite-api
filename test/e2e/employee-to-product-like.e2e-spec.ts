@@ -51,6 +51,20 @@ describe('EmployeeToProductLike API', () => {
           expect(res.error).toBeFalsy();
           expect(res.status).toBe(201);
         })
+    });
+
+    it('プロダクトに対して従業員がいいねを押すことに失敗する',async () => {
+      const input: CreateEmployeeToProductLikeInput = {
+        productId: 'productId0',
+      }
+      await request(app.getHttpServer())
+        .post('/employee-to-product-like')
+        .send(input)
+        .then((res) => {
+          expect(res.error).toBeTruthy();
+          //データの競合を表す409
+          expect(res.status).toBe(409);
+        })
     })
   })
 })

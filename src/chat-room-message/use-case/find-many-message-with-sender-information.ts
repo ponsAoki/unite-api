@@ -16,23 +16,25 @@ export class FindManyMessagesWithSenderInformation {
     const messages = await this.chatRoomMessageService.findManyByRoomId(roomId);
 
     return await Promise.all(
-      messages.map(async (message: ChatRoomMessageEntity) => {
-        const senderParticipant = await this.chatRoomParticipantService.find(
-          message.senderId,
-        );
-        if (!senderParticipant) throw new Error('sender participant not found');
+      messages
+        .map(async (message: ChatRoomMessageEntity) => {
+          const senderParticipant = await this.chatRoomParticipantService.find(
+            message.senderId,
+          );
+          if (!senderParticipant) return;
 
-        const senderUser = await this.userService.find(
-          senderParticipant.userId,
-        );
-        if (!senderUser) throw new Error('sender user not found');
+          const senderUser = await this.userService.find(
+            senderParticipant.userId,
+          );
+          if (!senderUser) return;
 
-        return {
-          ...message,
-          senderImage: senderUser.imageUrl,
-          senderName: senderUser.name,
-        };
-      }),
+          return {
+            ...message,
+            senderImage: senderUser.imageUrl,
+            senderName: senderUser.name,
+          };
+        })
+        .filter(async (messageInfo) => !!(await messageInfo)),
     );
   }
 }

@@ -10,8 +10,7 @@ export class CreateOrUpdateLikeSumJob {
     private readonly periodLikeSumService: PeriodLikeSumService
    ) {}
 
-  // @Cron('0 0 */12 * * *')
-  @Cron('30 * * * * *')
+  @Cron('0 0 */12 * * *')
   async handle(): Promise<void> {
     //likeテーブルを持つproductを全件取得する。
     const productsWithLikes = await this.productService.findAllIncludeLikes();

@@ -70,7 +70,7 @@ export class ProductService {
   }
 
   //いいねを含む募集を全件取得
-  findAllIncludeLikes(): PrismaPromise<Product[]> {
+  findAllIncludeLikes() {
     return this.prismaService.product.findMany({
       where: {
         employeeToProductLikes: {}
