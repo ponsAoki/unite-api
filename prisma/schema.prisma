@@ -192,7 +192,7 @@ model Corporation {
   name                  String?
   email                 String  @unique
   imageUrl              String?
-  DescriptionOfBusiness String? @db.Text()
+  descriptionOfBusiness String? @db.Text()
   location              String?
   phoneNumber           String?
 
@@ -210,7 +210,8 @@ model Employee {
   introduction  String? @db.VarChar(2000)
   phoneNumber   String?
 
-  belongToCorporation Corporation           @relation(fields: [corporationId], references: [id])
+  belongToCorporation Corporation             @relation(fields: [corporationId], references: [id])
+  likesForProduct     EmployeeToProductLike[]
   chatParticipants    ChatRoomParticipant[]
   scouts              Scout[]
 }
@@ -229,15 +230,17 @@ model Scout {
 }
 
 model Product {
-  id        String      @id @default(cuid())
-  recruitId String      @unique
-  headline  String
-  url       String      @db.VarChar(2000)
-  detail    String
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  comment   Comment[]
-  recruit   UserRecruit @relation(fields: [recruitId], references: [id], onDelete: Cascade)
+  id                     String                  @id @default(cuid())
+  recruitId              String                  @unique
+  headline               String
+  url                    String                  @db.VarChar(2000)
+  detail                 String
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
+  comment                Comment[]
+  employeeToProductLikes EmployeeToProductLike[]
+  periodLikeSum          PeriodLikeSum[]
+  recruit                UserRecruit             @relation(fields: [recruitId], references: [id], onDelete: Cascade)
 }
 
 model Comment {
@@ -257,4 +260,21 @@ model UserToRecruitLike {
   userId    String
   user      User        @relation(fields: [userId], references: [id])
   recruit   UserRecruit @relation(fields: [recruitId], references: [id], onDelete: Cascade)
+}
+
+model EmployeeToProductLike {
+  id         String   @id @default(cuid())
+  employeeId String
+  productId  String
+  createdAt  DateTime @default(now())
+  employee   Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model PeriodLikeSum {
+  id         String   @id @default(cuid())
+  productId  String
+  likesCount Int
+  createdAt  DateTime @default(now())
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 }

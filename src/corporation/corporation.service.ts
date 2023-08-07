@@ -42,7 +42,7 @@ export class CorporationService {
   }
 
   //企業のアカウントを消去する
-  delete(id: string): PrismaPromise<CorporationEntity | null> {
+  delete(id: string): PrismaPromise<Corporation> {
     return this.prismaService.corporation.delete({where: {id}});
   }
 

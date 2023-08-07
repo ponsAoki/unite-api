@@ -11,21 +11,22 @@ import {
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProduct } from './use-case/create-product';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { FirebaseAuth } from 'src/common/decorators/auth.decorator';
-import { UpdateProductService } from './use-case/update-product-service';
 import { Product } from '@prisma/client';
 import { UserService } from 'src/user/user.service';
 import { createProductInput } from './dto/create-product-input';
 import { UpdateProductInput } from './dto/update-product-input';
 import { AuthGuard } from 'src/common/guards/auth.guard';
+import { UpdateProduct } from './use-case/update-product';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { CorporateAuthGuard } from 'src/common/guards/corporate-auth.guard';
 
 @Controller('product')
 export class ProductController {
   constructor(
     private readonly productService: ProductService,
     private readonly createProduct: CreateProduct,
-    private readonly updateProductService: UpdateProductService,
+    private readonly updateProductService: UpdateProduct,
     private readonly userService: UserService,
   ) {}
 
@@ -51,20 +52,16 @@ export class ProductController {
   }
 
   // 一件取得
-  @Get('findone/:id')
+  @Get('findOne/:id')
+  @UseGuards(AuthGuard)
   async findOneById(@Param('id') id: string): Promise<Product> {
     return await this.productService.findOne(id);
   }
 
-  //Productの作成
-  @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
-  async create(
-    @UploadedFile() file: Express.Multer.File,
-    @Body() input: createProductInput,
-  ): Promise<Product> {
-    //use-caseでimageをfirebaseStorageに登録する処理に移る
-    return await this.createProduct.handle(file, input);
+  @Get('findOne/corporation/:id')
+  @UseGuards(CorporateAuthGuard)
+  async findOneByIdAndCorporationAuth(@Param('id') id: string) {
+    return await this.productService.findOne(id);
   }
 
   //情報の編集
@@ -77,6 +74,17 @@ export class ProductController {
     @Body() input?: UpdateProductInput,
   ): Promise<Product> {
     return this.updateProductService.handle(id, input, file);
+  }
+
+  //Productの作成
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file'))
+  async create(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() input: createProductInput,
+  ): Promise<Product> {
+    //use-caseでimageをfirebaseStorageに登録する処理に移る
+    return await this.createProduct.handle(file, input);
   }
 
   //productの削除

@@ -19,7 +19,7 @@ export class UpdateCorporationInput {
 
   @IsString()
   @IsOptional()
-  DescriptionOfBusiness?: string;
+  descriptionOfBusiness?: string;
 
   @IsString()
   @IsOptional()
