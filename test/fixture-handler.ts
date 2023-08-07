@@ -9,6 +9,7 @@ import { TestCorporation } from './fixture/corporation';
 import { TestChatRooms } from './fixture/chat-room';
 import { TestChatRoomParticipants } from './fixture/chat-room-participant';
 import { TestChatRoomMessages } from './fixture/chat-room-message';
+import { TestScouts } from './fixture/scout';
 
 export const createTestData = (prisma: PrismaClient) => {
   const createUsers = async (num = 10) => {
@@ -45,6 +46,12 @@ export const createTestData = (prisma: PrismaClient) => {
     });
   };
 
+  const createScouts = async (num = 10) => {
+    await prisma.scout.createMany({
+      data: new TestScouts().create(num),
+    });
+  };
+
   const createChatRooms = async (num = 10) => {
     await prisma.chatRoom.createMany({
       data: new TestChatRooms().create(num),
@@ -70,6 +77,7 @@ export const createTestData = (prisma: PrismaClient) => {
     createUserRecruitParticipants,
     createCorporations,
     createEmployees,
+    createScouts,
     createChatRooms,
     createChatRoomParticipants,
     createChatRoomMessages,

@@ -1,15 +1,17 @@
-import { ChatRoomParticipant } from '@prisma/client';
+import { Scout } from '@prisma/client';
 
-export class TestChatRoomParticipants {
-  create(num = 10): ChatRoomParticipant[] {
+export class TestScouts {
+  create(num = 10): Scout[] {
     return [...new Array(num)].map((_, n) => {
       const t = new Date();
       t.setSeconds(t.getSeconds() - num + n);
       return {
-        id: `chatRoomParticipantId${n}`,
-        roomId: `chatRoomId${n}`,
+        id: `scoutId${n}`,
         userId: `userId${n}`,
+        corporationId: `corporationId${n}`,
         employeeId: `employeeId${n}`,
+        createdAt: t,
+        updatedAt: t,
       };
     });
   }
