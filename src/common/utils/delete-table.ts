@@ -19,10 +19,6 @@ export const deleteAllTable = async (prisma: PrismaClient): Promise<void> => {
   const deleteChatRoomMessages = prisma.chatRoomMessage.deleteMany();
 
   await prisma.$transaction([
-    deleteUserRecruitParticipants,
-    deleteUserRecruitApplications,
-    deleteUserRecruits,
-    deleteUsers,
     deletePeriodLikeSum,
     deleteEmployeeToProductLikes,
     deleteProducts,
@@ -32,6 +28,7 @@ export const deleteAllTable = async (prisma: PrismaClient): Promise<void> => {
     deleteScouts,
     deleteEmployees,
     deleteCorporations,
+    deleteUserRecruitParticipants,
     deleteUserRecruitApplications,
     deleteUserRecruits,
     deleteUsers,
