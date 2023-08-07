@@ -15,7 +15,8 @@ import { ProductModule } from './product/product.module';
 import { CommentModule } from './comment/comment.module';
 import { UserRecruitParticipantModule } from './user-recruit-participant/user-recruit-participant.module';
 import { CorporateAuthModule } from './common/auth/employee/corporate-auth.module';
-
+import { ScoutModule } from './scout/scout.module';
+import { CorporationModule } from './corporation/corporation.module';
 
 @Module({
   imports: [
@@ -30,7 +31,9 @@ import { CorporateAuthModule } from './common/auth/employee/corporate-auth.modul
     ProductModule,
     CommentModule,
     UserRecruitParticipantModule,
-    CorporateAuthModule
+    CorporateAuthModule,
+    ScoutModule,
+    CorporationModule,
   ],
   controllers: [CorporationController],
   providers: [CorporationService, PrismaService],

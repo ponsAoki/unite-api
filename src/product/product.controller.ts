@@ -18,10 +18,7 @@ import { Product } from '@prisma/client';
 import { UserService } from 'src/user/user.service';
 import { createProductInput } from './dto/create-product-input';
 import { UpdateProductInput } from './dto/update-product-input';
-import { Request } from 'express';
 import { AuthGuard } from 'src/common/guards/auth.guard';
-import { CorporateAuthGuard } from 'src/common/guards/corporate-auth.guard';
-import { EmployeeFirebaseAuth } from 'src/common/decorators/employeeAuth.decorator';
 
 @Controller('product')
 export class ProductController {
