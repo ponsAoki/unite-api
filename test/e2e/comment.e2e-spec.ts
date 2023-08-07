@@ -5,6 +5,7 @@ import { createTestData, deleteAllTable } from "../fixture-handler";
 import * as request from 'supertest';
 import { CreateCommentInput } from "src/comment/dto/create-comment-input";
 import { UpdateCommentInput } from "src/comment/dto/update-comment-input";
+import { FAIL_TO_CREATE_COMMENT } from "src/common/constants/message";
 
 initTest();
 
@@ -44,7 +45,12 @@ describe('comment API', () => {
       content: 'content10',
     }
 
-    it('自分のコメントの作成',async () => {
+    const incorrectInput: CreateCommentInput = {
+      productId: 'productId0',
+      content: 'content10'
+    }
+
+    it('自分のコメントの作成に成功する',async () => {
       await request(app.getHttpServer())
         .post('/comment')
         .send(input)
@@ -58,6 +64,24 @@ describe('comment API', () => {
             userId: 'userId0'
           })
         })
+    })
+
+    it('コメントの作成に失敗する',async () => {
+      await request(app.getHttpServer())
+      .post('/comment')
+      .send(incorrectInput)
+      .then((res) => {
+        expect(res.error).toBeTruthy();
+        expect(res.status).toBe(409);
+
+        const resComment = res.body;
+        expect(resComment).toMatchObject({
+          error: "Conflict",
+          message: FAIL_TO_CREATE_COMMENT,
+          statusCode: 409,
+        })
+      })
+
     })
   })
 

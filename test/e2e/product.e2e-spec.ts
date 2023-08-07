@@ -26,11 +26,15 @@ describe('Product API', () => {
   })
 
   const createThisTestData =async () => {
-    const { createUsers, createUserRecruits, createProducts, createUserRecruitParticipants } = createTestData(prisma);
+    const { createUsers, createUserRecruits, createProducts, createUserRecruitParticipants, createComments, createCorporations, createEmployees, createEmployeeToProductLike } = createTestData(prisma);
     await createUsers();
     await createUserRecruits();
     await createUserRecruitParticipants();
     await createProducts();
+    await createComments();
+    await createCorporations();
+    await createEmployees();
+    await createEmployeeToProductLike();
   }
 
   describe('Get /product', () => {
@@ -106,6 +110,21 @@ describe('Product API', () => {
             headline: 'headline0',
             url: 'url0',
             detail: 'detail0',
+            comment: [
+              {
+                id: 'commentId0',
+                productId: 'productId0',
+                userId: 'userId0',
+                content: 'content0',
+              }
+            ],
+            employeeToProductLikes: [
+              {
+                id: 'employeeToProductLike0',
+                employeeId: 'employeeId0',
+                productId: 'productId0',
+              }
+            ]
           })
 
           
@@ -118,7 +137,7 @@ describe('Product API', () => {
       await createThisTestData();
     })
 
-    it.only('企業側から一件取得',async () => {
+    it('企業側から一件取得',async () => {
       await request(app.getHttpServer())
         .get('/product/findOne/corporation/productId0')
         .then((res) => {
@@ -165,34 +184,66 @@ describe('Product API', () => {
   })
 
   //質問する
-  
-  // describe('Post /product/upload', () => {
-  //   beforeEach(async () => {
-  //     await createThisTestData();
-  //   })
+  //product-userRecruitは1対の関係性　-> 外部キー制約でテストが書けない..
+  describe('Post /product/upload', () => {
+    beforeEach(async () => {
+      await createThisTestData();
+    })
 
-  //   it.only('新規productを作成する',async () => {
-  //     const input: createProductInput = {
-  //       recruitId: 'userRecruitId10',
-  //       url: 'fileUrl0',
-  //       headline: '変更',
-  //       detail: '変更'
-  //     }
+    it('新規productを作成する',async () => {
+      const recruit = await prisma.userRecruit.create({
+        data: {
+          id: 'userRecruitId10',
+          headline: 'headline10',
+          programingSkills: [],
+          numberOfApplicants: '3',
+          recruiterId: 'userId0'
+        }
+      })
+      const input: createProductInput = {
+        recruitId: recruit.id,
+        url: 'fileUrl0',
+        headline: '変更',
+        detail: '変更'
+      }
 
-  //     await request(app.getHttpServer())
-  //       .post('/product/upload')
-  //       .send(input)
-  //       .then((res) => {
-  //         expect(res.error).toBeFalsy();
-  //         expect(res.status).toBe(201);
+      await request(app.getHttpServer())
+        .post('/product/upload')
+        .send(input)
+        .then((res) => {
+          expect(res.error).toBeFalsy();
+          expect(res.status).toBe(201);
 
-  //         const resProduct = res.body;
-  //         expect(resProduct).toMatchObject({
-  //           ...input,
-  //         });
-  //       })
-  //   })
-  // })
+          const resProduct = res.body;
+          expect(resProduct).toMatchObject({
+            ...input,
+          });
+        })
+    })
+
+    it('新規プロダクトの作成に失敗する',async () => {
+      const input: createProductInput = {
+        recruitId: 'userRecruit0',
+        url: 'fileUrl0',
+        headline: '変更',
+        detail: '変更'
+      }
+
+      await request(app.getHttpServer())
+        .post('/product/upload')
+        .send(input)
+        .then((res) => {
+          expect(res.error).toBeTruthy();
+          expect(res.status).toBe(500);
+
+          const resProduct = res.body;
+          expect(resProduct).toMatchObject({
+            message: "Internal server error",
+            statusCode: 500,
+          });
+        })
+    })
+  })
 
   
 });

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaPromise, Product } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
+import { ProductWithLikesAndLikeSum } from './models/product-with-likes-and-like-sum';
 
 @Injectable()
 export class ProductService {
@@ -26,7 +27,7 @@ export class ProductService {
     })
   }
 
-  findOne(id: string): PrismaPromise<Product> {
+  findOne(id: string) {
     return this.prismaService.product.findUnique({
       where: { id },
       include: {
@@ -70,7 +71,7 @@ export class ProductService {
   }
 
   //いいねを含む募集を全件取得
-  findAllIncludeLikes() {
+  findAllIncludeLikes(): PrismaPromise<ProductWithLikesAndLikeSum[]> {
     return this.prismaService.product.findMany({
       where: {
         employeeToProductLikes: {}

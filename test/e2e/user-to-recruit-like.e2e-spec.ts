@@ -4,8 +4,6 @@ import { PrismaService } from "src/prisma.service";
 import { initTest, initTestApplication } from "../init";
 import * as request from 'supertest';
 import { createTestData, deleteAllTable } from '../fixture-handler';
-import { CreateEmployeeToProductLikeInput } from "src/employee-to-product-like/dto/create-employee-to-product-like.input";
-import { CreateUserToRecruitLike } from "src/user-to-recruit-like/use-case/create-user-to-recruit-like";
 import { CreateUserToRecruitLikeInput } from "src/user-to-recruit-like/dto/create-user-to-recruit-like";
 
 initTest();
