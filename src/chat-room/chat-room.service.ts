@@ -14,7 +14,7 @@ export class ChatRoomService {
     return this.prismaService.chatRoom.findFirst({ where: { id } });
   }
 
-  create(): PrismaPromise<ChatRoom> {
-    return this.prismaService.chatRoom.create({ data: {} });
+  create(id?: string): PrismaPromise<ChatRoom> {
+    return this.prismaService.chatRoom.create({ data: { id } });
   }
 }

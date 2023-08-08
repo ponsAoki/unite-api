@@ -1,25 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { UserService } from 'src/user/user.service';
 import { ChatRoomParticipantEntity } from '../entities/chat-room-participant.entity';
 import { ChatRoomParticipantService } from '../chat-room-participant.service';
+import { ChatAuthParam } from 'src/common/decorators/chat-atuh.decorator';
 
 @Injectable()
 export class FindChatRoomParticipantByRoomIdAndUserId {
   constructor(
-    private readonly userService: UserService,
     private readonly chatRoomParticipantService: ChatRoomParticipantService,
   ) {}
 
   async handle(
-    firebaseUid: string,
+    operator: ChatAuthParam,
     roomId: string,
   ): Promise<ChatRoomParticipantEntity> {
-    const user = await this.userService.findByFirebaseUID(firebaseUid);
-
     const participant =
-      await this.chatRoomParticipantService.findByRoomIdAndUserId({
+      await this.chatRoomParticipantService.findByRoomIdAndUserIdOrEmployeeId({
         roomId,
-        userId: user.id,
+        userId: operator.user?.id,
+        employeeId: operator.employee?.id,
       });
 
     return participant;

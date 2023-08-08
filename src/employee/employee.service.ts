@@ -13,41 +13,43 @@ export class EmployeeService {
   }
 
   findByEmail(email: string): PrismaPromise<Employee | null> {
-    return this.prismaService.employee.findUnique({where: { email }})
+    return this.prismaService.employee.findUnique({ where: { email } });
   }
 
   findByFirebaseUID(firebaseUID: string): Promise<Employee | null> {
-    return this.prismaService.employee.findUnique({ 
+    return this.prismaService.employee.findUnique({
       where: { firebaseUID },
       include: {
-        belongToCorporation: true
-      }
-    })
+        belongToCorporation: true,
+      },
+    });
   }
 
-  findById(id: string): Promise<Employee | null> {
-    return this.prismaService.employee.findUnique({ 
+  find(id: string): Promise<Employee | null> {
+    return this.prismaService.employee.findUnique({
+      where: { id },
+    });
+  }
+
+  findByIdWithCorporation(id: string): Promise<Employee | null> {
+    return this.prismaService.employee.findUnique({
       where: { id },
       include: {
-        belongToCorporation: true
-      }
-    })
+        belongToCorporation: true,
+      },
+    });
   }
 
-  updateById(
-    id: string,
-    input: UpdateEmployeeInput,
-  ) {
+  updateById(id: string, input: UpdateEmployeeInput) {
     return this.prismaService.employee.update({
       where: { id },
-      data: input
-    })
+      data: input,
+    });
   }
 
-  create(
-    input: CreateEmployeeInput,
-    corporationId: string
-  ): Promise<Employee> {
-    return this.prismaService.employee.create({data: { ...input, corporationId }});
+  create(input: CreateEmployeeInput, corporationId: string): Promise<Employee> {
+    return this.prismaService.employee.create({
+      data: { ...input, corporationId },
+    });
   }
 }

@@ -3,6 +3,11 @@ import { ExecutionContext } from '@nestjs/common';
 export class CorporateAuthGuardMock {
   canActivate(ctx: ExecutionContext): boolean {
     const req = ctx.switchToHttp().getRequest();
+
+    req.corporation = {
+      id: 'corporationId0',
+    };
+
     req.employee = {
       id: 'employeeId0',
       firebaseUID: 'firebaseUid0',
@@ -11,8 +16,9 @@ export class CorporateAuthGuardMock {
       name: 'name0',
       imageUrl: 'imageUrl0',
       introduction: 'hello, world',
-      phoneNumber: '000-0000-0000'
+      phoneNumber: '000-0000-0000',
     };
-    return !!req.employee;
+
+    return !!req.corporation && !!req.employee;
   }
 }

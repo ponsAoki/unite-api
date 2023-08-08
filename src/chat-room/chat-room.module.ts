@@ -6,9 +6,17 @@ import { FindManyChatRoomsWithInterlocutorAndMessage } from './use-case/find-cha
 import { UserModule } from 'src/user/user.module';
 import { ChatRoomParticipantModule } from 'src/chat-room-participant/chat-room-participant.module';
 import { ChatRoomMessageModule } from 'src/chat-room-message/chat-room-message.module';
+import { EmployeeModule } from 'src/employee/employee.module';
+import { CorporationModule } from 'src/corporation/corporation.module';
 
 @Module({
-  imports: [UserModule, ChatRoomParticipantModule, ChatRoomMessageModule],
+  imports: [
+    UserModule,
+    EmployeeModule,
+    ChatRoomParticipantModule,
+    ChatRoomMessageModule,
+    CorporationModule,
+  ],
   providers: [
     ChatRoomService,
     PrismaService,

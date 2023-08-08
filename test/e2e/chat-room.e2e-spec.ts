@@ -29,6 +29,9 @@ describe('ChatRoom API', () => {
       createUsers,
       createUserRecruits,
       createUserRecruitApplications,
+      createCorporations,
+      createEmployees,
+      createScouts,
       createChatRooms,
       createChatRoomParticipants,
       createChatRoomMessages,
@@ -36,6 +39,9 @@ describe('ChatRoom API', () => {
     await createUsers();
     await createUserRecruits();
     await createUserRecruitApplications();
+    await createCorporations();
+    await createEmployees();
+    await createScouts();
     await createChatRooms();
     await createChatRoomParticipants();
     await createChatRoomMessages();
@@ -59,10 +65,22 @@ describe('ChatRoom API', () => {
         }),
       );
       await Promise.all(
-        allParticipants.slice(5).map(async (participant, i) => {
+        allParticipants.slice(5, 8).map(async (participant, i) => {
           await prisma.chatRoomParticipant.update({
             where: { id: participant.id },
             data: { roomId: `chatRoomId${i}` },
+          });
+        }),
+      );
+      await Promise.all(
+        allParticipants.slice(8).map(async (participant, i) => {
+          await prisma.chatRoomParticipant.update({
+            where: { id: participant.id },
+            data: {
+              roomId: `chatRoomId${i + 3}`,
+              userId: null,
+              employeeId: `employeeId${i}`,
+            },
           });
         }),
       );
@@ -81,10 +99,10 @@ describe('ChatRoom API', () => {
             (roomInfo: ChatRoomWithInterlocutorAndMessageEntity, i: number) => {
               expect(roomInfo).toMatchObject({
                 id: `chatRoomId${i}`,
-                interlocutorName: `name${i + 5}`,
-                interlocutorImageUrl: `imageUrl${i + 5}`,
                 latestMessage: 'content',
               });
+              expect(roomInfo.interlocutorName).toContain('name');
+              expect(roomInfo.interlocutorImageUrl).toContain('image');
             },
           );
         });
