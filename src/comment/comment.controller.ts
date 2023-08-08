@@ -6,6 +6,7 @@ import { UpdateCommentInput } from './dto/update-comment-input';
 import { CommentService } from './comment.service';
 import { deleteComment } from './use-case/delete-comment';
 import { AuthGuard } from 'src/common/guards/auth.guard';
+import { Comment } from '@prisma/client';
 
 @Controller('comment')
 export class CommentController {
@@ -22,7 +23,7 @@ export class CommentController {
   async createComment(
     @FirebaseAuth() authUser: any,
     @Body() input: CreateCommentInput,
-  ) {
+  ): Promise<Comment> {
     return await this.createMyCommentService.handle(authUser.uid, input)
   }
 
@@ -34,7 +35,7 @@ export class CommentController {
     @FirebaseAuth() authUser: any,
     @Param('id') id: string,
     @Body() input: UpdateCommentInput,
-  ) {
+  ): Promise<Comment> {
     return this.commentService.update(id, input);
   }
 
@@ -44,7 +45,7 @@ export class CommentController {
   async deleteComment(
     @FirebaseAuth() authUser: any,
     @Body() input: { id: string },
-  ) {
+  ): Promise<Comment> {
     return this.deleteCommentService.handle(input.id, authUser.uid)
   }
 }

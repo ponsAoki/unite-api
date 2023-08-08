@@ -31,6 +31,6 @@ export class UserToRecruitLikeController {
     @FirebaseAuth() authUser: any,
     @Param('recruitId') recruitId: string
   ): Promise<void> {
-    return this.deleteUserToRecruitLike.handle(authUser.uid, recruitId)
+    return await this.deleteUserToRecruitLike.handle(authUser.uid, recruitId)
   }
 }
