@@ -9,20 +9,20 @@ export class CommentService {
   constructor(private readonly prismaService: PrismaService) {}
 
   //一件取得
-  findOne(id) {
+  findOne(id): PrismaPromise<Comment> {
     return this.prismaService.comment.findUnique({ where: { id } });
   }
 
   //同じproductIdを持つcommentを全権取得
-  findManyByProductId(productId: string) {
+  findManyByProductId(productId: string): PrismaPromise<Comment[]>{
     return this.prismaService.comment.findMany({
       where: { productId },
     });
   }
 
   //コメント作成
-  create(input: CreateCommentInput): PrismaPromise<Comment> {
-    return this.prismaService.comment.create({ data: input });
+  create(input: CreateCommentInput, userId: string): PrismaPromise<Comment> {
+    return this.prismaService.comment.create({ data: {...input, userId} });
   }
   //コメントの編集
   update(id: string, input: UpdateCommentInput): PrismaPromise<Comment> {
@@ -33,7 +33,7 @@ export class CommentService {
   }
 
   //コメントの削除
-  delete(id: string) {
+  delete(id: string): PrismaPromise<Comment> {
     return this.prismaService.comment.delete({ where: { id } });
   }
 }

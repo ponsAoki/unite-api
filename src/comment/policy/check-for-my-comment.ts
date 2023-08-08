@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { CommentService } from '../comment.service';
+import { FAIL_TO_CREATE_COMMENT } from 'src/common/constants/message';
 
 @Injectable()
 export class CheckForMyComment {
@@ -13,6 +14,6 @@ export class CheckForMyComment {
     );
 
     if (!isMyCommentExist) return;
-    throw new Error('commentはすでに存在している為作成することができません。');
+    throw new ConflictException(FAIL_TO_CREATE_COMMENT);
   }
 }
