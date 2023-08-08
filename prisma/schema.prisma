@@ -188,7 +188,7 @@ model ChatRoomMessage {
 
 model Corporation {
   id                    String  @id @default(cuid())
-  sharedPassword        String?
+  sharedPassword        String? @unique
   name                  String?
   email                 String  @unique
   imageUrl              String?
