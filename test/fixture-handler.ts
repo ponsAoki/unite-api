@@ -14,6 +14,7 @@ import { TestUserToRecruitLikes } from './fixture/user-to-recruit-like';
 import { TestChatRooms } from './fixture/chat-room';
 import { TestChatRoomParticipants } from './fixture/chat-room-participant';
 import { TestChatRoomMessages } from './fixture/chat-room-message';
+import { TestScouts } from './fixture/scout';
 
 export const createTestData = (prisma: PrismaClient) => {
   const createUsers = async (num = 10) => {
@@ -38,23 +39,23 @@ export const createTestData = (prisma: PrismaClient) => {
     });
   };
 
-  const createUserToRecruitLikes =async (num = 10) => {
+  const createUserToRecruitLikes = async (num = 10) => {
     await prisma.userToRecruitLike.createMany({
-      data: new TestUserToRecruitLikes().create(num)
-    })
-  }
+      data: new TestUserToRecruitLikes().create(num),
+    });
+  };
 
   const createProducts = async (num = 10) => {
     await prisma.product.createMany({
       data: new TestProduct().create(num),
-    })
-  }
+    });
+  };
 
-  const createComments =async (num=10) => {
+  const createComments = async (num = 10) => {
     await prisma.comment.createMany({
-      data: new TestComment().create(num)
-    })
-  }
+      data: new TestComment().create(num),
+    });
+  };
   const createCorporations = async (num = 10) => {
     await prisma.corporation.createMany({
       data: new TestCorporation().create(num),
@@ -64,6 +65,12 @@ export const createTestData = (prisma: PrismaClient) => {
   const createEmployees = async (num = 10) => {
     await prisma.employee.createMany({
       data: new TestEmployee().create(num),
+    });
+  };
+
+  const createScouts = async (num = 10) => {
+    await prisma.scout.createMany({
+      data: new TestScouts().create(num),
     });
   };
 
@@ -85,17 +92,17 @@ export const createTestData = (prisma: PrismaClient) => {
     });
   };
 
-  const createEmployeeToProductLike = async (num=10) => {
+  const createEmployeeToProductLike = async (num = 10) => {
     await prisma.employeeToProductLike.createMany({
-      data: new TestEmployeeToProductLike().create(num) 
-    })
-  }
+      data: new TestEmployeeToProductLike().create(num),
+    });
+  };
 
-  const createPeriodLikeSum = async (num=10) => {
+  const createPeriodLikeSum = async (num = 10) => {
     await prisma.periodLikeSum.createMany({
-      data: new TestPeriodLikeSum().create(num)
-    })
-  }
+      data: new TestPeriodLikeSum().create(num),
+    });
+  };
 
   return {
     createUsers,
@@ -107,6 +114,7 @@ export const createTestData = (prisma: PrismaClient) => {
     createComments,
     createCorporations,
     createEmployees,
+    createScouts,
     createEmployeeToProductLike,
     createPeriodLikeSum,
     createChatRooms,

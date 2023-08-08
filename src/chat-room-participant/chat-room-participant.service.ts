@@ -7,9 +7,12 @@ import { ChatRoomParticipantInput } from './dto/chat-room-participant.input';
 export class ChatRoomParticipantService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  findManyByUserId(userId: string): PrismaPromise<ChatRoomParticipant[]> {
+  findManyByUserIdOrEmployeeId(input: {
+    userId?: string;
+    employeeId?: string;
+  }): PrismaPromise<ChatRoomParticipant[]> {
     return this.prismaService.chatRoomParticipant.findMany({
-      where: { userId },
+      where: { userId: input.userId, employeeId: input.employeeId },
     });
   }
 
@@ -17,30 +20,63 @@ export class ChatRoomParticipantService {
     return this.prismaService.chatRoomParticipant.findFirst({ where: { id } });
   }
 
-  findByRoomIdAndUserId(
+  findByRoomIdAndUserIdOrEmployeeId(
     input: ChatRoomParticipantInput,
   ): PrismaPromise<ChatRoomParticipant | null> {
     return this.prismaService.chatRoomParticipant.findFirst({
-      where: { roomId: input.roomId, userId: input.userId },
+      where: {
+        roomId: input.roomId,
+        userId: input.userId,
+        employeeId: input.employeeId,
+      },
     });
   }
 
   //roomIdと操作者であるチャット参加者のuserIdを用いて、操作者の対話相手となるチャット参加者を取得するメソッド
   findInterlocutor(
     roomId: string,
-    operatorUserId: string,
+    operatorInfo: { userId?: string; employeeId?: string },
   ): PrismaPromise<ChatRoomParticipant | null> {
-    return this.prismaService.chatRoomParticipant.findFirst({
-      where: {
-        roomId,
-        NOT: {
-          userId: operatorUserId,
-        },
-      },
-    });
+    switch (true) {
+      case !!operatorInfo.userId:
+        return this.prismaService.chatRoomParticipant.findFirst({
+          where: {
+            roomId,
+            OR: [
+              {
+                NOT: {
+                  userId: operatorInfo.userId,
+                },
+              },
+              { userId: null },
+            ],
+          },
+        });
+      case !!operatorInfo.employeeId:
+        return this.prismaService.chatRoomParticipant.findFirst({
+          where: {
+            roomId,
+            OR: [
+              {
+                NOT: {
+                  employeeId: operatorInfo.employeeId,
+                },
+              },
+              { employeeId: null },
+            ],
+          },
+        });
+      default:
+        return null;
+    }
   }
 
-  create(input: ChatRoomParticipantInput): PrismaPromise<ChatRoomParticipant> {
-    return this.prismaService.chatRoomParticipant.create({ data: input });
+  create(
+    input: ChatRoomParticipantInput,
+    id?: string,
+  ): PrismaPromise<ChatRoomParticipant> {
+    return this.prismaService.chatRoomParticipant.create({
+      data: { ...input, id },
+    });
   }
 }

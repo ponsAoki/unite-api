@@ -10,8 +10,10 @@ import { UserService } from 'src/user/user.service';
 import { UploadFileToFirebaseStorage } from 'src/common/file/uplpad-fIle-to-firebaseStorage';
 import { EmployeeService } from 'src/employee/employee.service';
 import { DeleteFileToFirebaseStorage } from 'src/common/file/delete-file-to-firebase-storage';
+import { CorporationModule } from 'src/corporation/corporation.module';
 
 @Module({
+  imports: [CorporationModule],
   controllers: [ProductController],
   providers: [
     PrismaService,
@@ -23,7 +25,7 @@ import { DeleteFileToFirebaseStorage } from 'src/common/file/delete-file-to-fire
     DeleteFileToFirebaseStorage,
     UserService,
     UploadFileToFirebaseStorage,
-    EmployeeService
-  ]
+    EmployeeService,
+  ],
 })
 export class ProductModule {}

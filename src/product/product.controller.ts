@@ -21,7 +21,6 @@ import { UpdateProduct } from './use-case/update-product';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CorporateAuthGuard } from 'src/common/guards/corporate-auth.guard';
 
-
 @Controller('product')
 export class ProductController {
   constructor(
@@ -61,12 +60,10 @@ export class ProductController {
 
   @Get('findOne/corporation/:id')
   @UseGuards(CorporateAuthGuard)
-  async findOneByIdAndCorporationAuth(
-    @Param('id') id: string
-  ) {
-    return await this.productService.findOne(id)
+  async findOneByIdAndCorporationAuth(@Param('id') id: string) {
+    return await this.productService.findOne(id);
   }
-  
+
   //情報の編集
   @Put(':id')
   @UseGuards(AuthGuard)

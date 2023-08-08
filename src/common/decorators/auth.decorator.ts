@@ -1,4 +1,5 @@
 import { ExecutionContext, createParamDecorator } from '@nestjs/common';
+import { User } from '@prisma/client';
 
 export const FirebaseAuth = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
@@ -6,3 +7,7 @@ export const FirebaseAuth = createParamDecorator(
     return req.firebaseAuth;
   },
 );
+
+export type UserAuthParam = {
+  user: User;
+};

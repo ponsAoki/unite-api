@@ -28,6 +28,9 @@ describe('ChatRoomParticipant API', () => {
       createUsers,
       createUserRecruits,
       createUserRecruitApplications,
+      createCorporations,
+      createEmployees,
+      createScouts,
       createChatRooms,
       createChatRoomParticipants,
       createChatRoomMessages,
@@ -35,6 +38,9 @@ describe('ChatRoomParticipant API', () => {
     await createUsers();
     await createUserRecruits();
     await createUserRecruitApplications();
+    await createCorporations();
+    await createEmployees();
+    await createScouts();
     await createChatRooms();
     await createChatRoomParticipants();
     await createChatRoomMessages();
@@ -45,7 +51,7 @@ describe('ChatRoomParticipant API', () => {
       await createThisTestData();
     });
 
-    it('操作ユーザーのユーザーIDと特定のチャットルームIDから一意のチャット参加者が取得できる', async () => {
+    it('操作ユーザーのuserIdと特定のチャットルームIDから一意のチャット参加者が取得できる', async () => {
       const operatorUserId = 'userId0';
       const roomId = 'chatRoomId0';
 
@@ -59,6 +65,24 @@ describe('ChatRoomParticipant API', () => {
           expect(fetchedParticipant).toMatchObject({
             roomId,
             userId: operatorUserId,
+          });
+        });
+    });
+
+    it('操作従業員のemployeeIdと特定のチャットルームIDから一意のチャット参加者が取得できる', async () => {
+      const operatorEmployeeId = 'employeeId0';
+      const roomId = 'chatRoomId0';
+
+      await request(app.getHttpServer())
+        .get(`/chat-room-participant/${roomId}`)
+        .then(async (res) => {
+          expect(res.error).toBeFalsy();
+          expect(res.status).toBe(200);
+
+          const fetchedParticipant = res.body;
+          expect(fetchedParticipant).toMatchObject({
+            roomId,
+            employeeId: operatorEmployeeId,
           });
         });
     });
