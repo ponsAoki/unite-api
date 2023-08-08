@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { Cron } from "@nestjs/schedule";
 import { ProductService } from "src/product/product.service";
 import { PeriodLikeSumService } from "../period-like-sum.service";
-import { ProductWithLikesAndLikeSum } from "src/product/models/product-with-likes-and-like-sum";
+import { ProductWithLikesAndLikeSum } from "src/product/entities/product-with-likes-and-like-sum";
 
 @Injectable()
 export class CreateOrUpdateLikeSumJob {

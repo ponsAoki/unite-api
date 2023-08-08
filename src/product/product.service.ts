@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaPromise, Product } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
-import { ProductWithLikesAndLikeSum } from './models/product-with-likes-and-like-sum';
+import { ProductWithLikesAndLikeSum } from './entities/product-with-likes-and-like-sum';
 
 @Injectable()
 export class ProductService {

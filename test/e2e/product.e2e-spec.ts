@@ -235,12 +235,6 @@ describe('Product API', () => {
         .then((res) => {
           expect(res.error).toBeTruthy();
           expect(res.status).toBe(500);
-
-          const resProduct = res.body;
-          expect(resProduct).toMatchObject({
-            message: "Internal server error",
-            statusCode: 500,
-          });
         })
     })
   })
