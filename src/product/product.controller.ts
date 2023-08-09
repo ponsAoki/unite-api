@@ -20,6 +20,7 @@ import { AuthGuard } from 'src/common/guards/auth.guard';
 import { UpdateProduct } from './use-case/update-product';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CorporateAuthGuard } from 'src/common/guards/corporate-auth.guard';
+import { FirebaseAppName } from 'src/common/enums/storage-type';
 
 @Controller('product')
 export class ProductController {
@@ -73,7 +74,12 @@ export class ProductController {
     @UploadedFile() file?: Express.Multer.File,
     @Body() input?: UpdateProductInput,
   ): Promise<Product> {
-    return this.updateProductService.handle(id, input, file);
+    return this.updateProductService.handle(
+      id,
+      input,
+      file,
+      FirebaseAppName.USER,
+    );
   }
 
   //Productの作成

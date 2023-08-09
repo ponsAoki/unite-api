@@ -81,7 +81,7 @@ export class ChatAuthGuard implements CanActivate {
     }
     request['employee'] = employee;
 
-    const corporation = await this.corporationService.findbyCorporationID(
+    const corporation = await this.corporationService.find(
       employee.corporationId,
     );
     if (!corporation) {

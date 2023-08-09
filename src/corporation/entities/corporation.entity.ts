@@ -1,4 +1,4 @@
-import { Corporation } from "@prisma/client";
+import { Corporation, Employee } from '@prisma/client';
 
 export class CorporationEntity implements Corporation {
   id: string;
@@ -9,5 +9,5 @@ export class CorporationEntity implements Corporation {
   descriptionOfBusiness: string;
   location: string;
   phoneNumber: string;
+  employees?: Employee[];
 }
-
