@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import * as admin from 'firebase-admin';
+import { FirebaseAppName } from '../enums/storage-type';
 
 //fileをfirebaseStorageに保存してurlとして返す。
 //(テーブルにurlとして保存)
 @Injectable()
 export class UploadFileToFirebaseStorage {
-  async handle(file: Express.Multer.File) {
-    const bucket = admin.app('user').storage().bucket();
+  async handle(file: Express.Multer.File, firebaseAppName: FirebaseAppName) {
+    const bucket = admin.app(firebaseAppName).storage().bucket();
     const fileName = `${Date.now()}_${file.originalname}`;
 
     try {

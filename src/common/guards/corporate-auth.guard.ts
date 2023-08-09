@@ -42,7 +42,7 @@ export class CorporateAuthGuard implements CanActivate {
         request['employee'] = employee;
 
         //corporation情報もリクエストパラメータに付与
-        const corporation = await this.corporationService.findbyCorporationID(
+        const corporation = await this.corporationService.find(
           employee.corporationId,
         );
         request['corporation'] = corporation;

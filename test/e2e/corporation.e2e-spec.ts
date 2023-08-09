@@ -1,12 +1,11 @@
-import { INestApplication } from "@nestjs/common";
-import { PrismaService } from "src/prisma.service";
+import { INestApplication } from '@nestjs/common';
+import { PrismaService } from 'src/prisma.service';
 import { createTestData, deleteAllTable } from '../fixture-handler';
-import { initTest, initTestApplication } from "../init";
+import { initTest, initTestApplication } from '../init';
 import * as request from 'supertest';
-import { TestCorporation } from "../fixture/corporation";
-import { CreateCorporationInput } from "src/corporation/dto/create-corporation.input";
-import { UpdateCommentInput } from "src/comment/dto/update-comment-input";
-import { UpdateCorporationInput } from "src/corporation/dto/update-corporetion.input";
+import { TestCorporation } from '../fixture/corporation';
+import { CreateCorporationInput } from 'src/corporation/dto/create-corporation.input';
+import { UpdateCorporationInput } from 'src/corporation/dto/update-corporetion.input';
 
 initTest();
 
@@ -27,7 +26,7 @@ describe('corporation API', () => {
     await deleteAllTable(prisma);
   });
 
-  const createThisTestData =async () => {
+  const createThisTestData = async () => {
     const { createCorporations } = createTestData(prisma);
     await createCorporations();
   };
@@ -48,8 +47,8 @@ describe('corporation API', () => {
           const resCorporations = res.body;
           expect(resCorporations.length).toBe(10);
           const firstCorporation = new TestCorporation().create(1)[0];
-          expect(resCorporations[0]).toMatchObject(firstCorporation)
-        });  
+          expect(resCorporations[0]).toMatchObject(firstCorporation);
+        });
     });
   });
 
@@ -59,12 +58,13 @@ describe('corporation API', () => {
       await createThisTestData();
     });
 
-    it('should return one employee object',async () => {
+    it('should return one employee object', async () => {
       await request(app.getHttpServer())
-        .get('/corporation/sharedPassword')
+        .post('/corporation/sharedPassword')
+        .send({ sharedPassword: 'sharedPassword0' })
         .then((res) => {
           expect(res.error).toBeFalsy();
-          expect(res.status).toBe(200);
+          expect(res.status).toBe(201);
 
           const resCorporation = res.body;
           const firstCorporation = new TestCorporation().create(1)[0];
@@ -77,13 +77,13 @@ describe('corporation API', () => {
   describe('create a corporation', () => {
     beforeEach(async () => {
       await createThisTestData();
-    })
+    });
 
     it('should success in createing a corporation', async () => {
       const input: CreateCorporationInput = {
         email: 'testcorporate@gmail.com',
-        sharedPassword: 'sharedPassword0'
-      }
+        sharedPassword: 'sharedPassword100',
+      };
 
       await request(app.getHttpServer())
         .post('/corporation')
@@ -93,23 +93,23 @@ describe('corporation API', () => {
           expect(res.status).toBe(201);
 
           const resCorporation = res.body;
-          expect(resCorporation).toMatchObject({ ...input })
+          expect(resCorporation).toMatchObject({ ...input });
         });
-    })
-  })
+    });
+  });
 
   //企業情報編集に関するテスト
-  describe('update corporation-Info', () => { 
+  describe('update corporation-Info', () => {
     beforeEach(async () => {
-      await createThisTestData()
+      await createThisTestData();
     });
 
-    it('should success in updating a corporation',async () => {
+    it('should success in updating a corporation', async () => {
       const input: UpdateCorporationInput = {
         imageUrl: 'updateImage',
         descriptionOfBusiness: 'updateDescriptionOfBusiness',
-        location: 'updatepre'
-      }
+        location: 'updatepre',
+      };
 
       await request(app.getHttpServer())
         .put('/corporation/corporationId0')
@@ -117,11 +117,27 @@ describe('corporation API', () => {
         .then((res) => {
           expect(res.error).toBeFalsy();
           expect(res.status).toBe(200);
-          
-          const resCorporation = res.body;
-          expect(resCorporation).toMatchObject({ ... input })
-        })
-    })
-  })
-});
 
+          const resCorporation = res.body;
+          expect(resCorporation).toMatchObject({ ...input });
+        });
+    });
+
+    //ファイル (アイコン画像) を送信できるかを単体でチェック
+    it('should success in updating a corporation image url', async () => {
+      await request(app.getHttpServer())
+        .put('/corporation/corporationId0')
+        .set({ 'Content-Type': 'multipart/form-data' })
+        .attach('imageFile', 'test/files/test_image_1.png')
+        .then((res) => {
+          expect(res.error).toBeFalsy();
+          expect(res.status).toBe(200);
+
+          const resCorporation = res.body;
+          expect(resCorporation).toMatchObject({
+            imageUrl: 'fileUrl0',
+          });
+        });
+    });
+  });
+});
