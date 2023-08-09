@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import * as admin from 'firebase-admin';
 import { URL } from 'url';
+import { FirebaseAppName } from '../enums/storage-type';
 
 @Injectable()
 export class DeleteFileToFirebaseStorage {
-  async handle(fileUrl: string) {
-    const bucket = admin.app('user').storage().bucket();
+  async handle(fileUrl: string, firebaseAppName: FirebaseAppName) {
+    const bucket = admin.app(firebaseAppName).storage().bucket();
 
     try {
       //↓ fileUrlからfirebase storageに保存されているファイル名を抽出し、そのファイル名を持ったファイルがすでにfirebase storageに存在すれば削除する (存在しなければ早期return)

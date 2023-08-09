@@ -23,6 +23,7 @@ import { CorporateAuthGuard } from 'src/common/guards/corporate-auth.guard';
 import { ProductWithApprovedUserRecruitParticipantsEntity } from './entities/product-with-approved-user-recruit-participants.entity';
 import { FindOneWithApprovedUserRecruitParticipantsService } from './use-case/find-one-with-approved-user-recruit-participants.service';
 import { UserOrCorporateAuthGuard } from 'src/common/guards/user-or-corporate-auth.guard';
+import { FirebaseAppName } from 'src/common/enums/storage-type';
 
 @Controller('product')
 export class ProductController {
@@ -88,7 +89,12 @@ export class ProductController {
     @UploadedFile() file?: Express.Multer.File,
     @Body() input?: UpdateProductInput,
   ): Promise<Product> {
-    return this.updateProductService.handle(id, input, file);
+    return this.updateProductService.handle(
+      id,
+      input,
+      file,
+      FirebaseAppName.USER,
+    );
   }
 
   //Productの作成

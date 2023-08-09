@@ -24,6 +24,7 @@ import {
   SignInWithGoogleInput,
 } from './dto/sign-in-with-google-or-github.input';
 import { SignInWithGoogleOrGithubService } from './use-case/sign-in-with-google-or-github.service';
+import { FirebaseAppName } from 'src/common/enums/storage-type';
 
 @Controller('user')
 export class UserController {
@@ -97,6 +98,7 @@ export class UserController {
       //firebaseのstorageに保存 & 画像url生成
       const newImageUrl = await this.updateFileToFirebaseStorage.handle(
         imageFile,
+        FirebaseAppName.USER,
         user.imageUrl,
       );
 

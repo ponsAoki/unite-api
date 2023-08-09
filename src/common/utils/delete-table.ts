@@ -7,6 +7,7 @@ export const deleteAllTable = async (prisma: PrismaClient): Promise<void> => {
     prisma.userRecruitApplication.deleteMany();
   const deleteUserRecruitParticipants =
     prisma.userRecruitParticipant.deleteMany();
+  const deleteUserToRecruitLikes = prisma.userToRecruitLike.deleteMany();
   const deleteProducts = prisma.product.deleteMany();
   const deleteCorporations = prisma.corporation.deleteMany();
   const deleteEmployees = prisma.employee.deleteMany();
@@ -29,6 +30,7 @@ export const deleteAllTable = async (prisma: PrismaClient): Promise<void> => {
     deleteEmployees,
     deleteCorporations,
     deleteUserRecruitParticipants,
+    deleteUserToRecruitLikes,
     deleteUserRecruitApplications,
     deleteUserRecruits,
     deleteUsers,

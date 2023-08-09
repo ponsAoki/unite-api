@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { Cron } from "@nestjs/schedule";
 import { ProductService } from "src/product/product.service";
 import { PeriodLikeSumService } from "../period-like-sum.service";
+import { ProductWithLikesAndLikeSum } from "src/product/entities/product-with-likes-and-like-sum";
 
 @Injectable()
 export class CreateOrUpdateLikeSumJob {
@@ -23,7 +24,7 @@ export class CreateOrUpdateLikeSumJob {
     await Promise.all(
       // 一つずつproductを確認して既にlikeSumテーブルを持っているか確認する。
       //LikeSumが存在しない為新しくテーブル作成する。存在しない場合は更新
-      productsWithLikes.map(async (product) => {
+      productsWithLikes.map(async (product: ProductWithLikesAndLikeSum) => {
         const totalLikes = product.employeeToProductLikes.length;
         const specificId = product.periodLikeSum[0].id;
 

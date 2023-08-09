@@ -91,7 +91,7 @@ model User {
   firebaseUID      String? @unique
   name             String?
   email            String  @unique
-  imageUrl         String? @db.VarChar(2000)
+  imageUrl         String? @db.VarChar(2083)
   age              Int?
   prefecture       String?
   university       String?
@@ -191,7 +191,7 @@ model Corporation {
   sharedPassword        String? @unique
   name                  String?
   email                 String  @unique
-  imageUrl              String?
+  imageUrl              String? @db.VarChar(2083)
   descriptionOfBusiness String? @db.Text()
   location              String?
   phoneNumber           String?
@@ -206,7 +206,7 @@ model Employee {
   corporationId String
   name          String?
   email         String  @unique
-  imageUrl      String? @db.VarChar(2000)
+  imageUrl      String? @db.VarChar(2083)
   introduction  String? @db.VarChar(2000)
   phoneNumber   String?
 
