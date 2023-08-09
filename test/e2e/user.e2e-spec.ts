@@ -1,4 +1,4 @@
-import { Body, INestApplication } from '@nestjs/common';
+import { INestApplication } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { initTest, initTestApplication } from '../init';
 import * as request from 'supertest';
@@ -7,7 +7,6 @@ import { TestUsers } from '../fixture/user';
 import { CreateUserWithEmailInput } from 'src/user/dto/create-user-with-email.input';
 import { UpdateUserInput } from 'src/user/dto/update-user.input';
 import { EXIST_MAIL_ADDRESS } from 'src/common/constants/message';
-import { readFileSync } from 'fs';
 
 initTest();
 
