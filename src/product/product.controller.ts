@@ -20,6 +20,9 @@ import { AuthGuard } from 'src/common/guards/auth.guard';
 import { UpdateProduct } from './use-case/update-product';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CorporateAuthGuard } from 'src/common/guards/corporate-auth.guard';
+import { ProductWithApprovedUserRecruitParticipantsEntity } from './entities/product-with-approved-user-recruit-participants.entity';
+import { FindOneWithApprovedUserRecruitParticipantsService } from './use-case/find-one-with-approved-user-recruit-participants.service';
+import { UserOrCorporateAuthGuard } from 'src/common/guards/user-or-corporate-auth.guard';
 
 @Controller('product')
 export class ProductController {
@@ -28,6 +31,7 @@ export class ProductController {
     private readonly createProduct: CreateProduct,
     private readonly updateProductService: UpdateProduct,
     private readonly userService: UserService,
+    private readonly findOneWithApprovedUserRecruitParticipantsService: FindOneWithApprovedUserRecruitParticipantsService,
   ) {}
 
   @Get()
@@ -62,6 +66,17 @@ export class ProductController {
   @UseGuards(CorporateAuthGuard)
   async findOneByIdAndCorporationAuth(@Param('id') id: string) {
     return await this.productService.findOne(id);
+  }
+
+  // idからproduct一件と、それにひもづくrecruitの確定参加者 (productに関わった人) たちも共に取得
+  @Get('findOne/with-approved-recruit-participant/:id')
+  @UseGuards(UserOrCorporateAuthGuard)
+  async findOneWithApprovedUserRecruitParticipants(
+    @Param('id') id: string,
+  ): Promise<ProductWithApprovedUserRecruitParticipantsEntity> {
+    return await this.findOneWithApprovedUserRecruitParticipantsService.handle(
+      id,
+    );
   }
 
   //情報の編集

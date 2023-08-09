@@ -1,4 +1,4 @@
-import { Comment, Product } from "@prisma/client";
+import { Comment, Product } from '@prisma/client';
 
 export class ProductEntity implements Product {
   id: string;
@@ -8,5 +8,5 @@ export class ProductEntity implements Product {
   detail: string;
   createdAt: Date;
   updatedAt: Date;
-  comment: Comment[];
+  comment?: Comment[];
 }

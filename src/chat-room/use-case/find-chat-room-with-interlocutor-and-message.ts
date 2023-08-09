@@ -9,7 +9,7 @@ import { EmployeeService } from 'src/employee/employee.service';
 import { Employee, User } from '@prisma/client';
 import { UserAuthParam } from 'src/common/decorators/auth.decorator';
 import { CompanyAuthParam } from 'src/common/decorators/company-auth.decorator';
-import { ChatAuthParam } from 'src/common/decorators/chat-atuh.decorator';
+import { UserOrCorporateAuthParam } from 'src/common/decorators/user-or-corporate-atuh.decorator';
 
 @Injectable()
 export class FindManyChatRoomsWithInterlocutorAndMessage {
@@ -22,7 +22,7 @@ export class FindManyChatRoomsWithInterlocutorAndMessage {
   ) {}
 
   async handle(
-    operator: ChatAuthParam,
+    operator: UserOrCorporateAuthParam,
   ): Promise<ChatRoomWithInterlocutorAndMessageEntity[]> {
     const ownParticipants =
       await this.chatRoomParticipantService.findManyByUserIdOrEmployeeId({

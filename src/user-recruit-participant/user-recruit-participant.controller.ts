@@ -52,9 +52,7 @@ export class UserRecruitParticipantController {
 
   //recruitの募集主が拒否した場合にテーブルを破棄する。
   @Delete(':id/reject')
-  async rejectParticipant(
-    @Param('id') id: string
-  ) {
-    return await this.userRecruitParticipantService.rejectParticipant(id)
+  async rejectParticipant(@Param('id') id: string) {
+    return await this.userRecruitParticipantService.rejectParticipant(id);
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ChatRoomParticipantEntity } from '../entities/chat-room-participant.entity';
 import { ChatRoomParticipantService } from '../chat-room-participant.service';
-import { ChatAuthParam } from 'src/common/decorators/chat-atuh.decorator';
+import { UserOrCorporateAuthParam } from 'src/common/decorators/user-or-corporate-atuh.decorator';
 
 @Injectable()
 export class FindChatRoomParticipantByRoomIdAndUserId {
@@ -10,7 +10,7 @@ export class FindChatRoomParticipantByRoomIdAndUserId {
   ) {}
 
   async handle(
-    operator: ChatAuthParam,
+    operator: UserOrCorporateAuthParam,
     roomId: string,
   ): Promise<ChatRoomParticipantEntity> {
     const participant =
