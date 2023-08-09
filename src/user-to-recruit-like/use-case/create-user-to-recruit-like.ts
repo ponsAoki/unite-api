@@ -10,7 +10,7 @@ export class CreateUserToRecruitLike {
     private readonly userToRecruitLikeService: UserToRecruitLikeService
   ) {}
 
-  async handle(userId: string, recruitId: string) {
+  async handle(userId: string, recruitId: string): Promise<void> {
     const user = await this.userService.findByFirebaseUID(userId);
 
     //すでにいいねテーブルを作成していないかチェックする

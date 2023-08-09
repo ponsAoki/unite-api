@@ -20,7 +20,7 @@ export class CreateMyComment {
     await this.checkForComment.handle(input.productId, user.id)
 
     //コメントがなかった場合commentを作成する。
-    const comment = await this.commentService.create({...input, userId: user.id})
+    const comment = await this.commentService.create(input, user.id)
 
     return comment
   }
