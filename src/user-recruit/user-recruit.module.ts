@@ -22,5 +22,6 @@ import { UserRecruitController } from './user-recruit.controller';
     CreateUserRecruit,
     UserService,
   ],
+  exports: [UserRecruitService],
 })
 export class UserRecruitModule {}

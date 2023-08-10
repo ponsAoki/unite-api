@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { CreateUserRecruitParticipantInput } from './dto/create-user-recruit-participant-input';
+import { UserRecruitParticipant } from '@prisma/client';
 
 @Injectable()
 export class UserRecruitParticipantService {
@@ -9,7 +10,9 @@ export class UserRecruitParticipantService {
     return this.prismaService.userRecruitParticipant.findMany();
   }
 
-  findManyByRecruitId(userRecruitId: string) {
+  findManyByRecruitId(
+    userRecruitId: string,
+  ): Promise<UserRecruitParticipant[]> {
     return this.prismaService.userRecruitParticipant.findMany({
       where: { userRecruitId },
       include: { user: true },
@@ -36,7 +39,7 @@ export class UserRecruitParticipantService {
 
   rejectParticipant(id: string) {
     return this.prismaService.userRecruitParticipant.delete({
-      where: { id }
-    })
+      where: { id },
+    });
   }
 }

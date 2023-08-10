@@ -13,18 +13,38 @@ import { CreateUserRecruitParticipantInput } from './dto/create-user-recruit-par
 import { UserRecruitParticipantService } from './user-recruit-participant.service';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { UserService } from 'src/user/user.service';
+import { IsRelatedUserByRecruitIdService } from './use-case/is-related-user-by-recruit-id.service';
+import { UserOrCorporateAuthGuard } from 'src/common/guards/user-or-corporate-auth.guard';
+import {
+  UserOrCorporateAuth,
+  UserOrCorporateAuthParam,
+} from 'src/common/decorators/user-or-corporate-atuh.decorator';
 
 @Controller('user-recruit-participant')
 export class UserRecruitParticipantController {
   constructor(
     private readonly userRecruitParticipantService: UserRecruitParticipantService,
     private readonly userService: UserService,
+    private readonly isRelatedUserByRecruitIdService: IsRelatedUserByRecruitIdService,
   ) {}
 
   @Get()
   findAll() {
     return this.userRecruitParticipantService.findAll();
   }
+
+  @Get('is-related-user-by-recruit-id/:recruitId')
+  @UseGuards(UserOrCorporateAuthGuard)
+  async isRelatedUserByRecruitId(
+    @UserOrCorporateAuth() operator: UserOrCorporateAuthParam,
+    @Param('recruitId') recruitId: string,
+  ): Promise<boolean> {
+    return await this.isRelatedUserByRecruitIdService.handle(
+      operator,
+      recruitId,
+    );
+  }
+
   //一件のrecruitに対する全件取得
   @Post('find-many-by-userRecruit')
   async findManyByUserRecruit(@Body() input: { userRecruitId: string }) {
