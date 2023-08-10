@@ -1,10 +1,9 @@
-import { ConflictException, Injectable, UploadedFile, UseInterceptors } from "@nestjs/common";
-import { FileInterceptor } from "@nestjs/platform-express";
-import * as admin from 'firebase-admin';
+import { Injectable } from "@nestjs/common";
 import { ProductService } from "../product.service";
 import { UploadFileToFirebaseStorage } from "src/common/file/uplpad-fIle-to-firebaseStorage";
 import { FAIL_TO_CREATE_PRODUCT, FAIL_TO_UPLOAD_FIREBASE_STORAGE } from "src/common/constants/message";
 import { DeleteFileToFirebaseStorage } from "src/common/file/delete-file-to-firebase-storage";
+import { createProductInput } from "../dto/create-product-input";
 
 
 @Injectable()
@@ -16,7 +15,7 @@ export class CreateProduct {
   ) {}
 
   async handle(file: Express.Multer.File, rest: any) {
-    let url
+    let url: string
     try {
       url = await this.uploadFileToFirebaseStorageService.handle(file)
     } catch (error) {
@@ -24,7 +23,7 @@ export class CreateProduct {
       throw new Error(FAIL_TO_UPLOAD_FIREBASE_STORAGE);
     }
 
-    const input = {url, ...rest};
+    const input: createProductInput = {url, ...rest};
     try {
       const product = await this.productService.create(input);
       return product

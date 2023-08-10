@@ -1,11 +1,23 @@
-import { IsOptional, IsString } from "class-validator";
+import { IsArray, IsOptional, IsString } from "class-validator";
 
 export class UpdateProductInput {
   @IsString()
   @IsOptional()
-  headline: string;
+  name?: string;
+
+  @IsArray()
+  @IsOptional()
+  skills?: string[];
 
   @IsString()
   @IsOptional()
-  detail: string;
+  reasonForSkillSelection?: string;
+
+  @IsString()
+  @IsOptional()
+  developmentBackground?: string;
+
+  @IsString()
+  @IsOptional()
+  overview?: string;
 }

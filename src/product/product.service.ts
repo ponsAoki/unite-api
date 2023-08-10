@@ -94,7 +94,7 @@ export class ProductService {
     })
   }
 
-  create(input: { recruitId: string, headline: string, detail: string, url: string}): PrismaPromise<Product> {
+  create(input: any): PrismaPromise<Product> {
     return this.prismaService.product.create({
       data: {...input}
     })
