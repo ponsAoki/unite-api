@@ -201,19 +201,35 @@ model Corporation {
 }
 
 model Employee {
-  id            String  @id @default(cuid())
-  firebaseUID   String? @unique
-  corporationId String
-  name          String?
-  email         String  @unique
-  imageUrl      String? @db.VarChar(2083)
-  introduction  String? @db.VarChar(2000)
-  phoneNumber   String?
-
+  id                  String                  @id @default(cuid())
+  firebaseUID         String?                 @unique
+  corporationId       String
+  name                String?
+  email               String                  @unique
+  imageUrl            String?                 @db.VarChar(2000)
+  introduction        String?                 @db.VarChar(2000)
+  phoneNumber         String?
   belongToCorporation Corporation             @relation(fields: [corporationId], references: [id])
   likesForProduct     EmployeeToProductLike[]
   chatParticipants    ChatRoomParticipant[]
   scouts              Scout[]
+}
+
+model Product {
+  id                      String                  @id @default(cuid())
+  recruitId               String                  @unique
+  name                    String
+  skills                  Json
+  reasonForSkillSelection String                  @db.VarChar(1000)
+  developmentBackground   String                  @db.VarChar(1000)
+  overview                String                  @db.VarChar(2000)
+  url                     String                  @db.VarChar(2000)
+  createdAt               DateTime                @default(now())
+  updatedAt               DateTime                @updatedAt
+  comment                 Comment[]
+  employeeToProductLikes  EmployeeToProductLike[]
+  periodLikeSum           PeriodLikeSum[]
+  recruit                 UserRecruit             @relation(fields: [recruitId], references: [id], onDelete: Cascade)
 }
 
 model Scout {
@@ -227,20 +243,6 @@ model Scout {
   user        User        @relation(fields: [userId], references: [id])
   employee    Employee    @relation(fields: [employeeId], references: [id])
   corporation Corporation @relation(fields: [corporationId], references: [id])
-}
-
-model Product {
-  id                     String                  @id @default(cuid())
-  recruitId              String                  @unique
-  headline               String
-  url                    String                  @db.VarChar(2000)
-  detail                 String
-  createdAt              DateTime                @default(now())
-  updatedAt              DateTime                @updatedAt
-  comment                Comment[]
-  employeeToProductLikes EmployeeToProductLike[]
-  periodLikeSum          PeriodLikeSum[]
-  recruit                UserRecruit             @relation(fields: [recruitId], references: [id], onDelete: Cascade)
 }
 
 model Comment {
