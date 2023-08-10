@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsString } from 'class-validator';
 
 export class createProductInput {
   @IsString()
@@ -7,13 +7,21 @@ export class createProductInput {
 
   @IsString()
   @IsNotEmpty()
-  headline!: string;
+  name!: string;
+
+  @IsArray()
+  @IsNotEmpty()
+  skills!: string[]
 
   @IsString()
   @IsNotEmpty()
-  detail!: string;
+  reasonForSkillSelection!: string;
 
   @IsString()
   @IsNotEmpty()
-  url!: string;
+  developmentBackground!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  overview !: string;
 }

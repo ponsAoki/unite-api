@@ -1,12 +1,16 @@
-import { Comment, Product } from '@prisma/client';
+import { Comment, EmployeeToProductLike, Product } from '@prisma/client';
 
 export class ProductEntity implements Product {
   id: string;
   recruitId: string;
-  headline: string;
+  name: string;
+  skills: string[];
+  reasonForSkillSelection: string;
+  developmentBackground: string;
+  overview: string;
   url: string;
-  detail: string;
   createdAt: Date;
   updatedAt: Date;
   comment?: Comment[];
+  employeeToProductLikes?: EmployeeToProductLike[];
 }
