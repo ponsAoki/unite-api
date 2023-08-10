@@ -3,8 +3,8 @@ import { ProductService } from "../product.service";
 import { UploadFileToFirebaseStorage } from "src/common/file/uplpad-fIle-to-firebaseStorage";
 import { FAIL_TO_CREATE_PRODUCT, FAIL_TO_UPLOAD_FIREBASE_STORAGE } from "src/common/constants/message";
 import { DeleteFileToFirebaseStorage } from "src/common/file/delete-file-to-firebase-storage";
-import { createProductInput } from "../dto/create-product-input";
 import { FirebaseAppName } from 'src/common/enums/storage-type';
+import { CreateSystemProductInput } from "../dto/create-system-product-input";
 
 @Injectable()
 export class CreateProduct {
@@ -27,7 +27,7 @@ export class CreateProduct {
       throw new Error(FAIL_TO_UPLOAD_FIREBASE_STORAGE);
     }
 
-    const input: createProductInput = {url, ...rest};
+    const input: CreateSystemProductInput = {url, ...rest};
     try {
       const product = await this.productService.create(input);
       return product;

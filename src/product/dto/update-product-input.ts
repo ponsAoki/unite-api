@@ -20,4 +20,8 @@ export class UpdateProductInput {
   @IsString()
   @IsOptional()
   overview?: string;
+
+  @IsString()
+  @IsOptional()
+  url?: string;
 }

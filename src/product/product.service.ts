@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { PrismaPromise, Product } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { ProductWithLikesAndLikeSum } from './entities/product-with-likes-and-like-sum';
+import { CreateSystemProductInput } from './dto/create-system-product-input';
+import { UpdateProductInput } from './dto/update-product-input';
 
 @Injectable()
 export class ProductService {
@@ -86,7 +88,7 @@ export class ProductService {
 
   update(
     id: string,
-    input: any
+    input: UpdateProductInput
   ): PrismaPromise<Product> {
     return this.prismaService.product.update({
       where: { id },
@@ -94,7 +96,7 @@ export class ProductService {
     })
   }
 
-  create(input: any): PrismaPromise<Product> {
+  create(input: CreateSystemProductInput): PrismaPromise<Product> {
     return this.prismaService.product.create({
       data: {...input}
     })

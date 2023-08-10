@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsString } from 'class-validator';
 
 export class createProductInput {
   @IsString()
@@ -24,8 +24,4 @@ export class createProductInput {
   @IsString()
   @IsNotEmpty()
   overview !: string;
-
-  @IsString()
-  @IsNotEmpty()
-  url?: string;
 }
