@@ -11,9 +11,11 @@ import { UploadFileToFirebaseStorage } from 'src/common/file/uplpad-fIle-to-fire
 import { EmployeeService } from 'src/employee/employee.service';
 import { DeleteFileToFirebaseStorage } from 'src/common/file/delete-file-to-firebase-storage';
 import { CorporationModule } from 'src/corporation/corporation.module';
+import { FindOneWithApprovedUserRecruitParticipantsService } from './use-case/find-one-with-approved-user-recruit-participants.service';
+import { UserRecruitParticipantModule } from 'src/user-recruit-participant/user-recruit-participant.module';
 
 @Module({
-  imports: [CorporationModule],
+  imports: [CorporationModule, UserRecruitParticipantModule],
   controllers: [ProductController],
   providers: [
     PrismaService,
@@ -26,6 +28,7 @@ import { CorporationModule } from 'src/corporation/corporation.module';
     UserService,
     UploadFileToFirebaseStorage,
     EmployeeService,
+    FindOneWithApprovedUserRecruitParticipantsService,
   ],
 })
 export class ProductModule {}

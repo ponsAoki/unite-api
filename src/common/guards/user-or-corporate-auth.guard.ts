@@ -12,7 +12,7 @@ import { Request } from 'express';
 import { CorporationService } from 'src/corporation/corporation.service';
 
 @Injectable()
-export class ChatAuthGuard implements CanActivate {
+export class UserOrCorporateAuthGuard implements CanActivate {
   private request: Request;
 
   constructor(

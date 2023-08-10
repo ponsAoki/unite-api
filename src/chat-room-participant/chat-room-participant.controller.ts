@@ -1,11 +1,11 @@
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { ChatRoomParticipantEntity } from './entities/chat-room-participant.entity';
 import { FindChatRoomParticipantByRoomIdAndUserId } from './use-case/find-chat-room-participant-by-room-id-and-user-id';
-import { ChatAuthGuard } from 'src/common/guards/chat-auth.guard';
+import { UserOrCorporateAuthGuard } from 'src/common/guards/user-or-corporate-auth.guard';
 import {
-  ChatAuth,
-  ChatAuthParam,
-} from 'src/common/decorators/chat-atuh.decorator';
+  UserOrCorporateAuth,
+  UserOrCorporateAuthParam,
+} from 'src/common/decorators/user-or-corporate-atuh.decorator';
 
 @Controller('chat-room-participant')
 export class ChatRoomParticipantController {
@@ -14,9 +14,9 @@ export class ChatRoomParticipantController {
   ) {}
 
   @Get(':roomId')
-  @UseGuards(ChatAuthGuard)
+  @UseGuards(UserOrCorporateAuthGuard)
   async findByRoomIdAndUserId(
-    @ChatAuth() operator: ChatAuthParam,
+    @UserOrCorporateAuth() operator: UserOrCorporateAuthParam,
     @Param('roomId') roomId: string,
   ): Promise<ChatRoomParticipantEntity> {
     return await this.findChatRoomParticipantByRoomIdAndUserId.handle(

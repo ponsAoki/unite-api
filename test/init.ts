@@ -19,8 +19,8 @@ import { DeleteFileToFirebaseStorage } from 'src/common/file/delete-file-to-fire
 import { DeleteFileToFirebaseStorageMock } from './mock/delete-file-from-firebase-strage.mock';
 import { UploadFileToFirebaseStorage } from 'src/common/file/uplpad-fIle-to-firebaseStorage';
 import { UploadFileToFirebaseStorageMock } from './mock/upload-file-service.mock';
-import { ChatAuthGuard } from 'src/common/guards/chat-auth.guard';
-import { ChatAuthGuardMock } from './mock/chat/chat-auth.guard.mock';
+import { UserOrCorporateAuthGuard } from 'src/common/guards/user-or-corporate-auth.guard';
+import { UserOrCorporateAuthGuardMock } from './mock/common/user-or-corporate-auth.guard.mock';
 
 export const initTest = (): void => {
   dotenv.config({ path: __dirname + '/../.env.e2e', override: true });
@@ -48,8 +48,8 @@ export const initTestApplication = async () => {
     .useClass(AuthGuardMock)
     .overrideGuard(CorporateAuthGuard)
     .useClass(CorporateAuthGuardMock)
-    .overrideGuard(ChatAuthGuard)
-    .useClass(ChatAuthGuardMock);
+    .overrideGuard(UserOrCorporateAuthGuard)
+    .useClass(UserOrCorporateAuthGuardMock);
 
   const moduleFixture: TestingModule = await testingModuleBuilder.compile();
 
