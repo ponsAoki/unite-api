@@ -1,6 +1,6 @@
 import { ExecutionContext } from '@nestjs/common';
 
-export class ChatAuthGuardMock {
+export class UserOrCorporateAuthGuardMock {
   canActivate(ctx: ExecutionContext): boolean {
     const req = ctx.switchToHttp().getRequest();
 
