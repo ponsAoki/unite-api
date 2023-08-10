@@ -4,24 +4,31 @@ import { UserService } from 'src/user/user.service';
 import { ChatRoomParticipantService } from 'src/chat-room-participant/chat-room-participant.service';
 import { ChatRoomService } from '../chat-room.service';
 import { ChatRoomMessageService } from 'src/chat-room-message/chat-room-message.service';
+import { ChatSenderInput } from 'src/chat-event/dto/chat-sender.input';
+import { EmployeeService } from 'src/employee/employee.service';
+import { Employee, User } from '@prisma/client';
+import { UserAuthParam } from 'src/common/decorators/auth.decorator';
+import { CompanyAuthParam } from 'src/common/decorators/company-auth.decorator';
+import { ChatAuthParam } from 'src/common/decorators/chat-atuh.decorator';
 
 @Injectable()
 export class FindManyChatRoomsWithInterlocutorAndMessage {
   constructor(
-    private readonly userService: UserService,
     private readonly chatRoomParticipantService: ChatRoomParticipantService,
     private readonly chatRoomService: ChatRoomService,
+    private readonly userService: UserService,
+    private readonly employeeService: EmployeeService,
     private readonly chatRoomMessageService: ChatRoomMessageService,
   ) {}
 
   async handle(
-    firebaseUid: string,
+    operator: ChatAuthParam,
   ): Promise<ChatRoomWithInterlocutorAndMessageEntity[]> {
-    const operatorUser = await this.userService.findByFirebaseUID(firebaseUid);
-    if (!operatorUser) throw new Error('operator user not found');
-
     const ownParticipants =
-      await this.chatRoomParticipantService.findManyByUserId(operatorUser.id);
+      await this.chatRoomParticipantService.findManyByUserIdOrEmployeeId({
+        userId: operator.user?.id,
+        employeeId: operator.employee?.id,
+      });
 
     return await Promise.all(
       ownParticipants
@@ -30,16 +37,27 @@ export class FindManyChatRoomsWithInterlocutorAndMessage {
           if (!room) return;
 
           const interlocutor =
-            await this.chatRoomParticipantService.findInterlocutor(
-              room.id,
-              operatorUser.id,
-            );
+            await this.chatRoomParticipantService.findInterlocutor(room.id, {
+              userId: participant.userId,
+              employeeId: participant.employeeId,
+            });
           if (!interlocutor) return;
 
-          const interlocutorUser = await this.userService.find(
-            interlocutor.userId,
-          );
-          if (!interlocutorUser) return;
+          let interlocutorInfo: User | Employee;
+          switch (true) {
+            case !!interlocutor.userId:
+              interlocutorInfo = await this.userService.find(
+                interlocutor.userId,
+              );
+              break;
+            case !!interlocutor.employeeId:
+              interlocutorInfo = await this.employeeService.find(
+                interlocutor.employeeId,
+              );
+              break;
+            default:
+              return;
+          }
 
           const messages = await this.chatRoomMessageService.findManyByRoomId(
             room.id,
@@ -50,8 +68,8 @@ export class FindManyChatRoomsWithInterlocutorAndMessage {
 
           return {
             ...room,
-            interlocutorName: interlocutorUser.name,
-            interlocutorImageUrl: interlocutorUser.imageUrl,
+            interlocutorName: interlocutorInfo.name,
+            interlocutorImageUrl: interlocutorInfo.imageUrl,
             latestMessage: latestMessage.content,
             lastDate,
           };

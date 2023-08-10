@@ -87,20 +87,21 @@ model InternshipExperience {
 }
 
 model User {
-  id                      String                   @id @default(cuid())
-  firebaseUID             String?                  @unique
-  name                    String?
-  email                   String                   @unique
-  imageUrl                String?                  @db.VarChar(2000)
-  age                     Int?
-  prefecture              String?
-  university              String?
-  undergraduate           String?
-  selfPublicity           String?
-  careerVision            String?
-  graduateYear            String?
-  githubAccount           String?
-  programingSkills        Json?
+  id               String  @id @default(cuid())
+  firebaseUID      String? @unique
+  name             String?
+  email            String  @unique
+  imageUrl         String? @db.VarChar(2083)
+  age              Int?
+  prefecture       String?
+  university       String?
+  undergraduate    String?
+  selfPublicity    String?
+  careerVision     String?
+  graduateYear     String?
+  githubAccount    String?
+  programingSkills Json?
+
   developmentExperience   DevelopmentExperience?
   internshipExperience    InternshipExperience?
   userRecruitParticipant  UserRecruitParticipant[]
@@ -109,6 +110,7 @@ model User {
   userRecruitApplications UserRecruitApplication[]
   chatParticipants        ChatRoomParticipant[]
   userToRecruitLike       UserToRecruitLike[]
+  scouts                  Scout[]
 }
 
 model UserRecruitApplication {
@@ -161,12 +163,14 @@ model ChatRoom {
 }
 
 model ChatRoomParticipant {
-  id     String  @id @default(cuid())
-  roomId String
-  userId String?
+  id         String  @id @default(cuid())
+  roomId     String
+  userId     String?
+  employeeId String?
 
   room     ChatRoom          @relation(fields: [roomId], references: [id])
   user     User?             @relation(fields: [userId], references: [id])
+  employee Employee?         @relation(fields: [employeeId], references: [id])
   messages ChatRoomMessage[]
 }
 
@@ -183,15 +187,17 @@ model ChatRoomMessage {
 }
 
 model Corporation {
-  id                    String     @id @default(cuid())
-  sharedPassword        String?    @unique
+  id                    String  @id @default(cuid())
+  sharedPassword        String? @unique
   name                  String?
-  email                 String     @unique
-  imageUrl              String?
-  descriptionOfBusiness String?    @db.Text()
+  email                 String  @unique
+  imageUrl              String? @db.VarChar(2083)
+  descriptionOfBusiness String? @db.Text()
   location              String?
   phoneNumber           String?
-  employees             Employee[]
+
+  employees Employee[]
+  scouts    Scout[]
 }
 
 model Employee {
@@ -203,8 +209,10 @@ model Employee {
   imageUrl            String?                 @db.VarChar(2000)
   introduction        String?                 @db.VarChar(2000)
   phoneNumber         String?
-  likesForProduct     EmployeeToProductLike[]
   belongToCorporation Corporation             @relation(fields: [corporationId], references: [id])
+  likesForProduct     EmployeeToProductLike[]
+  chatParticipants    ChatRoomParticipant[]
+  scouts              Scout[]
 }
 
 model Product {
@@ -222,6 +230,19 @@ model Product {
   employeeToProductLikes  EmployeeToProductLike[]
   periodLikeSum           PeriodLikeSum[]
   recruit                 UserRecruit             @relation(fields: [recruitId], references: [id], onDelete: Cascade)
+}
+
+model Scout {
+  id            String   @id @default(cuid())
+  userId        String
+  employeeId    String
+  corporationId String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user        User        @relation(fields: [userId], references: [id])
+  employee    Employee    @relation(fields: [employeeId], references: [id])
+  corporation Corporation @relation(fields: [corporationId], references: [id])
 }
 
 model Comment {

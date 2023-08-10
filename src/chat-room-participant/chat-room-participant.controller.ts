@@ -1,8 +1,11 @@
 import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { ChatRoomParticipantEntity } from './entities/chat-room-participant.entity';
-import { FirebaseAuth } from 'src/common/decorators/auth.decorator';
 import { FindChatRoomParticipantByRoomIdAndUserId } from './use-case/find-chat-room-participant-by-room-id-and-user-id';
-import { AuthGuard } from 'src/common/guards/auth.guard';
+import { ChatAuthGuard } from 'src/common/guards/chat-auth.guard';
+import {
+  ChatAuth,
+  ChatAuthParam,
+} from 'src/common/decorators/chat-atuh.decorator';
 
 @Controller('chat-room-participant')
 export class ChatRoomParticipantController {
@@ -11,13 +14,13 @@ export class ChatRoomParticipantController {
   ) {}
 
   @Get(':roomId')
-  @UseGuards(AuthGuard)
+  @UseGuards(ChatAuthGuard)
   async findByRoomIdAndUserId(
-    @FirebaseAuth() authUser: any,
+    @ChatAuth() operator: ChatAuthParam,
     @Param('roomId') roomId: string,
   ): Promise<ChatRoomParticipantEntity> {
     return await this.findChatRoomParticipantByRoomIdAndUserId.handle(
-      authUser.uid,
+      operator,
       roomId,
     );
   }

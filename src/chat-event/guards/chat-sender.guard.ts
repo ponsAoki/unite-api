@@ -80,7 +80,7 @@ export class ChatSenderGuard implements CanActivate {
       userId: user.id,
     };
     const participant =
-      await this.chatRoomParticipantService.findByRoomIdAndUserId(
+      await this.chatRoomParticipantService.findByRoomIdAndUserIdOrEmployeeId(
         chatRoomParticipantInput,
       );
     if (!participant) {
@@ -101,8 +101,20 @@ export class ChatSenderGuard implements CanActivate {
       throw new UnauthorizedException('employee not found');
     }
 
-    //TODO: ChatRoomParticipantをemployeeとも関連付け、employeeIdとroomIdからparticipantを取得するメソッドをここで呼ぶ
+    const chatRoomParticipantInput: ChatRoomParticipantInput = {
+      roomId: this.messageBody.roomId,
+      employeeId: employee.id,
+    };
+    const participant =
+      await this.chatRoomParticipantService.findByRoomIdAndUserIdOrEmployeeId(
+        chatRoomParticipantInput,
+      );
+    if (!participant) {
+      throw new ForbiddenException('participant not found');
+    }
 
-    return !!employee;
+    client['sender'] = { participant, employee };
+
+    return !!participant;
   }
 }

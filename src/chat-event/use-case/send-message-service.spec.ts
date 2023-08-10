@@ -28,7 +28,7 @@ describe('SendMessageService Service', () => {
       module.get<SendMessageService>(SendMessageService);
   });
 
-  it('チャットメッセージの保存とクライエントへの送信のユースケースが成功すること', async () => {
+  it('学生ユーザーからのチャットメッセージの保存とクライエントへの送信のユースケースが成功すること', async () => {
     const senderParticipantId = 'chatRoomParticipantId0';
     const roomId = 'chatRoomId0';
     const senderUserId = 'userId0';
@@ -39,6 +39,7 @@ describe('SendMessageService Service', () => {
         id: senderParticipantId,
         roomId,
         userId: senderUserId,
+        employeeId: null,
       },
       user: {
         id: senderUserId,
@@ -82,6 +83,58 @@ describe('SendMessageService Service', () => {
       senderId: sender.participant.id,
       senderName: sender.user.name,
       senderImage: sender.user.imageUrl,
+    });
+  });
+
+  it('企業従業員からのチャットメッセージの保存とクライエントへの送信のユースケースが成功すること', async () => {
+    const senderParticipantId = 'chatRoomParticipantId0';
+    const roomId = 'chatRoomId0';
+    const senderEmployeeId = 'employeeId0';
+    const message = 'test message';
+
+    const sender: ChatSenderInput = {
+      participant: {
+        id: senderParticipantId,
+        roomId,
+        userId: null,
+        employeeId: senderEmployeeId,
+      },
+      employee: {
+        id: senderEmployeeId,
+        firebaseUID: 'firebaseUid0',
+        corporationId: 'corporationId0',
+        name: 'name0',
+        email: 'test0@test.com',
+        imageUrl: 'imageUrl0',
+        introduction: 'introduction0',
+        phoneNumber: '000-000-000',
+      },
+    };
+    const input: ChatMessageInput = {
+      message,
+      roomId,
+    };
+
+    chatRoomMessageService.create = jest.fn().mockResolvedValue({
+      content: message,
+      roomId,
+      senderId: senderParticipantId,
+    });
+
+    expect(sendMessageSerSendMessageService.handle(server, sender, input))
+      .resolves;
+
+    const resMessage = await sendMessageSerSendMessageService.handle(
+      server,
+      sender,
+      input,
+    );
+    expect(resMessage).toMatchObject({
+      content: input.message,
+      roomId: input.roomId,
+      senderId: sender.participant.id,
+      senderName: sender.employee.name,
+      senderImage: sender.employee.imageUrl,
     });
   });
 });

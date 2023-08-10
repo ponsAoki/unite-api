@@ -9,6 +9,7 @@ export class TestChatRoomParticipants {
         id: `chatRoomParticipantId${n}`,
         roomId: `chatRoomId${n}`,
         userId: `userId${n}`,
+        employeeId: `employeeId${n}`,
       };
     });
   }

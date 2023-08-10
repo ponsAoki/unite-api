@@ -24,8 +24,8 @@ export class SendMessageService {
 
     const resMessage = {
       ...message,
-      senderName: sender.user.name,
-      senderImage: sender.user.imageUrl,
+      senderName: sender.user?.name ?? sender.employee?.name,
+      senderImage: sender.user?.imageUrl ?? sender.employee?.imageUrl,
     };
 
     server.emit('toClient', resMessage);
