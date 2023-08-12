@@ -1,74 +1,112 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# unite-api (「UNITE」の API リポジトリ)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## 環境構築
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+### Docker インストール (していない場合)
 
-## Description
+下記のドキュメントなどを参考に Docker デスクトップというアプリを PC 上にインストールお願いします。
+https://docs.docker.com/desktop/install/mac-install/  
+(「Docker Desktop for (OS 名)」ボタンを押して手順に沿ってインストールできると思います。)  
+https://docs.docker.jp/docker-for-mac/install.html (mac)  
+https://docs.docker.jp/desktop/windows/wsl.html (windows (WSL))
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+ターミナルを開いて、
 
-## Installation
-
-```bash
-$ npm install
+```
+docker -v
 ```
 
-## Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+```
+docker compose
 ```
 
-## Test
+などと打ってバージョン名やオプション一覧が出てきたら、無事インストールなど完了していると思います！
 
-```bash
-# unit tests
-$ npm run test
+### リポジトリクローン
 
-# e2e tests
-$ npm run test:e2e
+このリポジトリのクローンをお願いします。  
+(クローンの方法がわからない場合: https://docs.github.com/ja/repositories/creating-and-managing-repositories/cloning-a-repository)
 
-# test coverage
-$ npm run test:cov
+### コンテナのビルドや npm パッケージインストール
+
+ターミナルで (クローンしたプロジェクトのルートディレクトリで)、
+
+```
+docker compose up -d
 ```
 
-## Support
+```
+npm i
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+の２コマンドを打てば基本的に大丈夫だと思います。
 
-## Stay in touch
+### 動かしてみる
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+ターミナルで以下のコマンドを実行してみてください。  
+・データベースのマイグレーション
 
-## License
+```
+npm run migrate
+```
 
-Nest is [MIT licensed](LICENSE).
-# unite-api
+・prisma のインスタンス生成
+
+```
+npm run generate
+```
+
+※ 上記 2 つのコマンドは最新のブランチを取り込んだ際などにも必要に応じて実行してください。
+
+・サーバーを起動してみる
+
+```
+npm run start
+```
+
+もしくは、ホットリロード可能な下記コマンドがおすすめ
+
+```
+npm run start:debug
+```
+
+### test してみる
+
+・まずは、テスト用の DB のマイグレーションのために以下を実行ください。
+
+```
+npm run migrate:e2e
+```
+
+・e2e テスト
+
+```
+npm run test:e2e [テストファイル名を指定してもOK]
+```
+
+・unit テスト
+
+```
+npm run test:unit
+```
+
+...環境構築は以上で大体終了です。ざっくり書いているので、わからないところや不備がありましたらなんでもお聞きください 🙇
+
+## 技術構成
+
+NestJS / Prisma / MySQL / Docker / Railway (ホスティング)
+
+## 設計・アーキテクチャ
+
+設計は DDD (ドメイン駆動設計) を意識。(実践できていない点や適切でない点も多々あると思うので、知見のある方は遠慮なくご指摘いただけると幸いです 🙇)  
+アーキテクチャは特に意識していないが、クリーンアーキテクチャ・レイヤードアーキテクチャあたりが近いのかも知れない
+
+## リファレンス
+
+### 公式ドキュメント
+
+NestJS: https://docs.nestjs.com/  
+Prisma: https://www.prisma.io/docs  
+MySQL: https://dev.mysql.com/doc/  
+Docker: https://docs.docker.com/  
+Railway: https://docs.railway.app/
