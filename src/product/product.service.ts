@@ -29,6 +29,35 @@ export class ProductService {
     })
   }
 
+  findOneWithRecruiterAndUsers(id) {
+    return this.prismaService.product.findUnique({
+      where: { id },
+      include: {
+        recruit: {
+          select: {
+            recruiter: {
+              select: {
+                name: true,
+                imageUrl: true
+              }
+            },
+            userRecruitParticipant: {
+              select: {
+                user: {
+                  select: {
+                    name: true,
+                    imageUrl: true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+  
+
   findOne(id: string) {
     return this.prismaService.product.findUnique({
       where: { id },
@@ -43,7 +72,6 @@ export class ProductService {
     });
   }
 
-  //リファクタ->もっとマシな書き方あるはず(そもそもテーブル設計がいけてないちゃんと学ぶ)
   findMyProducts(id: string): PrismaPromise<Product[]> {
     const myProducts = this.prismaService.product.findMany({
       where: {

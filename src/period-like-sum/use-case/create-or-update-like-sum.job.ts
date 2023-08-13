@@ -26,7 +26,7 @@ export class CreateOrUpdateLikeSumJob {
       //LikeSumが存在しない為新しくテーブル作成する。存在しない場合は更新
       productsWithLikes.map(async (product: ProductWithLikesAndLikeSum) => {
         const totalLikes = product.employeeToProductLikes.length;
-        const specificId = product.periodLikeSum[0].id;
+        const specificId = product.periodLikeSum[0]?.id ?? '';
 
         await this.periodLikeSumService.upsert(product.id, totalLikes, specificId);
       })

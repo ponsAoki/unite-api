@@ -9,19 +9,42 @@ export class PeriodLikeSumService {
     private readonly prismaService: PrismaService
   ) {}
 
-  //昇順にソートする
   @Cron('0 0 */12 * * *')
-  findAllToSortByFixedTime(): PrismaPromise<PeriodLikeSum[]> {
+  findTenToSortByFixedTime() {
     return this.prismaService.periodLikeSum.findMany({
       take: 10,
       orderBy: {
         likesCount: 'desc'
-      },
-      include: {
-        product: true,
       }
-    })
+    });
   }
+
+  //昇順にソートする
+  // @Cron('0 0 */12 * * *')
+  // findAllToSortByFixedTime(): PrismaPromise<PeriodLikeSum[]> {
+  //   return this.prismaService.periodLikeSum.findMany({
+  //     take: 10,
+  //     orderBy: {
+  //       likesCount: 'desc'
+  //     },
+  //     include: {
+  //       product: {
+  //         include: {
+  //           recruit: {
+  //             include: {
+  //               recruiter: true,
+  //               userRecruitParticipant: {
+  //                 include: {
+  //                   user: true
+  //                 }
+  //               },
+  //             }
+  //           },
+  //         }
+  //       },
+  //     }
+  //   })
+  // }
 
   //更新or新規作成
   upsert( productId: string, totalLikes: number, id?: string,) {
