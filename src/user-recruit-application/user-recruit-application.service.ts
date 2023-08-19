@@ -11,6 +11,18 @@ export class UserRecruitApplicationService {
     return this.prismaService.userRecruitApplication.findMany();
   }
 
+  findByApplicantIdAndRecruitId(
+    applicantId: string,
+    recruitId: string,
+  ): PrismaPromise<UserRecruitApplication> {
+    return this.prismaService.userRecruitApplication.findFirst({
+      where: {
+        applicantId,
+        recruitId,
+      },
+    });
+  }
+
   create(
     input: CreateUserRecruitApplicationInput & { applicantId: string },
   ): PrismaPromise<UserRecruitApplication> {

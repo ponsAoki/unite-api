@@ -1,4 +1,4 @@
-import { INestApplication } from '@nestjs/common';
+import { HttpStatus, INestApplication } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { initTest, initTestApplication } from '../init';
 import * as request from 'supertest';
@@ -26,10 +26,36 @@ describe('UserRecruitApplication API', () => {
   });
 
   const createThisTestData = async (): Promise<void> => {
-    const { createUsers, createUserRecruits } = createTestData(prisma);
+    const { createUsers, createUserRecruits, createUserRecruitApplications } =
+      createTestData(prisma);
     await createUsers();
     await createUserRecruits();
+    await createUserRecruitApplications();
   };
+
+  describe('GET /user-recruit-application/find-by-applicant-id-and-recruit-id/:recruitId', () => {
+    beforeEach(async () => {
+      await createThisTestData();
+    });
+
+    it('userIdとrecruitIdによる応募情報の取得に成功する', async () => {
+      const recruitId = 'userRecruitId0';
+      await request(app.getHttpServer())
+        .get(
+          `/user-recruit-application/find-by-applicant-id-and-recruit-id/${recruitId}`,
+        )
+        .then(async (res) => {
+          expect(res.error).toBeFalsy();
+          expect(res.status).toBe(HttpStatus.OK);
+
+          expect(res.body).toMatchObject({
+            id: 'userRecruitApplicationId0',
+            applicantId: 'userId0',
+            recruitId,
+          });
+        });
+    });
+  });
 
   describe('POST /user-recruit-application', () => {
     beforeEach(async () => {
@@ -39,7 +65,7 @@ describe('UserRecruitApplication API', () => {
     it('応募に対するユーザーの「話を聞きたい」アクションが成功する', async () => {
       const senderUserId = 'userId0';
       const recipientUserId = 'userId1';
-      const recruitId = 'userRecruitId0';
+      const recruitId = 'userRecruitId1';
 
       await prisma.userRecruit.update({
         where: { id: recruitId },
@@ -59,7 +85,7 @@ describe('UserRecruitApplication API', () => {
         .send(input)
         .then(async (res) => {
           expect(res.error).toBeFalsy();
-          expect(res.status).toBe(201);
+          expect(res.status).toBe(HttpStatus.CREATED);
 
           const resData = res.body;
           expect(resData).toMatchObject({
