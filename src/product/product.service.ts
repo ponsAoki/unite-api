@@ -42,6 +42,9 @@ export class ProductService {
               }
             },
             userRecruitParticipant: {
+              where: {
+                isApproved: true
+              },
               select: {
                 user: {
                   select: {
