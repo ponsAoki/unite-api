@@ -29,38 +29,6 @@ export class ProductService {
     })
   }
 
-  findOneWithRecruiterAndUsers(id) {
-    return this.prismaService.product.findUnique({
-      where: { id },
-      include: {
-        recruit: {
-          select: {
-            recruiter: {
-              select: {
-                name: true,
-                imageUrl: true
-              }
-            },
-            userRecruitParticipant: {
-              where: {
-                isApproved: true
-              },
-              select: {
-                user: {
-                  select: {
-                    name: true,
-                    imageUrl: true
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    });
-  }
-  
-
   findOne(id: string) {
     return this.prismaService.product.findUnique({
       where: { id },
