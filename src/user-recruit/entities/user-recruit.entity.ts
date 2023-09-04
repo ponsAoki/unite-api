@@ -1,4 +1,4 @@
-import { Prisma, Product, UserRecruit } from '@prisma/client';
+import { Prisma, Product, User, UserRecruit, UserRecruitParticipant } from '@prisma/client';
 
 export class UserRecruitEntity implements UserRecruit {
   id: string;
@@ -12,6 +12,7 @@ export class UserRecruitEntity implements UserRecruit {
   developmentPeriod: string;
   hackathonUrl: string;
   numberOfApplicants: string;
-  recruiter?: string;
+  recruiter?: User;
   product?: Product;
+  userRecruitParticipant?: UserRecruitParticipant;
 }

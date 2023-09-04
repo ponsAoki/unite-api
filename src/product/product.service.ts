@@ -43,7 +43,6 @@ export class ProductService {
     });
   }
 
-  //リファクタ->もっとマシな書き方あるはず(そもそもテーブル設計がいけてないちゃんと学ぶ)
   findMyProducts(id: string): PrismaPromise<Product[]> {
     const myProducts = this.prismaService.product.findMany({
       where: {
