@@ -1,8 +1,7 @@
-import { UserToRecruitLike } from "@prisma/client";
-
+import { UserToRecruitLike } from '@prisma/client';
 
 export class UserToRecruitLikeEntity implements UserToRecruitLike {
-  id: string
+  id: string;
   userId: string;
   recruitId: string;
 }

@@ -7,9 +7,7 @@ import { UpdateProductInput } from './dto/update-product-input';
 
 @Injectable()
 export class ProductService {
-  constructor(
-    private readonly prismaService: PrismaService,
-  ) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   findMany(): PrismaPromise<Product[]> {
     return this.prismaService.product.findMany({
@@ -20,13 +18,13 @@ export class ProductService {
             recruiter: true,
             userRecruitParticipant: {
               include: {
-                user: true
-              }
+                user: true,
+              },
             },
-          }
+          },
         },
-      }
-    })
+      },
+    });
   }
 
   findOne(id: string) {
@@ -35,11 +33,11 @@ export class ProductService {
       include: {
         comment: {
           include: {
-            user: true
-          }
+            user: true,
+          },
         },
         employeeToProductLikes: true,
-      }
+      },
     });
   }
 
@@ -48,14 +46,14 @@ export class ProductService {
     const myProducts = this.prismaService.product.findMany({
       where: {
         recruit: {
-          recruiterId: id
-        }
+          recruiterId: id,
+        },
       },
       include: {
-        comment: true
-      }
-    })
-    return myProducts
+        comment: true,
+      },
+    });
+    return myProducts;
   }
 
   findRelatedProducts(id: string): PrismaPromise<Product[]> {
@@ -64,41 +62,37 @@ export class ProductService {
         recruit: {
           userRecruitParticipant: {
             some: {
-              userId: id
-            }
-          }
-        }
-      }
-    })
+              userId: id,
+            },
+          },
+        },
+      },
+    });
   }
 
   //いいねを含む募集を全件取得
   findAllIncludeLikes(): PrismaPromise<ProductWithLikesAndLikeSum[]> {
     return this.prismaService.product.findMany({
       where: {
-        employeeToProductLikes: {}
+        employeeToProductLikes: {},
       },
       include: {
         employeeToProductLikes: true,
-        periodLikeSum: true
+        periodLikeSum: true,
       },
-    })
+    });
   }
 
-
-  update(
-    id: string,
-    input: UpdateProductInput
-  ): PrismaPromise<Product> {
+  update(id: string, input: UpdateProductInput): PrismaPromise<Product> {
     return this.prismaService.product.update({
       where: { id },
-      data: input
-    })
+      data: input,
+    });
   }
 
   create(input: CreateSystemProductInput): PrismaPromise<Product> {
     return this.prismaService.product.create({
-      data: {...input}
-    })
+      data: { ...input },
+    });
   }
 }

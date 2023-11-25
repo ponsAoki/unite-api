@@ -1,4 +1,4 @@
-import { Employee } from "@prisma/client";
+import { Employee } from '@prisma/client';
 
 export class TestEmployee {
   create(num = 10): Employee[] {
@@ -13,8 +13,8 @@ export class TestEmployee {
         email: `test${n}@gmail.com`,
         imageUrl: `imageURL${n}`,
         introduction: `introduction${n}`,
-        phoneNumber: `090-${n}-${n}`
-      }
-    })
+        phoneNumber: `090-${n}-${n}`,
+      };
+    });
   }
 }

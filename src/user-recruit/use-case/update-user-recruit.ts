@@ -21,9 +21,15 @@ export class UpdateUserRecruit {
     const user = await this.userService.findByFirebaseUID(recruiterFirebaseUID);
     if (!user) throw new ForbiddenException('募集を作成する権限がありません。');
 
+    const { numberOfApplicants: stringApplicants, ...rest } = input;
+    const numberOfApplicants = Number(stringApplicants);
+
     //更新しようとしている募集が操作ユーザーが作成したものかチェック
     await this.manipulateUserRecruitPolicy.handle(id, user.id);
 
-    return await this.userRecruitService.update(id, input);
+    return await this.userRecruitService.update(id, {
+      numberOfApplicants,
+      ...rest,
+    });
   }
 }

@@ -17,7 +17,12 @@ export class CreateUserRecruit {
   ): Promise<UserRecruitEntity> {
     const user = await this.userService.findByFirebaseUID(recruiterFirebaseUID);
     if (!user) throw new ForbiddenException('募集を作成する権限がありません。');
+    const { numberOfApplicants: stringApplicants, ...rest } = input;
+    const numberOfApplicants = Number(stringApplicants);
 
-    return await this.userRecruitService.create(user.id, input);
+    return await this.userRecruitService.create(user.id, {
+      ...rest,
+      numberOfApplicants,
+    });
   }
 }

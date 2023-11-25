@@ -5,9 +5,7 @@ import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class PeriodLikeSumService {
-  constructor(
-    private readonly prismaService: PrismaService
-  ) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   //昇順にソートする
   @Cron('0 0 */12 * * *')
@@ -15,26 +13,25 @@ export class PeriodLikeSumService {
     return this.prismaService.periodLikeSum.findMany({
       take: 10,
       orderBy: {
-        likesCount: 'desc'
+        likesCount: 'desc',
       },
       include: {
         product: true,
-      }
-    })
+      },
+    });
   }
 
   //更新or新規作成
-  upsert( productId: string, totalLikes: number, id?: string,) {
+  upsert(productId: string, totalLikes: number, id?: string) {
     return this.prismaService.periodLikeSum.upsert({
-      where: {id},
+      where: { id },
       update: {
-        likesCount: totalLikes
+        likesCount: totalLikes,
       },
       create: {
         productId,
         likesCount: totalLikes,
-      }
-    })
+      },
+    });
   }
 }
-

@@ -1,10 +1,10 @@
-import { INestApplication } from "@nestjs/common";
-import { PrismaService } from "src/prisma.service";
+import { INestApplication } from '@nestjs/common';
+import { PrismaService } from 'src/prisma.service';
 
-import { initTest, initTestApplication } from "../init";
+import { initTest, initTestApplication } from '../init';
 import * as request from 'supertest';
 import { createTestData, deleteAllTable } from '../fixture-handler';
-import { CreateUserToRecruitLikeInput } from "src/user-to-recruit-like/dto/create-user-to-recruit-like";
+import { CreateUserToRecruitLikeInput } from 'src/user-to-recruit-like/dto/create-user-to-recruit-like';
 
 initTest();
 
@@ -13,7 +13,7 @@ describe('UserToRecruitLike API', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
-    ({ app, prismaService: prisma} = await initTestApplication());
+    ({ app, prismaService: prisma } = await initTestApplication());
   });
 
   afterAll(async () => {
@@ -25,8 +25,9 @@ describe('UserToRecruitLike API', () => {
     await deleteAllTable(prisma);
   });
 
-  const createThisTestData =async (): Promise<void> => {
-    const { createUsers, createUserRecruits, createUserToRecruitLikes } = createTestData(prisma);
+  const createThisTestData = async (): Promise<void> => {
+    const { createUsers, createUserRecruits, createUserToRecruitLikes } =
+      createTestData(prisma);
     await createUsers();
     await createUserRecruits();
     await createUserToRecruitLikes();
@@ -37,45 +38,45 @@ describe('UserToRecruitLike API', () => {
       await createThisTestData();
     });
 
-    it('募集に対してユーザーがいいねを押すことに成功する',async () => {
+    it('募集に対してユーザーがいいねを押すことに成功する', async () => {
       const input: CreateUserToRecruitLikeInput = {
         recruitId: 'userRecruitId1',
-      }
+      };
       await request(app.getHttpServer())
         .post('/user-to-recruit-like')
         .send(input)
         .then((res) => {
           expect(res.error).toBeFalsy();
           expect(res.status).toBe(201);
-        })
-    })
+        });
+    });
 
-    it('募集に対してユーザーがいいねを押すことに失敗する',async () => {
+    it('募集に対してユーザーがいいねを押すことに失敗する', async () => {
       const input: CreateUserToRecruitLikeInput = {
         recruitId: 'userRecruitId0',
-      }
+      };
       await request(app.getHttpServer())
         .post('/user-to-recruit-like')
         .send(input)
         .then((res) => {
           expect(res.error).toBeTruthy();
           expect(res.status).toBe(409);
-        })
-    })
-  })
+        });
+    });
+  });
 
   describe('POST /user-to-recruit-like/:recruitId', () => {
     beforeEach(async () => {
       await createThisTestData();
     });
 
-    it('いいねを削除することに成功する', async() => {
+    it('いいねを削除することに成功する', async () => {
       await request(app.getHttpServer())
         .delete('/user-to-recruit-like/userRecruitId0')
         .then((res) => {
           expect(res.error).toBeFalsy();
           expect(res.status).toBe(200);
-        })
-    })
-  })
-})
+        });
+    });
+  });
+});

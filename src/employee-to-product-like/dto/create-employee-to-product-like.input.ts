@@ -1,7 +1,7 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateEmployeeToProductLikeInput {
   @IsString()
   @IsNotEmpty()
-  productId: string
+  productId: string;
 }

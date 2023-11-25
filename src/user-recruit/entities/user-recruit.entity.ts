@@ -6,12 +6,13 @@ export class UserRecruitEntity implements UserRecruit {
   createdAt: Date;
   updatedAt: Date;
   headline: string;
-  hackthonName: string;
+  hackathonName: string;
+  hackathonUrl: string;
   details: string;
   programingSkills: Prisma.JsonValue;
-  developmentPeriod: string;
-  hackathonUrl: string;
-  numberOfApplicants: string;
+  developmentStartDate: string;
+  developmentEndDate: string;
+  numberOfApplicants: number;
   recruiter?: string;
   product?: Product;
 }

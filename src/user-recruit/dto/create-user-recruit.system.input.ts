@@ -1,6 +1,6 @@
 import { IsArray, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
-export class CreateUserRecruitInput {
+export class CreateUserRecruitSystemInput {
   @IsNotEmpty()
   @IsString()
   headline!: string;
@@ -19,7 +19,7 @@ export class CreateUserRecruitInput {
 
   @IsNotEmpty()
   @IsNumber()
-  numberOfApplicants!: string;
+  numberOfApplicants!: number;
 
   @IsArray()
   programingSkills: string[];

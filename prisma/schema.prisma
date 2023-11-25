@@ -136,13 +136,14 @@ model UserRecruitParticipant {
 
 model UserRecruit {
   id                      String                   @id @default(cuid())
-  hackthonName            String?
-  headline                String
-  details                 String?                  @db.VarChar(500)
-  programingSkills        Json
-  developmentPeriod       String?
+  hackathonName           String?
   hackathonUrl            String?
-  numberOfApplicants      String
+  headline                String
+  details                 String                  @db.VarChar(500)
+  numberOfApplicants      Int
+  programingSkills        Json
+  developmentStartDate    String
+  developmentEndDate      String
   createdAt               DateTime                 @default(now())
   updatedAt               DateTime                 @updatedAt
   recruiterId             String
