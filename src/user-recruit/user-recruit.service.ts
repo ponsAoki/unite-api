@@ -52,6 +52,18 @@ export class UserRecruitService {
     });
   }
 
+  findByUserRecruitParticipantId(id: string) {
+    return this.prismaService.userRecruit.findFirst({
+      where: {
+        userRecruitParticipant: {
+          some: {
+            id: id,
+          },
+        },
+      },
+    });
+  }
+
   //いいねしているrecruitを探す
   findLikedRecruitById(id: string) {
     return this.prismaService.userRecruit.findFirst({
