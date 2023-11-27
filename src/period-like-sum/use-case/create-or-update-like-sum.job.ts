@@ -1,21 +1,21 @@
-import { Injectable } from "@nestjs/common";
-import { Cron } from "@nestjs/schedule";
-import { ProductService } from "src/product/product.service";
-import { PeriodLikeSumService } from "../period-like-sum.service";
-import { ProductWithLikesAndLikeSum } from "src/product/entities/product-with-likes-and-like-sum";
+import { Injectable } from '@nestjs/common';
+import { Cron } from '@nestjs/schedule';
+import { ProductService } from 'src/product/product.service';
+import { PeriodLikeSumService } from '../period-like-sum.service';
+import { ProductWithLikesAndLikeSum } from 'src/product/entities/product-with-likes-and-like-sum';
 
 @Injectable()
 export class CreateOrUpdateLikeSumJob {
   constructor(
     private readonly productService: ProductService,
-    private readonly periodLikeSumService: PeriodLikeSumService
-   ) {}
+    private readonly periodLikeSumService: PeriodLikeSumService,
+  ) {}
 
   @Cron('0 0 */12 * * *')
   async handle(): Promise<void> {
     //likeテーブルを持つproductを全件取得する。
     const productsWithLikes = await this.productService.findAllIncludeLikes();
-  
+
     // productsWithLikesが存在しない場合、処理を終了する
     if (productsWithLikes.length === 0) {
       return;
@@ -28,10 +28,12 @@ export class CreateOrUpdateLikeSumJob {
         const totalLikes = product.employeeToProductLikes.length;
         const specificId = product.periodLikeSum[0].id;
 
-        await this.periodLikeSumService.upsert(product.id, totalLikes, specificId);
-      })
-    )
+        await this.periodLikeSumService.upsert(
+          product.id,
+          totalLikes,
+          specificId,
+        );
+      }),
+    );
   }
 }
-
-

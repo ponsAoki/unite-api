@@ -1,4 +1,4 @@
-import { Comment } from "@prisma/client";
+import { Comment } from '@prisma/client';
 
 export class CommentEntity implements Comment {
   id: string;
@@ -8,4 +8,3 @@ export class CommentEntity implements Comment {
   createdAt: Date;
   updatedAt: Date;
 }
-

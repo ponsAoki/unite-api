@@ -19,7 +19,7 @@ import { UserService } from 'src/user/user.service';
     UserRecruitService,
     CreateMyComment,
     deleteComment,
-    UserService
-  ]
+    UserService,
+  ],
 })
 export class CommentModule {}

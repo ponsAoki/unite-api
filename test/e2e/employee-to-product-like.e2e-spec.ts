@@ -1,10 +1,10 @@
-import { INestApplication } from "@nestjs/common";
-import { PrismaService } from "src/prisma.service";
+import { INestApplication } from '@nestjs/common';
+import { PrismaService } from 'src/prisma.service';
 
-import { initTest, initTestApplication } from "../init";
+import { initTest, initTestApplication } from '../init';
 import * as request from 'supertest';
 import { createTestData, deleteAllTable } from '../fixture-handler';
-import { CreateEmployeeToProductLikeInput } from "src/employee-to-product-like/dto/create-employee-to-product-like.input";
+import { CreateEmployeeToProductLikeInput } from 'src/employee-to-product-like/dto/create-employee-to-product-like.input';
 
 initTest();
 
@@ -13,7 +13,7 @@ describe('EmployeeToProductLike API', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
-    ({ app, prismaService: prisma} = await initTestApplication());
+    ({ app, prismaService: prisma } = await initTestApplication());
   });
 
   afterAll(async () => {
@@ -25,8 +25,15 @@ describe('EmployeeToProductLike API', () => {
     await deleteAllTable(prisma);
   });
 
-  const createThisTestData =async (): Promise<void> => {
-    const { createUsers, createProducts, createEmployees, createEmployeeToProductLike, createUserRecruits, createCorporations } = createTestData(prisma);
+  const createThisTestData = async (): Promise<void> => {
+    const {
+      createUsers,
+      createProducts,
+      createEmployees,
+      createEmployeeToProductLike,
+      createUserRecruits,
+      createCorporations,
+    } = createTestData(prisma);
     await createUsers();
     await createUserRecruits();
     await createProducts();
@@ -40,23 +47,23 @@ describe('EmployeeToProductLike API', () => {
       await createThisTestData();
     });
 
-    it('プロダクトに対して従業員がいいねを押すことに成功する',async () => {
+    it('プロダクトに対して従業員がいいねを押すことに成功する', async () => {
       const input: CreateEmployeeToProductLikeInput = {
         productId: 'productId1',
-      }
+      };
       await request(app.getHttpServer())
         .post('/employee-to-product-like')
         .send(input)
         .then((res) => {
           expect(res.error).toBeFalsy();
           expect(res.status).toBe(201);
-        })
+        });
     });
 
-    it('プロダクトに対して従業員がいいねを押すことに失敗する',async () => {
+    it('プロダクトに対して従業員がいいねを押すことに失敗する', async () => {
       const input: CreateEmployeeToProductLikeInput = {
         productId: 'productId0',
-      }
+      };
       await request(app.getHttpServer())
         .post('/employee-to-product-like')
         .send(input)
@@ -64,7 +71,7 @@ describe('EmployeeToProductLike API', () => {
           expect(res.error).toBeTruthy();
           //データの競合を表す409
           expect(res.status).toBe(409);
-        })
-    })
-  })
-})
+        });
+    });
+  });
+});

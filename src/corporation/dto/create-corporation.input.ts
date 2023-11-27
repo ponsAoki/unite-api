@@ -1,4 +1,4 @@
-import { IsEmpty, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsEmpty, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateCorporationInput {
   @IsString()

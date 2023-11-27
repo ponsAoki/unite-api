@@ -1,4 +1,11 @@
-import { Body, Controller, Delete, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { FirebaseAuth } from 'src/common/decorators/auth.decorator';
 import { CreateUserToRecruitLikeInput } from './dto/create-user-to-recruit-like';
 import { UserToRecruitLikeService } from './user-to-recruit-like.service';
@@ -20,17 +27,20 @@ export class UserToRecruitLikeController {
   @UseGuards(AuthGuard)
   async createLike(
     @FirebaseAuth() authUser: any,
-    @Body() input: CreateUserToRecruitLikeInput
+    @Body() input: CreateUserToRecruitLikeInput,
   ): Promise<void> {
-    return await this.createUserToRecruitLike.handle(authUser.uid, input.recruitId)
+    return await this.createUserToRecruitLike.handle(
+      authUser.uid,
+      input.recruitId,
+    );
   }
 
   @Delete(':recruitId')
   @UseGuards(AuthGuard)
   async deleteLike(
     @FirebaseAuth() authUser: any,
-    @Param('recruitId') recruitId: string
+    @Param('recruitId') recruitId: string,
   ): Promise<void> {
-    return await this.deleteUserToRecruitLike.handle(authUser.uid, recruitId)
+    return await this.deleteUserToRecruitLike.handle(authUser.uid, recruitId);
   }
 }

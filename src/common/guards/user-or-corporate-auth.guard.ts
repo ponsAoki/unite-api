@@ -87,7 +87,6 @@ export class UserOrCorporateAuthGuard implements CanActivate {
     if (!corporation) {
       throw new UnauthorizedException('corporation not found');
     }
-    request['corporation'] = corporation;
 
     return !!employee && !!corporation;
   }

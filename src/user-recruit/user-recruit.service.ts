@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaPromise, UserRecruit } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
-import { CreateUserRecruitInput } from './dto/create-user-recruit.input';
 import { UpdateUserRecruitInput } from './dto/update-user-recruit.input';
 import { UserService } from 'src/user/user.service';
+import { CreateUserRecruitSystemInput } from './dto/create-user-recruit.system.input';
 
 @Injectable()
 export class UserRecruitService {
@@ -17,8 +17,22 @@ export class UserRecruitService {
       include: {
         product: true,
         recruiter: true,
-        userRecruitParticipant: true
-      }
+        userRecruitParticipant: true,
+      },
+    });
+  }
+
+  findSearch(search?: string) {
+    return this.prismaService.userRecruit.findMany({
+      where: {
+        hackathonName: {
+          contains: search,
+        },
+      },
+      include: {
+        recruiter: true,
+        userRecruitParticipant: true,
+      },
     });
   }
 
@@ -34,7 +48,19 @@ export class UserRecruitService {
           },
         },
         userToRecruitLikes: true,
-      }
+      },
+    });
+  }
+
+  findByUserRecruitParticipantId(id: string) {
+    return this.prismaService.userRecruit.findFirst({
+      where: {
+        userRecruitParticipant: {
+          some: {
+            id: id,
+          },
+        },
+      },
     });
   }
 
@@ -43,25 +69,23 @@ export class UserRecruitService {
     return this.prismaService.userRecruit.findFirst({
       where: { id },
       include: {
-        userToRecruitLikes: true
-      }
-    })
+        userToRecruitLikes: true,
+      },
+    });
   }
 
   //自分が作成したrecruitの一覧取得
   findManyByUserId(id: string): PrismaPromise<UserRecruit[]> {
-    return this.prismaService.userRecruit.findMany(
-      {
-        where: {
-          recruiter: {
-            id
-          }
+    return this.prismaService.userRecruit.findMany({
+      where: {
+        recruiter: {
+          id,
         },
-        include: {
-          userRecruitParticipant: true,
-        }
-      }
-    )
+      },
+      include: {
+        userRecruitParticipant: true,
+      },
+    });
   }
 
   //関連するrecruitの一覧取得
@@ -71,14 +95,14 @@ export class UserRecruitService {
         userRecruitParticipant: {
           some: {
             userId: id,
-            isApproved: true
-          }
-        }
+            isApproved: true,
+          },
+        },
       },
       include: {
         recruiter: true,
-      }
-    })
+      },
+    });
   }
 
   //自分がいいねしたrecruitの一覧取得
@@ -88,10 +112,10 @@ export class UserRecruitService {
         userToRecruitLikes: {
           some: {
             userId: id,
-          }
-        }
-      }
-    })
+          },
+        },
+      },
+    });
   }
 
   findByIdAndRecruiterId(
@@ -105,10 +129,13 @@ export class UserRecruitService {
 
   create(
     recruiterId: string,
-    input: CreateUserRecruitInput,
+    input: CreateUserRecruitSystemInput,
   ): PrismaPromise<UserRecruit> {
     return this.prismaService.userRecruit.create({
-      data: { ...input, recruiterId },
+      data: {
+        ...input,
+        recruiterId,
+      },
     });
   }
 

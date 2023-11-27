@@ -1,4 +1,4 @@
-import { Employee } from "@prisma/client";
+import { Employee } from '@prisma/client';
 
 export class EmployeeEntity implements Employee {
   id: string;
@@ -10,5 +10,3 @@ export class EmployeeEntity implements Employee {
   introduction: string;
   phoneNumber: string;
 }
-
-

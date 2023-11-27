@@ -15,8 +15,10 @@ export const APPLY_FIRST_MESSAGE =
 
 export const FAIL_TO_DELETE_COMMENT = 'このコメントを削除することはできません';
 
-export const FAIL_TO_CREATE_COMMENT = 'commentはすでに存在している為作成することができません。'
+export const FAIL_TO_CREATE_COMMENT =
+  'commentはすでに存在している為作成することができません。';
 
-export const FAIL_TO_UPLOAD_FIREBASE_STORAGE = 'fileをfirebaseAuthに保存することができませんでした。'
+export const FAIL_TO_UPLOAD_FIREBASE_STORAGE =
+  'fileをfirebaseAuthに保存することができませんでした。';
 
-export const FAIL_TO_CREATE_PRODUCT = 'プロダクトの作成に失敗しました。'
+export const FAIL_TO_CREATE_PRODUCT = 'プロダクトの作成に失敗しました。';

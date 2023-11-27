@@ -11,7 +11,7 @@ export class createProductInput {
 
   @IsArray()
   @IsNotEmpty()
-  skills!: string[]
+  skills!: string[];
 
   @IsString()
   @IsNotEmpty()
@@ -23,5 +23,5 @@ export class createProductInput {
 
   @IsString()
   @IsNotEmpty()
-  overview !: string;
+  overview!: string;
 }
