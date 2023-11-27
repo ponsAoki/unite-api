@@ -120,9 +120,7 @@ describe('Product API', () => {
           expect(resProduct).toMatchObject({
             id: 'productId0',
             recruitId: 'userRecruitId0',
-            headline: 'headline0',
             url: 'url0',
-            detail: 'detail0',
             comment: [
               {
                 id: 'commentId0',
@@ -161,8 +159,12 @@ describe('Product API', () => {
 
     it('product情報の更新', async () => {
       const input: UpdateProductInput = {
-        headline: '変更',
-        detail: '変更',
+        name: '変更',
+        skills: ['typeScript'],
+        reasonForSkillSelection: '変更',
+        developmentBackground: '変更',
+        overview: '変更',
+        url: '変更'
       };
 
       await request(app.getHttpServer())
@@ -200,9 +202,11 @@ describe('Product API', () => {
       });
       const input: createProductInput = {
         recruitId: recruit.id,
-        url: 'fileUrl0',
-        headline: '変更',
-        detail: '変更',
+        name: '新規作成',
+        skills: ['JavaScript'],
+        reasonForSkillSelection: '新規作成',
+        developmentBackground: '新規作成',
+        overview: '新規作成'
       };
 
       await request(app.getHttpServer())
@@ -222,9 +226,11 @@ describe('Product API', () => {
     it('新規プロダクトの作成に失敗する', async () => {
       const input: createProductInput = {
         recruitId: 'userRecruit0',
-        url: 'fileUrl0',
-        headline: '変更',
-        detail: '変更',
+        name: '新規作成',
+        skills: ['JavaScript'],
+        reasonForSkillSelection: '新規作成',
+        developmentBackground: '新規作成',
+        overview: '新規作成'
       };
 
       await request(app.getHttpServer())
