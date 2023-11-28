@@ -39,7 +39,6 @@ export class UserRecruitApplicationController {
     if (!user) {
       throw new ForbiddenException('user not found');
     }
-
     return await this.userRecruitApplicationService.findByApplicantIdAndRecruitId(
       user.id,
       recruitId,

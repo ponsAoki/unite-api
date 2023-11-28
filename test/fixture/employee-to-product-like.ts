@@ -1,4 +1,4 @@
-import { EmployeeToProductLike } from "@prisma/client";
+import { EmployeeToProductLike } from '@prisma/client';
 
 export class TestEmployeeToProductLike {
   create(num = 10): EmployeeToProductLike[] {
@@ -9,12 +9,8 @@ export class TestEmployeeToProductLike {
         id: `employeeToProductLike${n}`,
         employeeId: `employeeId${n}`,
         productId: `productId${n}`,
-        createdAt: t
-      }
-    })
+        createdAt: t,
+      };
+    });
   }
 }
-
-
-
-

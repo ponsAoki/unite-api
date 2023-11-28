@@ -18,10 +18,12 @@ export class AuthUtil {
       clientC509CertUrl: process.env.FIREBASE_DEV_CLIENT_X509_CERT_URL,
       storageBucket: process.env.FIREBASE_DEV_STORAGE_BUCKET,
     };
-    admin.initializeApp({
-      credential: admin.credential.cert(firebaseConfig),
-      storageBucket: process.env.FIREBASE_DEV_STORAGE_BUCKET,
-    }, 'user');
+    admin.initializeApp(
+      {
+        credential: admin.credential.cert(firebaseConfig),
+        storageBucket: process.env.FIREBASE_DEV_STORAGE_BUCKET,
+      },
+      'user',
+    );
   }
 }
-

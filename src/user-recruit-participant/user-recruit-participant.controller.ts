@@ -19,6 +19,7 @@ import {
   UserOrCorporateAuth,
   UserOrCorporateAuthParam,
 } from 'src/common/decorators/user-or-corporate-atuh.decorator';
+import { ApproveParticipantUseCase } from './use-case/approveParticipant.usecase';
 
 @Controller('user-recruit-participant')
 export class UserRecruitParticipantController {
@@ -26,6 +27,7 @@ export class UserRecruitParticipantController {
     private readonly userRecruitParticipantService: UserRecruitParticipantService,
     private readonly userService: UserService,
     private readonly isRelatedUserByRecruitIdService: IsRelatedUserByRecruitIdService,
+    private readonly approveParticipantUseCase: ApproveParticipantUseCase,
   ) {}
 
   @Get()
@@ -64,10 +66,15 @@ export class UserRecruitParticipantController {
     return await this.userRecruitParticipantService.create(user.id, input);
   }
 
+  // @Put(':id/approve')
+  // async approveParticipant(@Param('id') id: string) {
+  //   return await this.userRecruitParticipantService.approveParticipant(id);
+  // }
+
   //recruitの募集主が承認を押した時に状態をtrueにする。
   @Put(':id/approve')
   async approveParticipant(@Param('id') id: string) {
-    return await this.userRecruitParticipantService.approveParticipant(id);
+    return await this.approveParticipantUseCase.handle(id);
   }
 
   //recruitの募集主が拒否した場合にテーブルを破棄する。

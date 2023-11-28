@@ -14,7 +14,7 @@ export class CommentService {
   }
 
   //同じproductIdを持つcommentを全権取得
-  findManyByProductId(productId: string): PrismaPromise<Comment[]>{
+  findManyByProductId(productId: string): PrismaPromise<Comment[]> {
     return this.prismaService.comment.findMany({
       where: { productId },
     });
@@ -22,7 +22,7 @@ export class CommentService {
 
   //コメント作成
   create(input: CreateCommentInput, userId: string): PrismaPromise<Comment> {
-    return this.prismaService.comment.create({ data: {...input, userId} });
+    return this.prismaService.comment.create({ data: { ...input, userId } });
   }
   //コメントの編集
   update(id: string, input: UpdateCommentInput): PrismaPromise<Comment> {

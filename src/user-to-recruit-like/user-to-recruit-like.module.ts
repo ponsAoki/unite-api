@@ -15,7 +15,7 @@ import { DeleteUserToRecruitLikeService } from './use-case/delete-user-to-recrui
     UserRecruitService,
     UserService,
     CreateUserToRecruitLike,
-    DeleteUserToRecruitLikeService
-  ]
+    DeleteUserToRecruitLikeService,
+  ],
 })
 export class UserToRecruitLikeModule {}

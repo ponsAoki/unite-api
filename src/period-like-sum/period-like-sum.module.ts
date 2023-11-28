@@ -12,8 +12,7 @@ import { CreateOrUpdateLikeSumJob } from './use-case/create-or-update-like-sum.j
     ProductService,
     PeriodLikeSumService,
     PrismaService,
-    CreateOrUpdateLikeSumJob
-  ]
+    CreateOrUpdateLikeSumJob,
+  ],
 })
 export class PeriodLikeSumModule {}
-

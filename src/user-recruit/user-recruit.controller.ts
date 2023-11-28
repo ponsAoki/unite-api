@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { FirebaseAuth } from 'src/common/decorators/auth.decorator';
@@ -29,9 +30,13 @@ export class UserRecruitController {
     private readonly userService: UserService,
   ) {}
 
+  // @Get()
+  // async findAll(): Promise<UserRecruitEntity[]> {
+  //   return await this.userRecruitService.findAll();
+  // }
   @Get()
-  async findAll(): Promise<UserRecruitEntity[]> {
-    return await this.userRecruitService.findAll();
+  async findAll(@Query('search') search: string | undefined): Promise<any> {
+    return await this.userRecruitService.findSearch(search);
   }
 
   @Get('my-recruits')
@@ -48,22 +53,18 @@ export class UserRecruitController {
 
   @Get('related-recruits')
   @UseGuards(AuthGuard)
-  async findRelativeManybyUserId(
-    @FirebaseAuth() authUser: any
-  ) {
-    const user = await this.userService.findByFirebaseUID(authUser.uid)
-    return this.userRecruitService.findRelativeManybyUserId(user.id)
+  async findRelativeManybyUserId(@FirebaseAuth() authUser: any) {
+    const user = await this.userService.findByFirebaseUID(authUser.uid);
+    return this.userRecruitService.findRelativeManybyUserId(user.id);
   }
 
   @Get('liked-recruits')
   @UseGuards(AuthGuard)
-  async findLikedRecruits(
-    @FirebaseAuth() authUser: any
-  ) {
+  async findLikedRecruits(@FirebaseAuth() authUser: any) {
     const user = await this.userService.findByFirebaseUID(authUser.uid);
-    return this.userRecruitService.findLikedRecruitsByUserId(user.id)
+    return this.userRecruitService.findLikedRecruitsByUserId(user.id);
   }
-  
+
   async findMyRelativeMany(@FirebaseAuth() authUser: any) {
     const user = await this.userService.findByFirebaseUID(authUser.uid);
     return this.userRecruitService.findRelativeManybyUserId(user.id);
@@ -84,10 +85,10 @@ export class UserRecruitController {
   }
 
   @Get('findOne/:id')
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   async findById(
     @Param('id') id: string,
-    @FirebaseAuth() authUser: any,
+    // @FirebaseAuth() authUser: any,
   ): Promise<UserRecruitEntity> {
     return await this.userRecruitService.findById(id);
   }

@@ -4,14 +4,11 @@ import { PeriodLikeSumService } from './period-like-sum.service';
 
 @Controller('period-like-sum')
 export class PeriodLikeSumController {
-  constructor(
-    private readonly periodLikeSumJobService: PeriodLikeSumService,
-  ) {}
+  constructor(private readonly periodLikeSumJobService: PeriodLikeSumService) {}
 
   //全件取得(job化されている)
   @Get()
   async findAll(): Promise<PeriodLikeSum[]> {
-    return await this.periodLikeSumJobService.findAllToSortByFixedTime()
+    return await this.periodLikeSumJobService.findAllToSortByFixedTime();
   }
-
 }

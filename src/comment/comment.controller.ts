@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { CreateCommentInput } from './dto/create-comment-input';
 import { FirebaseAuth } from 'src/common/decorators/auth.decorator';
 import { CreateMyComment } from './use-case/create-my-comment';
@@ -13,7 +22,7 @@ export class CommentController {
   constructor(
     private readonly createMyCommentService: CreateMyComment,
     private readonly commentService: CommentService,
-    private readonly deleteCommentService: deleteComment
+    private readonly deleteCommentService: deleteComment,
   ) {}
 
   //コメント作成
@@ -24,7 +33,7 @@ export class CommentController {
     @FirebaseAuth() authUser: any,
     @Body() input: CreateCommentInput,
   ): Promise<Comment> {
-    return await this.createMyCommentService.handle(authUser.uid, input)
+    return await this.createMyCommentService.handle(authUser.uid, input);
   }
 
   //コメントの編集
@@ -46,6 +55,6 @@ export class CommentController {
     @FirebaseAuth() authUser: any,
     @Body() input: { id: string },
   ): Promise<Comment> {
-    return this.deleteCommentService.handle(input.id, authUser.uid)
+    return this.deleteCommentService.handle(input.id, authUser.uid);
   }
 }

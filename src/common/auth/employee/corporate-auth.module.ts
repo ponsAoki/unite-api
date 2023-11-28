@@ -3,9 +3,6 @@ import { CorporateAuthService } from './corporate-auth.service';
 import { CorporateAuthUtil } from './corporateAuth.util';
 
 @Module({
-  providers: [
-    CorporateAuthService,
-    CorporateAuthUtil
-  ]
+  providers: [CorporateAuthService, CorporateAuthUtil],
 })
 export class CorporateAuthModule {}
